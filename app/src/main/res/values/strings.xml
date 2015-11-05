@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">SchafkopfHelfer</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Fragment Titles -->
+
+    <string name="title_start_fragment">Schafkopf Helper</string>
+    <string name="title_players_fragment">Spieler</string>
+    <string name="title_game_main_fragment">Spiel</string>
+    <string name="title_game_settings_fragment">Einstellungen</string>
+    <string name="title_game_table_fragment">Spielverlauf</string>
+    <string name="title_statistic_fragment">Statistik</string>
+
+    <!-- Main Buttons -->
+
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Abbrechen</string>
+    <string name="button_close">Schliessen</string>
+
+    <!-- StartFragment -->
+
+    <string name="button_new_game">Neues Spiel</string>
+    <string name="button_old_game">Weiter spielen</string>
+    <string name="button_statistic">Statistik</string>
+
+    <!-- PlayersFragment -->
+
+    <string name="hint_name">Name</string>
+
+    <!-- Games -->
+
+    <string name="ramsch">Ramsch</string>
+    <string name="durchmarsch">Durchmarsch</string>
+    <string name="pott">Pott</string>
+    <string name="sauspiel">Sauspiel</string>
+    <string name="solo">Solo</string>
+    <string name="wenz">Wenz</string>
+    <string name="geier">Geier</string>
+    <string name="farbwenz">Farbwenz</string>
+    <string name="farbgeier">Farbgeier</string>
+    <string name="bettel">Bettel</string>
+
+    <string name="laufende">Laufende</string>
+    <string name="schneider">Schneider</string>
+    <string name="schwarz">Schwarz</string>
+    <string name="jungfrau">Jungfrau</string>
+    <string name="klopfen">Klopfen</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
