@@ -12,12 +12,13 @@ import android.widget.Button;
 
 import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
+import com.applicatum.schafkopfhelfer.StartActivity;
 
 
 public class StartFragment extends Fragment {
 
     private View view;
-    private MainActivity activity;
+    private StartActivity activity;
 
     private Button buttonNewGame;
     private Button buttonOldGame;
@@ -32,7 +33,7 @@ public class StartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_start, container, false);
-        activity = (MainActivity) getActivity();
+        activity = (StartActivity) getActivity();
 
         buttonNewGame = (Button) view.findViewById(R.id.buttonNewGame);
         buttonOldGame = (Button) view.findViewById(R.id.buttonOldGame);
