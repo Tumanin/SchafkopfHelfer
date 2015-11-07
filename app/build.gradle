@@ -20,7 +20,6 @@ android {
 }
 
 repositories {
-
     flatDir {
         dirs 'libs'
     }
@@ -30,6 +29,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //testCompile 'junit:junit:4.12'
     compile(name: 'dynamicgrid-release', ext: 'aar')
+    compile(name: 'library-2.4.1', ext: 'aar')
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
 }
