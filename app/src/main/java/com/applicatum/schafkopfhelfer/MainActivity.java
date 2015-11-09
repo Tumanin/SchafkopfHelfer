@@ -26,12 +26,14 @@ public class MainActivity extends AppCompatActivity {
     SectionsPagerAdapter mSectionsPagerAdapter;
     private CirclePageIndicator circlePageIndicator;
     ViewPager mViewPager;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.title_game_main_fragment));
         setSupportActionBar(toolbar);
 
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int index) {
 
                 //updateChannelNames(index);
+                toolbar.setTitle(mSectionsPagerAdapter.getPageTitle(index));
+                //mSectionsPagerAdapter.getPageTitle(index);
+
             }
 
             @Override
@@ -175,5 +180,9 @@ public class MainActivity extends AppCompatActivity {
             if (object instanceof StatisticsFragment) return 2;
             else return POSITION_NONE;
         }
+    }
+
+    public void setTitle(String title){
+        toolbar.setTitle(title);
     }
 }
