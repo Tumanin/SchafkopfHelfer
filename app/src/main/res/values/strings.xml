@@ -26,6 +26,7 @@
     <!-- PlayersFragment -->
 
     <string name="hint_name">Name</string>
+    <string name="title_new_player">Neuer Spieler</string>
 
     <!-- Games -->
 

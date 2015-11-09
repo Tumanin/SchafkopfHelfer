@@ -4,11 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.applicatum.schafkopfhelfer.R;
-import com.applicatum.schafkopfhelfer.models.User;
+import com.applicatum.schafkopfhelfer.models.Player;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
@@ -23,7 +22,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
     //private Context context;
     private LayoutInflater mInflater;
 
-    public UsersDynamicAdapter(Context context, List<User> items, int columnCount) {
+    public UsersDynamicAdapter(Context context, List<Player> items, int columnCount) {
 
         super(context, items, columnCount);
         //users = items;
@@ -42,13 +41,13 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
             holder = (UserViewHolder) convertView.getTag();
         }
 
-        User user = (User) getItem(position);
-        holder.build(user.getName(), user.getPoints(), getState(user));
+        Player player = (Player) getItem(position);
+        holder.build(player.getName(), player.getPoints(), getState(player));
         return convertView;
     }
 
-    private String getState(User user){
-        switch (user.getState()){
+    private String getState(Player player){
+        switch (player.getState()){
             case PLAY:
                 return "spielt";
             case WAIT:

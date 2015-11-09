@@ -1,7 +1,5 @@
 package com.applicatum.schafkopfhelfer.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,12 +12,12 @@ import android.widget.Toast;
 import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.adapters.UsersDynamicAdapter;
-import com.applicatum.schafkopfhelfer.models.User;
+import com.applicatum.schafkopfhelfer.models.Player;
+import com.applicatum.schafkopfhelfer.utils.PlayersList;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -56,26 +54,31 @@ public class GameMainFragment extends Fragment {
 
     private void setGridView(){
 
-        User user1 = new User("User1");
-        User user2 = new User("User2");
-        User user3 = new User("User3");
-        User user4 = new User("User4");
-        User user5 = new User("User5");
-        User user6 = new User("User6");
-        User user7 = new User("User7");
-        User user8 = new User("User8");
+        /*
+        Player player1 = new Player("User1");
+        Player player2 = new Player("User2");
+        Player player3 = new Player("User3");
+        Player player4 = new Player("User4");
+        Player player5 = new Player("User5");
+        Player player6 = new Player("User6");
+        Player player7 = new Player("User7");
+        Player player8 = new Player("User8");
+        */
 
-        List<User> users = new ArrayList<>();
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-        users.add(user4);
-        users.add(user5);
-        users.add(user6);
-        users.add(user7);
-        users.add(user8);
+        List<Player> players = new ArrayList<>();
+        players.addAll(PlayersList.getInstance().getList());
+        /*
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        players.add(player5);
+        players.add(player6);
+        players.add(player7);
+        players.add(player8);
+        */
 
-        UsersDynamicAdapter usersDynamicAdapter = new UsersDynamicAdapter(activity, users, 3);
+        UsersDynamicAdapter usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
         gridView.setAdapter(usersDynamicAdapter);
 //        add callback to stop edit mode if needed
         gridView.setOnDropListener(new DynamicGridView.OnDropListener()

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.applicatum.schafkopfhelfer.fragments.StartFragment;
+import com.applicatum.schafkopfhelfer.models.Player;
 
 /**
  * Created by Alexx on 07.11.2015.
@@ -19,6 +20,9 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        Player.findById(Player.class, (long)1);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
