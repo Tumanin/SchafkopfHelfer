@@ -10,6 +10,10 @@ import android.widget.TableLayout;
 
 import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
+import com.applicatum.schafkopfhelfer.models.Game;
+import com.applicatum.schafkopfhelfer.models.Player;
+
+import java.util.List;
 
 public class GameTableFragment extends Fragment {
 
@@ -27,7 +31,7 @@ public class GameTableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_game_table, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_game_table_mock, container, false);
         table = (TableLayout) mRootView.findViewById(R.id.table);
         mActivity = (MainActivity) getActivity();
 
@@ -41,5 +45,8 @@ public class GameTableFragment extends Fragment {
     }
     public void updateTable(){
         Log.d(TAG, "updateTable");
+        Game game = Game.lastGame();
+        //game.
+        List<Player> activePlayers;
     }
 }

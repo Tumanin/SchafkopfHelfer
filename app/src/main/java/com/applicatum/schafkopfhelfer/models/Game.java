@@ -4,6 +4,7 @@ import com.applicatum.schafkopfhelfer.utils.Types;
 import com.orm.SugarRecord;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ public class Game extends SugarRecord<Game>{
     public Game(){
         this.date = (new Date().getTime())/1000L;
         pot = 0;
-
+        activePlayers = new ArrayList<>();
         gameTypes = new HashMap<>();
         gameTypes.put(Types.RAMSCH, 10);
         gameTypes.put(Types.POTT, -1);
@@ -71,7 +72,9 @@ public class Game extends SugarRecord<Game>{
     }
 
     public void updateActivePlayers(List<Player> activePlayers) {
-        this.activePlayers = activePlayers;
+        //this.activePlayers = activePlayers;
+        this.activePlayers.clear();
+        this.activePlayers.addAll(activePlayers);
         this.save();
     }
 
