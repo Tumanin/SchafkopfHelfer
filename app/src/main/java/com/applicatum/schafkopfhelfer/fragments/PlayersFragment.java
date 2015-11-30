@@ -59,8 +59,9 @@ public class PlayersFragment extends Fragment {
             public void onClick(View view) {
                 if (activePlayers.size() > 3 && activePlayers.size() < 8) {
                     PlayersList.getInstance().setList(activePlayers);
-
+                    System.out.println("calling game");
                     Game game = Game.lastGame();
+                    System.out.println("calling updateActivePlayers");
                     game.updateActivePlayers(activePlayers);
                     activePlayers.clear();
 

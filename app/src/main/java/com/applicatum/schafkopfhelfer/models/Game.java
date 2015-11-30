@@ -4,6 +4,7 @@ import com.applicatum.schafkopfhelfer.utils.Types;
 import com.orm.SugarRecord;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,31 +21,32 @@ public class Game extends SugarRecord<Game>{
 
     long date;
     int pot;
+    @Ignore
     List<Player> activePlayers;
-    HashMap<String, Integer> gameTypes;
 
     public Game(){
         this.date = (new Date().getTime())/1000L;
         pot = 0;
-
-        gameTypes = new HashMap<>();
-        gameTypes.put(Types.RAMSCH, 10);
-        gameTypes.put(Types.POTT, -1);
-        gameTypes.put(Types.PFLICHT, -1);
-        gameTypes.put(Types.SAUSPIEL, 10);
-        gameTypes.put(Types.FARBSOLO, 50);
-        gameTypes.put(Types.WENZ, 50);
-        gameTypes.put(Types.GEIER, -1);
-        gameTypes.put(Types.BETTEL, -1);
-        gameTypes.put(Types.KLOPFEN, 10);
-        gameTypes.put(Types.LAUFENDE, 10);
-        gameTypes.put(Types.SCHNEIDER, 10);
-        gameTypes.put(Types.SCHWARZ, 10);
+        activePlayers = new ArrayList<>();
     }
 
     public static Game createGame(){
         Game game = new Game();
         game.save();
+        GameTypes gt = new GameTypes();
+        new GameTypes(game, Types.RAMSCH, 10);
+        new GameTypes(game, Types.RAMSCH, 10);
+        new GameTypes(game, Types.POTT, -1);
+        new GameTypes(game, Types.PFLICHT, -1);
+        new GameTypes(game, Types.SAUSPIEL, 10);
+        new GameTypes(game, Types.FARBSOLO, 50);
+        new GameTypes(game, Types.WENZ, 50);
+        new GameTypes(game, Types.GEIER, -1);
+        new GameTypes(game, Types.BETTEL, -1);
+        new GameTypes(game, Types.KLOPFEN, 10);
+        new GameTypes(game, Types.LAUFENDE, 10);
+        new GameTypes(game, Types.SCHNEIDER, 10);
+        new GameTypes(game, Types.SCHWARZ, 10);
         return game;
     }
 
@@ -56,32 +58,39 @@ public class Game extends SugarRecord<Game>{
         Iterator it = gameTypes.entrySet().iterator();
         while (it.hasNext()){
             Map.Entry<String, Integer> pair = (Map.Entry) it.next();
-            this.gameTypes.put(pair.getKey(), pair.getValue());
+            GameTypes.getGameType(this, pair.getKey()).setValue(pair.getValue());
             it.remove();
         }
         this.save();
     }
 
     public HashMap<String, Integer> getGameTypes() {
-        return gameTypes;
+        List<GameTypes> gt = GameTypes.getGameTypes(this);
+        HashMap<String, Integer> hm = new HashMap<>();
+        for(GameTypes e : gt){
+            hm.put(e.getType(), e.getValue());
+        }
+        return hm;
     }
 
     public List<Player> getActivePlayers() {
-        return activePlayers;
+        return GamePlayers.returnPlayers(this);
     }
 
     public void updateActivePlayers(List<Player> activePlayers) {
-        this.activePlayers = activePlayers;
-        this.save();
+        for(Player p : activePlayers){
+            System.out.println(p);
+            GamePlayers gp = new GamePlayers(this, p);
+        }
     }
 
     public void recordNewRound(String type, List<Player> winners, List<Player> losers, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf){
-        int difference = gameTypes.get(type) + laufende * gameTypes.get(Types.LAUFENDE);
+        int difference = GameTypes.getValue(this, type) + laufende * GameTypes.getValue(this, Types.LAUFENDE);
         if(schneider){
-            difference += gameTypes.get(Types.SCHNEIDER);
+            difference += GameTypes.getValue(this, Types.SCHNEIDER);
         }
         if(schwarz){
-            difference += gameTypes.get(Types.SCHWARZ);
+            difference += GameTypes.getValue(this, Types.SCHWARZ);
         }
         difference = difference * klopf;
 
@@ -98,7 +107,7 @@ public class Game extends SugarRecord<Game>{
                 winners.remove(e);
             }
         }
-        if((gameTypes.get(Types.POTT)==1)&&(type == Types.SAUSPIEL)){
+        if((GameTypes.getValue(this, Types.POTT)==1)&&(type == Types.SAUSPIEL)){
             win += pot/NumberOfWinners;
         }
 
