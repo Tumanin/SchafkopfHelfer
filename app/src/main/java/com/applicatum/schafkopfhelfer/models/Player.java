@@ -11,6 +11,7 @@ import java.util.List;
 public class Player extends SugarRecord<Player>{
 
     String name;
+    boolean visible;
     @Ignore
     int points;
     @Ignore
@@ -30,12 +31,11 @@ public class Player extends SugarRecord<Player>{
         player.points = 0;
         player.pointsChange = 0;
         player.state = State.OUT;
+        player.visible = true;
         player.save();
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
 
@@ -47,22 +47,9 @@ public class Player extends SugarRecord<Player>{
         this.points = points;
     }
 
-    public State getState() {
-        return state;
-    }
+    public State getState() { return state; }
 
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public static List<Player> getPlayers(){
-
-        return Player.listAll(Player.class);
-    }
-
-    public static void deletePlayer(Player p){
-        p.delete();
-    }
+    public void setState(State state) { this.state = state; }
 
     public void update(int points, int pointsChange, State state){
         this.points = points;
@@ -73,5 +60,25 @@ public class Player extends SugarRecord<Player>{
     public void rename(String name){
         this.name = name;
         this.save();
+    }
+
+    public void delete(){
+        this.visible = false;
+        this.name = this.name + "_deleted";
+        this.save();
+    }
+
+    public static List<Player> getPlayers(){
+        return Player.find(Player.class, "visible = ?", "1");
+    }
+
+    public static boolean nameIsUnique(String name){
+        List<Player> players = Player.find(Player.class, "name = ?", name);
+
+        if(players.isEmpty()){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
