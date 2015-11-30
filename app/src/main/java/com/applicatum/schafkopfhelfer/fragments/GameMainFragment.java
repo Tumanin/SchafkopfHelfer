@@ -37,7 +37,7 @@ public class GameMainFragment extends Fragment {
     private DynamicGridView gridView;
     private MainActivity activity;
     private View view;
-    private Game game = Game.lastGame();
+    private Game game;
     UsersDynamicAdapter usersDynamicAdapter;
 
     private Button buttonSau;
@@ -101,6 +101,7 @@ public class GameMainFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         activity = (MainActivity) getActivity();
+        game = Game.lastGame();
         setGridView();
     }
 
