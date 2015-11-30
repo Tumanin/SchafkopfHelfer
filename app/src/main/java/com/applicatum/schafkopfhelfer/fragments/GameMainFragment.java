@@ -16,13 +16,18 @@ import android.widget.Toast;
 import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.adapters.UsersDynamicAdapter;
+import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.applicatum.schafkopfhelfer.utils.PlayersList;
+import com.applicatum.schafkopfhelfer.utils.Types;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 public class GameMainFragment extends Fragment {
@@ -32,6 +37,7 @@ public class GameMainFragment extends Fragment {
     private DynamicGridView gridView;
     private MainActivity activity;
     private View view;
+    private Game game = Game.lastGame();
     UsersDynamicAdapter usersDynamicAdapter;
 
     private Button buttonSau;
@@ -49,6 +55,8 @@ public class GameMainFragment extends Fragment {
 
     private View gameLayout;
     private View aussetzerLayout;
+
+    List<Player> players;
 
     int laufende;
     int klopfen;
@@ -200,6 +208,7 @@ public class GameMainFragment extends Fragment {
                     Toast.makeText(activity, "Wähle Gewinner und Spiel!",
                             Toast.LENGTH_SHORT).show();
                 }else{
+                    recordNewRound();
                     activity.updateTable();
                     laufende = 0;
                     klopfen = 0;
@@ -213,17 +222,14 @@ public class GameMainFragment extends Fragment {
 
     private void setGridView(){
 
-        List<Player> players = new ArrayList<>();
-        players.addAll(PlayersList.getInstance().getList());
+        players = game.getActivePlayers();
 
         usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
         gridView.setAdapter(usersDynamicAdapter);
 //        add callback to stop edit mode if needed
-        gridView.setOnDropListener(new DynamicGridView.OnDropListener()
-        {
+        gridView.setOnDropListener(new DynamicGridView.OnDropListener() {
             @Override
-            public void onActionDrop()
-            {
+            public void onActionDrop() {
                 gridView.stopEditMode();
             }
         });
@@ -250,18 +256,18 @@ public class GameMainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Player player = (Player)usersDynamicAdapter.getItem(position);
+                Player player = (Player) usersDynamicAdapter.getItem(position);
                 if (!aussetzer) {
-                    if (player.getState()== Player.State.PLAY) {
-                        if (winnerCount<3) {
-                            winnerCount+=1;
+                    if (player.getState() == Player.State.PLAY) {
+                        if (winnerCount < 3) {
+                            winnerCount += 1;
                             player.setState(Player.State.WIN);
-                            if(winnerCount==1 || winnerCount==3){
+                            if (winnerCount == 1 || winnerCount == 3) {
                                 buttonSau.setEnabled(false);
                                 buttonSau.setSelected(false);
                                 buttonRamsch.setEnabled(true);
                                 buttonSolo.setEnabled(true);
-                            }else {
+                            } else {
                                 buttonSau.setEnabled(true);
                                 buttonSau.setSelected(true);
                                 buttonRamsch.setEnabled(false);
@@ -269,20 +275,20 @@ public class GameMainFragment extends Fragment {
                                 buttonSolo.setEnabled(false);
                                 buttonSolo.setSelected(false);
                             }
-                        }else{
+                        } else {
                             Toast.makeText(activity, "Zu viele Gewinner!",
                                     Toast.LENGTH_SHORT).show();
                         }
-                    } else if(player.getState() == Player.State.WIN){
+                    } else if (player.getState() == Player.State.WIN) {
                         player.setState(Player.State.PLAY);
-                        if(winnerCount>1){
-                            winnerCount-=1;
-                            if(winnerCount==1 || winnerCount==3){
+                        if (winnerCount > 1) {
+                            winnerCount -= 1;
+                            if (winnerCount == 1 || winnerCount == 3) {
                                 buttonSau.setEnabled(false);
                                 buttonSau.setSelected(false);
                                 buttonRamsch.setEnabled(true);
                                 buttonSolo.setEnabled(true);
-                            }else {
+                            } else {
                                 buttonSau.setEnabled(true);
                                 buttonSau.setSelected(true);
                                 buttonRamsch.setEnabled(false);
@@ -290,8 +296,8 @@ public class GameMainFragment extends Fragment {
                                 buttonSolo.setEnabled(false);
                                 buttonSolo.setSelected(false);
                             }
-                        }else{
-                            winnerCount=0;
+                        } else {
+                            winnerCount = 0;
                             buttonSau.setEnabled(false);
                             buttonSau.setSelected(false);
                             buttonRamsch.setEnabled(false);
@@ -301,16 +307,16 @@ public class GameMainFragment extends Fragment {
                         }
                     }
                 } else {
-                    if(player.getState()== Player.State.WAIT){
+                    if (player.getState() == Player.State.WAIT) {
                         player.setState(Player.State.PLAY);
-                        if(aussetzerCount>0) aussetzerCount-=1;
-                    }else if(player.getState()== Player.State.PLAY){
+                        if (aussetzerCount > 0) aussetzerCount -= 1;
+                    } else if (player.getState() == Player.State.PLAY) {
 
-                        if(usersDynamicAdapter.getCount()-aussetzerCount >4){
-                            aussetzerCount+=1;
+                        if (usersDynamicAdapter.getCount() - aussetzerCount > 4) {
+                            aussetzerCount += 1;
                             player.setState(Player.State.WAIT);
 
-                        }else{
+                        } else {
                             Toast.makeText(activity, "Es müssen genau 4 Spieler spielen!",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -320,5 +326,29 @@ public class GameMainFragment extends Fragment {
 
             }
         });
+    }
+
+    private void recordNewRound(){
+        String type = Types.SAUSPIEL;
+        if(buttonSolo.isSelected()){
+            type = Types.FARBSOLO;
+        } else if(buttonRamsch.isSelected()){
+            type = Types.RAMSCH;
+        }
+
+        List<Player> winners = new ArrayList<>();
+        List<Player> losers = new ArrayList<>();
+        List<Player> jungfrauen = new ArrayList<>();
+
+        for(Player p : players){
+            if(p.getState() == Player.State.WIN){
+                winners.add(p);
+            } else if(p.getState() == Player.State.PLAY){
+                losers.add(p);
+            }
+        }
+
+        game.recordNewRound(type, winners, losers, jungfrauen, buttonSchneider.isSelected(),
+                buttonSchwarz.isSelected(), laufende, klopfen);
     }
 }
