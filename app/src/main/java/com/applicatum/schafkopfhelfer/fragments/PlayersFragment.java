@@ -17,6 +17,7 @@ import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.StartActivity;
 import com.applicatum.schafkopfhelfer.adapters.PlayersListAdapter;
+import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.applicatum.schafkopfhelfer.utils.PlayersList;
 
@@ -58,7 +59,13 @@ public class PlayersFragment extends Fragment {
             public void onClick(View view) {
                 if (activePlayers.size() > 3 && activePlayers.size() < 8) {
                     PlayersList.getInstance().setList(activePlayers);
+
+                    Game game = Game.lastGame();
+                    game.updateActivePlayers(activePlayers);
                     activePlayers.clear();
+
+                    game = Game.lastGame();
+
                     Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
                     activity.startActivity(intent);
                 } else {
@@ -129,7 +136,7 @@ public class PlayersFragment extends Fragment {
                         .setPositiveButton(getResources().getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String playerName = inputPlayerName.getText().toString().replace(",","").trim();
+                                String playerName = inputPlayerName.getText().toString().replace(",", "").trim();
                                 if(playerName.equals("")) {
                                     Toast.makeText(activity, "Der Name darf nicht leer sein!", Toast.LENGTH_LONG).show();
                                 } else if(Player.nameIsUnique(playerName)){

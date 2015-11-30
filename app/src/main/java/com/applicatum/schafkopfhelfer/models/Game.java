@@ -59,6 +59,7 @@ public class Game extends SugarRecord<Game>{
             this.gameTypes.put(pair.getKey(), pair.getValue());
             it.remove();
         }
+        this.save();
     }
 
     public HashMap<String, Integer> getGameTypes() {
@@ -71,6 +72,7 @@ public class Game extends SugarRecord<Game>{
 
     public void updateActivePlayers(List<Player> activePlayers) {
         this.activePlayers = activePlayers;
+        this.save();
     }
 
     public void recordNewRound(String type, List<Player> winners, List<Player> losers, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf){
@@ -113,6 +115,6 @@ public class Game extends SugarRecord<Game>{
         for(Player p : jungfrauen){
             new PlayerRound(p, round, true, 2*win, true);
         }
-
+        this.save();
     }
 }
