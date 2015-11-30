@@ -17,6 +17,8 @@ public class Player extends SugarRecord<Player>{
     public enum State{OUT, PLAY, WAIT, WIN};
     @Ignore
     State state;
+    @Ignore
+    int color = -1;
 
     public Player(){
 
@@ -28,6 +30,7 @@ public class Player extends SugarRecord<Player>{
         player.points = 0;
         player.state = State.OUT;
         player.save();
+        color = -1;
     }
 
     public String getName() {
@@ -52,6 +55,14 @@ public class Player extends SugarRecord<Player>{
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public static List<Player> getPlayers(){
