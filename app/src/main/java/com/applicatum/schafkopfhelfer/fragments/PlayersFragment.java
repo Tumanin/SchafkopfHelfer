@@ -63,6 +63,9 @@ public class PlayersFragment extends Fragment {
                     Game game = Game.lastGame();
                     game.updateActivePlayers(activePlayers);
                     activePlayers.clear();
+
+                    game = Game.lastGame();
+
                     Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
                     activity.startActivity(intent);
                 } else {

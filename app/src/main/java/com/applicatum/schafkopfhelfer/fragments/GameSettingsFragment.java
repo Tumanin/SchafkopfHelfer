@@ -103,7 +103,7 @@ public class GameSettingsFragment extends Fragment {
         editSauspiel.setEnabled(true);
         checkSolo.setChecked(true);
         editSolo.setEnabled(true);
-        checkWenz.setEnabled(true);
+        checkWenz.setChecked(true);
         editWenz.setEnabled(true);
 
         mPreferenceUtils = PreferenceUtils.getInstance(getActivity());

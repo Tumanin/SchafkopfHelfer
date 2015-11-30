@@ -96,7 +96,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
         } else {
             view.setBackgroundResource(getRandomColor(player.getColor()));
         }
-        holder.build(player.getName(), player.getGamePoints(), getState(player), player.getColor());
+        holder.build(player.getName(), player.getPoints(), getState(player), player.getColor());
         return convertView;
     }
 
