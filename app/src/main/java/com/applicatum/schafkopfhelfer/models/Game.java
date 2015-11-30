@@ -2,6 +2,7 @@ package com.applicatum.schafkopfhelfer.models;
 
 import com.orm.SugarRecord;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,10 +10,16 @@ import java.util.List;
  */
 public class Game extends SugarRecord<Game>{
 
-    List<Round> rounds;
-    List<Player> players;
-    //List<Player> aussetzer;
-    //List<Player> inactive;
+    long date;
+
+    public Game(){
+        this.date = (new Date().getTime())/1000L;
+    }
+
+    public void createGame(){
+        Game game = new Game();
+        game.save();
+    }
 
 
 }
