@@ -59,10 +59,10 @@ public class PlayersFragment extends Fragment {
             public void onClick(View view) {
                 if (activePlayers.size() > 3 && activePlayers.size() < 8) {
                     PlayersList.getInstance().setList(activePlayers);
+
+                    Game game = Game.lastGame();
+                    game.updateActivePlayers(activePlayers);
                     activePlayers.clear();
-
-
-
                     Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
                     activity.startActivity(intent);
                 } else {
