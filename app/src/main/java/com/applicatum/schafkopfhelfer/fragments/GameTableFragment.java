@@ -32,7 +32,7 @@ public class GameTableFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_game_table_mock, container, false);
-        table = (TableLayout) mRootView.findViewById(R.id.table);
+        //table = (TableLayout) mRootView.findViewById(R.id.table);
         mActivity = (MainActivity) getActivity();
 
         return mRootView;
