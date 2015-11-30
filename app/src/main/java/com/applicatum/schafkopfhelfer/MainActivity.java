@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private CirclePageIndicator circlePageIndicator;
     ViewPager mViewPager;
     Toolbar toolbar;
+    MainActivity mActivity;
+    GameTableFragment tableFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.title_game_main_fragment));
         setSupportActionBar(toolbar);
-
+        mActivity = this;
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         /*
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    public void updateTable(){
+        if(tableFragment!=null){
+            tableFragment.updateTable();
+        }
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm) {
@@ -128,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 1:
                     fragment = new GameTableFragment();
+                    tableFragment = (GameTableFragment)fragment;
                     break;
                 case 2:
                     fragment = new StatisticsFragment();

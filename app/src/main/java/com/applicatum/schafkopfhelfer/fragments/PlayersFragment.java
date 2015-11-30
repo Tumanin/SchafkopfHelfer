@@ -96,7 +96,8 @@ public class PlayersFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if(!activePlayers.contains(player)){
-                            player.setState(Player.State.WAIT);
+                            player.setState(Player.State.PLAY);
+                            player.setColor(-1);
                             activePlayers.add(player);
                             v.setBackgroundResource(R.drawable.user_item_frame_checked);
                         }else{

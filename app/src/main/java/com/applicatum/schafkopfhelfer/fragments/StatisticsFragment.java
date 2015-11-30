@@ -100,6 +100,10 @@ public class StatisticsFragment extends Fragment {
         axisX.setValues(axisValues);
 
         Axis axisY = new Axis().setHasLines(true);
+        axisX.setLineColor(R.color.blue_dark);
+        axisY.setLineColor(R.color.blue_dark);
+        axisX.setTextColor(R.color.blue_dark);
+        axisY.setTextColor(R.color.blue_dark);
         /*
         if (hasAxesNames) {
             axisX.setName("Axis X");
@@ -117,7 +121,8 @@ public class StatisticsFragment extends Fragment {
         List<Player> players = new ArrayList<>();
         players.addAll(PlayersList.getInstance().getList());
 
-        UsersDynamicAdapter usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
+        final UsersDynamicAdapter usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
+        usersDynamicAdapter.setStatistic(true);
         gridView.setAdapter(usersDynamicAdapter);
 //        add callback to stop edit mode if needed
         gridView.setOnDropListener(new DynamicGridView.OnDropListener()
@@ -150,10 +155,41 @@ public class StatisticsFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Player player = (Player) usersDynamicAdapter.getItem(position);
+                Log.d(TAG, "player color " + player.getColor());
                 Toast.makeText(activity, "OnClick!",
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private int getPlayerColor(int randomNumber){
+        //Random random = new Random();
+        //int randomNumber = random.nextInt(8);
+        //int randomNumber = colors.remove(0);
+        Log.d("ColorIssue", "number is " + randomNumber);
+        switch (randomNumber){
+            case 0:
+                return R.color.pink_dark;
+            case 1:
+                return R.color.lime_dark;
+            case 2:
+                return R.color.green_dark;
+            case 3:
+                return R.color.purple_dark;
+            case 4:
+                return R.color.amber_dark;
+            case 5:
+                return R.color.blue_dark;
+            case 6:
+                return R.color.red_dark;
+            case 7:
+                return R.color.teal_dark;
+            default:
+                return R.color.red_dark;
+        }
+
     }
 
 }

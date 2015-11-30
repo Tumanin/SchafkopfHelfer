@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.applicatum.schafkopfhelfer.MainActivity;
@@ -28,6 +32,34 @@ public class GameMainFragment extends Fragment {
     private DynamicGridView gridView;
     private MainActivity activity;
     private View view;
+    UsersDynamicAdapter usersDynamicAdapter;
+
+    private Button buttonSau;
+    private Button buttonRamsch;
+    private Button buttonSolo;
+    private Spinner soloSpinner;
+    private Button buttonSchneider;
+    private Button buttonSchwarz;
+    private Button buttonLaufende;
+    private Button buttonKlopfen;
+    private Button buttonRechner;
+    private Button buttonOk;
+    private Button buttonAussetzer;
+    private TextView textAussetzer;
+
+    private View gameLayout;
+    private View aussetzerLayout;
+
+    int laufende;
+    int klopfen;
+
+    int winnerCount;
+    int aussetzerCount;
+
+    boolean schneider;
+    boolean schwarz;
+
+    boolean aussetzer;
 
 
     public GameMainFragment() {
@@ -41,6 +73,18 @@ public class GameMainFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_game_main, container, false);
         gridView = (DynamicGridView) view.findViewById(R.id.usersGrid);
 
+        gameLayout = view.findViewById(R.id.gameLayout);
+        aussetzerLayout = view.findViewById(R.id.aussetzerLayout);
+
+        laufende = 0;
+        klopfen = 0;
+        aussetzer = true;
+        winnerCount = 0;
+        aussetzerCount = 0;
+        schneider = false;
+        schwarz = false;
+
+        setButtons();
         return view;
     }
 
@@ -52,12 +96,127 @@ public class GameMainFragment extends Fragment {
         setGridView();
     }
 
+    private void setButtons(){
+        buttonSau = (Button)view.findViewById(R.id.buttonSau);
+        buttonRamsch = (Button)view.findViewById(R.id.buttonRamsch);
+        buttonSolo = (Button)view.findViewById(R.id.buttonSolo);
+        soloSpinner = (Spinner)view.findViewById(R.id.soloSpinner);
+        buttonSchneider = (Button)view.findViewById(R.id.buttonSchneider);
+        buttonSchwarz = (Button)view.findViewById(R.id.buttonSchwarz);
+        buttonLaufende = (Button)view.findViewById(R.id.buttonLaufende);
+        buttonKlopfen = (Button)view.findViewById(R.id.buttonKlopfen);
+        buttonRechner = (Button)view.findViewById(R.id.buttonRechner);
+        buttonOk = (Button)view.findViewById(R.id.buttonOk);
+        buttonAussetzer = (Button) view.findViewById(R.id.buttonAussetzer);
+
+        buttonSau.setEnabled(false);
+        buttonSau.setSelected(false);
+        buttonRamsch.setEnabled(false);
+        buttonRamsch.setSelected(false);
+        buttonSolo.setEnabled(false);
+        buttonSolo.setSelected(false);
+
+        buttonAussetzer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(usersDynamicAdapter.getCount()-aussetzerCount==4){
+                    aussetzer = false;
+                    aussetzerLayout.setVisibility(View.GONE);
+                    gameLayout.setVisibility(View.VISIBLE);
+                }else{
+                    Toast.makeText(activity, "Es müssen genau 4 Spieler spielen!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        buttonSau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!buttonSau.isSelected() && buttonSau.isEnabled()){
+                    buttonSau.setSelected(true);
+                    buttonRamsch.setSelected(false);
+                    buttonSolo.setSelected(false);
+                }
+            }
+        });
+
+        buttonRamsch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!buttonRamsch.isSelected() && buttonRamsch.isEnabled()){
+                    buttonRamsch.setSelected(true);
+                    buttonSau.setSelected(false);
+                    buttonSolo.setSelected(false);
+                }
+            }
+        });
+
+        buttonSolo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!buttonSolo.isSelected() && buttonSolo.isEnabled()){
+                    buttonSolo.setSelected(true);
+                    buttonSau.setSelected(false);
+                    buttonRamsch.setSelected(false);
+                }
+            }
+        });
+
+        buttonSchneider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonSchneider.setSelected(!buttonSchneider.isSelected());
+            }
+        });
+
+        buttonSchwarz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonSchwarz.setSelected(!buttonSchwarz.isSelected());
+            }
+        });
+
+        buttonLaufende.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                laufende+=1;
+                buttonLaufende.setText(String.valueOf(laufende));
+            }
+        });
+        buttonKlopfen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                klopfen+=1;
+                buttonKlopfen.setText(String.valueOf(klopfen));
+            }
+        });
+
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(!buttonSau.isSelected() && !buttonSolo.isSelected() && !buttonRamsch.isSelected()){
+                    Toast.makeText(activity, "Wähle Gewinner und Spiel!",
+                            Toast.LENGTH_SHORT).show();
+                }else{
+                    activity.updateTable();
+                    laufende = 0;
+                    klopfen = 0;
+                    buttonLaufende.setText(String.valueOf(laufende));
+                    buttonKlopfen.setText(String.valueOf(klopfen));
+                }
+
+            }
+        });
+    }
+
     private void setGridView(){
 
-        final List<Player> players = new ArrayList<>();
+        List<Player> players = new ArrayList<>();
         players.addAll(PlayersList.getInstance().getList());
 
-        final UsersDynamicAdapter usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
+        usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
         gridView.setAdapter(usersDynamicAdapter);
 //        add callback to stop edit mode if needed
         gridView.setOnDropListener(new DynamicGridView.OnDropListener()
@@ -90,8 +249,74 @@ public class GameMainFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(activity, "OnClick!",
-                        Toast.LENGTH_SHORT).show();
+
+                Player player = (Player)usersDynamicAdapter.getItem(position);
+                if (!aussetzer) {
+                    if (player.getState()== Player.State.PLAY) {
+                        if (winnerCount<3) {
+                            winnerCount+=1;
+                            player.setState(Player.State.WIN);
+                            if(winnerCount==1 || winnerCount==3){
+                                buttonSau.setEnabled(false);
+                                buttonSau.setSelected(false);
+                                buttonRamsch.setEnabled(true);
+                                buttonSolo.setEnabled(true);
+                            }else {
+                                buttonSau.setEnabled(true);
+                                buttonSau.setSelected(true);
+                                buttonRamsch.setEnabled(false);
+                                buttonRamsch.setSelected(false);
+                                buttonSolo.setEnabled(false);
+                                buttonSolo.setSelected(false);
+                            }
+                        }else{
+                            Toast.makeText(activity, "Zu viele Gewinner!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    } else if(player.getState() == Player.State.WIN){
+                        player.setState(Player.State.PLAY);
+                        if(winnerCount>1){
+                            winnerCount-=1;
+                            if(winnerCount==1 || winnerCount==3){
+                                buttonSau.setEnabled(false);
+                                buttonSau.setSelected(false);
+                                buttonRamsch.setEnabled(true);
+                                buttonSolo.setEnabled(true);
+                            }else {
+                                buttonSau.setEnabled(true);
+                                buttonSau.setSelected(true);
+                                buttonRamsch.setEnabled(false);
+                                buttonRamsch.setSelected(false);
+                                buttonSolo.setEnabled(false);
+                                buttonSolo.setSelected(false);
+                            }
+                        }else{
+                            winnerCount=0;
+                            buttonSau.setEnabled(false);
+                            buttonSau.setSelected(false);
+                            buttonRamsch.setEnabled(false);
+                            buttonRamsch.setSelected(false);
+                            buttonSolo.setEnabled(false);
+                            buttonSolo.setSelected(false);
+                        }
+                    }
+                } else {
+                    if(player.getState()== Player.State.WAIT){
+                        player.setState(Player.State.PLAY);
+                        if(aussetzerCount>0) aussetzerCount-=1;
+                    }else if(player.getState()== Player.State.PLAY){
+
+                        if(usersDynamicAdapter.getCount()-aussetzerCount >4){
+                            aussetzerCount+=1;
+                            player.setState(Player.State.WAIT);
+
+                        }else{
+                            Toast.makeText(activity, "Es müssen genau 4 Spieler spielen!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                usersDynamicAdapter.notifyDataSetChanged();
 
             }
         });

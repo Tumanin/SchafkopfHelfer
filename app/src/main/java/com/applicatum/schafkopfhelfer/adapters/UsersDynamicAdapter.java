@@ -26,6 +26,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private ArrayList<Integer> colors;
+    private boolean statistic;
 
     public UsersDynamicAdapter(Context context, List<Player> items, int columnCount) {
 
@@ -43,8 +44,16 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
         colors.add(6);
         colors.add(7);
         Collections.shuffle(colors);
+        statistic = false;
     }
 
+    public boolean isStatistic() {
+        return statistic;
+    }
+
+    public void setStatistic(boolean statistic) {
+        this.statistic = statistic;
+    }
 
     public List<Player> getAllItems() {
         ArrayList<Player> players = new ArrayList<>();
@@ -66,7 +75,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
 
             if (player.getColor()==-1) {
                 Log.d("ColorIssue", "color is -1");
-                player.setColor(getRandomColor());
+                player.setColor(colors.remove(0));
             }
             Log.d("ColorIssue", "color updated to " + player.getColor());
 
@@ -75,36 +84,46 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
         } else {
             holder = (UserViewHolder) convertView.getTag();
         }
-        //View view = convertView.findViewById(R.id.playerCard);
-        //view.setBackgroundResource(player.getColor());
+        View view = convertView.findViewById(R.id.playerCard);
+        if (!statistic) {
+            if (player.getState()== Player.State.WIN) {
+                view.setBackgroundResource(R.drawable.bg_button_green);
+            }else if(player.getState()== Player.State.PLAY){
+                view.setBackgroundResource(R.drawable.bg_button_teal);
+            }else if(player.getState()== Player.State.WAIT){
+                view.setBackgroundResource(R.drawable.bg_button_gray);
+            }
+        } else {
+            view.setBackgroundResource(getRandomColor(player.getColor()));
+        }
         holder.build(player.getName(), player.getPoints(), getState(player), player.getColor());
         return convertView;
     }
 
-    private int getRandomColor(){
+    private int getRandomColor(int randomNumber){
         //Random random = new Random();
         //int randomNumber = random.nextInt(8);
-        int randomNumber = colors.remove(0);
+        //int randomNumber = colors.remove(0);
         Log.d("ColorIssue", "number is " + randomNumber);
         switch (randomNumber){
             case 0:
-                return R.color.red_light;
+                return R.drawable.bg_button_pink;
             case 1:
-                return R.color.pink_light;
+                return R.drawable.bg_button_lime;
             case 2:
-                return R.color.purple_light;
+                return R.drawable.bg_button_green;
             case 3:
-                return R.color.cyan_light;
+                return R.drawable.bg_button_purple;
             case 4:
-                return R.color.teal_light;
+                return R.drawable.bg_button_amber;
             case 5:
-                return R.color.indigo_light;
+                return R.drawable.bg_button_blue;
             case 6:
-                return R.color.amber_light;
+                return R.drawable.bg_button_red;
             case 7:
-                return R.color.orange_light;
+                return R.drawable.bg_button_teal;
             default:
-                return R.color.red_light;
+                return R.drawable.bg_button_red;
         }
 
     }
