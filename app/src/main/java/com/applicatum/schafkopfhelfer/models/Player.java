@@ -60,7 +60,7 @@ public class Player extends SugarRecord<Player>{
         return globalPoints;
     }
 
-    public int getGamePoints() {
+    public int getPoints() {
         return gamePoints;
     }
 

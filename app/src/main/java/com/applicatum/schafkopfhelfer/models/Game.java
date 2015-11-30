@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.orm.dsl.Ignore;
+import com.orm.query.Select;
 
 /**
  * Created by Alexx on 09.11.2015.
@@ -45,6 +46,10 @@ public class Game extends SugarRecord<Game>{
         Game game = new Game();
         game.save();
         return game;
+    }
+
+    public static Game lastGame(){
+        return Select.from(Game.class).orderBy("id desc").first();
     }
 
     public void updateGameTypes(HashMap<String, Integer> gameTypes){
@@ -108,8 +113,6 @@ public class Game extends SugarRecord<Game>{
         for(Player p : jungfrauen){
             new PlayerRound(p, round, true, 2*win, true);
         }
-
-
 
     }
 }
