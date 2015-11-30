@@ -66,15 +66,6 @@ public class Player extends SugarRecord<Player>{
         this.color = color;
     }
 
-    public static List<Player> getPlayers(){
-
-        return Player.listAll(Player.class);
-    }
-
-    public static void deletePlayer(Player p){
-        p.delete();
-    }
-
     public void update(int points, int pointsChange, State state){
         this.points = points;
         this.pointsChange = pointsChange;
