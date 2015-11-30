@@ -4,6 +4,7 @@ import com.orm.SugarRecord;
 
 import java.util.Date;
 import java.util.List;
+import com.orm.dsl.Ignore;
 
 /**
  * Created by Alexx on 09.11.2015.
@@ -11,6 +12,8 @@ import java.util.List;
 public class Game extends SugarRecord<Game>{
 
     long date;
+    @Ignore
+    List<Player> players;
 
     public Game(){
         this.date = (new Date().getTime())/1000L;
