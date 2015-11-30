@@ -56,7 +56,7 @@ public class PlayersFragment extends Fragment {
         fabGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (activePlayers.size()>3 && activePlayers.size()<8) {
+                if (activePlayers.size() > 3 && activePlayers.size() < 8) {
                     PlayersList.getInstance().setList(activePlayers);
                     activePlayers.clear();
                     Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
@@ -129,13 +129,15 @@ public class PlayersFragment extends Fragment {
                         .setPositiveButton(getResources().getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String playerName = inputPlayerName.getText().toString();
-                                if (playerName != null && !playerName.equals("")) {
-                                    Player player = new Player(playerName.replace(",", ""));
+                                String playerName = inputPlayerName.getText().toString().replace(",","").trim();
+                                if(playerName.equals("")) {
+                                    Toast.makeText(activity, "Der Name darf nicht leer sein!", Toast.LENGTH_LONG).show();
+                                } else if(Player.nameIsUnique(playerName)){
+                                    Player player = new Player(playerName);
                                     populatePlayers();
                                     dialog.dismiss();
                                 } else {
-                                    Toast.makeText(activity, "Der Name darf nicht leer sein!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(activity, "Der Name existiert bereits!", Toast.LENGTH_LONG).show();
                                 }
                             }
                         })

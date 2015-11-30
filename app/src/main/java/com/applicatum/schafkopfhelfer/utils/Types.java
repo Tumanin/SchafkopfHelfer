@@ -18,7 +18,4 @@ public class Types {
     public static final String LAUFENDE = "laufende";
     public static final String SCHNEIDER = "schneider";
     public static final String SCHWARZ = "schwarz";
-
-    public static final String JUNGFRAU = "jungfrau";
-    public static final String DURCHMARSCH = "durchmarsch";
 }

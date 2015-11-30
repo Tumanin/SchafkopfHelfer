@@ -2,6 +2,8 @@ package com.applicatum.schafkopfhelfer.models;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.List;
 
@@ -10,17 +12,16 @@ import java.util.List;
  */
 public class Player extends SugarRecord<Player>{
 
-    String name;
-    @Ignore
-    int points;
-    @Ignore
-    int pointsChange;
-    @Ignore
+    private String name;
+    private boolean visible;
+    private int globalPoints;
+    private int gamePoints;
+    private int changePoints;
     public enum State{OUT, PLAY, WAIT, WIN};
     @Ignore
-    State state;
+    private State state;
     @Ignore
-    int color = -1;
+    private int color = -1;
 
     public Player(){
 
@@ -29,25 +30,38 @@ public class Player extends SugarRecord<Player>{
     public Player(String name){
         Player player = new Player();
         player.name = name;
-        player.points = 0;
-        player.pointsChange = 0;
+        player.globalPoints = 0;
+        player.gamePoints = 0;
+        player.changePoints = 0;
         player.state = State.OUT;
+        player.visible = true;
         player.save();
         color = -1;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
 
-    public int getPoints() {
-        return points;
+    public void addPoints(int pointDifference){
+        this.changePoints = pointDifference;
+        this.globalPoints += pointDifference;
+        this.gamePoints += pointDifference;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public int getChangePoints() {
+        return changePoints;
+    }
+
+    public int getGlobalPoints() {
+        //Select query = Select.from(PlayerRound.class)
+        //        .where(Condition.prop("player").eq(this.getId())).orderBy("id desc");
+        //PlayerRound LastRound = (PlayerRound) query.first();
+        return globalPoints;
+    }
+
+    public int getGamePoints() {
+        return gamePoints;
     }
 
     public State getState() {
@@ -66,23 +80,32 @@ public class Player extends SugarRecord<Player>{
         this.color = color;
     }
 
-    public static List<Player> getPlayers(){
-
-        return Player.listAll(Player.class);
-    }
-
-    public static void deletePlayer(Player p){
-        p.delete();
-    }
-
-    public void update(int points, int pointsChange, State state){
-        this.points = points;
-        this.pointsChange = pointsChange;
+    public void update(State state){
         this.state = state;
     }
 
     public void rename(String name){
         this.name = name;
         this.save();
+    }
+
+    public void delete(){
+        this.visible = false;
+        this.name = this.name + "_deleted";
+        this.save();
+    }
+
+    public static List<Player> getPlayers(){
+        return Player.find(Player.class, "visible = ?", "1");
+    }
+
+    public static boolean nameIsUnique(String name) {
+        List<Player> players = Player.find(Player.class, "name = ?", name);
+
+        if (players.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

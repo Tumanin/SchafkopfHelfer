@@ -23,7 +23,7 @@ import java.util.Random;
 public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
 
     //private List<User> users;
-    private Context context;
+    //private Context context;
     private LayoutInflater mInflater;
     private ArrayList<Integer> colors;
     private boolean statistic;
@@ -32,7 +32,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
 
         super(context, items, columnCount);
         //users = items;
-        this.context = context;
+        //this.context = context;
         mInflater = LayoutInflater.from(context);
         colors = new ArrayList<>();
         colors.add(0);
