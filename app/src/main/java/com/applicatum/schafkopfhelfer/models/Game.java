@@ -11,8 +11,8 @@ public class Game extends SugarRecord<Game>{
 
     List<Round> rounds;
     List<Player> players;
-    List<Player> aussetzer;
-    List<Player> inactive;
+    //List<Player> aussetzer;
+    //List<Player> inactive;
 
 
 }
