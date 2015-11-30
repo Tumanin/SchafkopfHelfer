@@ -29,7 +29,7 @@ public class PlayerRound extends SugarRecord<PlayerRound> {
         pr.round = round;
         pr.gewonnen = gewonnen;
         pr.globalPoints = player.getGlobalPoints();
-        pr.gamePoints = player.getGamePoints();
+        pr.gamePoints = player.getPoints();
         pr.changePoints = changePoints;
         pr.jungfrau = jungfrau;
         pr.save();
