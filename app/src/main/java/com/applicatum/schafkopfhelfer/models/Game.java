@@ -3,6 +3,7 @@ package com.applicatum.schafkopfhelfer.models;
 import com.orm.SugarRecord;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import com.orm.dsl.Ignore;
 
@@ -14,6 +15,7 @@ public class Game extends SugarRecord<Game>{
     long date;
     @Ignore
     List<Player> players;
+    HashMap<String, Integer> gameTypes;
 
     public Game(){
         this.date = (new Date().getTime())/1000L;

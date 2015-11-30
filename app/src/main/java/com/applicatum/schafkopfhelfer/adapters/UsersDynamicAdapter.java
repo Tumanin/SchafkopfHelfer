@@ -45,6 +45,16 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
         Collections.shuffle(colors);
     }
 
+
+    public List<Player> getAllItems() {
+        ArrayList<Player> players = new ArrayList<>();
+        for(Object object : super.getItems()){
+            players.add((Player) object);
+        }
+
+        return players;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         UserViewHolder holder;
