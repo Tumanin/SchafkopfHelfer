@@ -227,15 +227,14 @@ public class GameMainFragment extends Fragment {
                     buttonSchwarz.setSelected(false);
 
                     if(players!=null){
-                        Player previousPlayer = players.get(players.size()-1);
+                        String precedingState = players.get(players.size()-1).getState();
                         for(Player player : players){
-                            if(player.getState()== Player.State.WIN){
-                                player.setState(Player.State.PLAY);
+							String newState = Player.State.PLAY;
+                            if(precedingState== Player.State.WAIT){
+                                newState = Player.State.WAIT;
                             }
-                            if(previousPlayer.getState()== Player.State.WAIT){
-                                player.setState(Player.State.WAIT);
-                            }
-                            previousPlayer = player;
+                            precedingState = player.getState();
+							player.setState(newState);
                         }
                     }
                     usersDynamicAdapter.notifyDataSetChanged();
