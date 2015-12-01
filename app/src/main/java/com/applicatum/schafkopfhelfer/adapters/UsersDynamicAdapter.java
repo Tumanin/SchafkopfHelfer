@@ -75,7 +75,8 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
 
             if (player.getColor()==-1) {
                 Log.d("ColorIssue", "color is -1");
-                player.setColor(colors.remove(0));
+                int color = colors.remove(0);
+                player.setColor(color);
             }
             Log.d("ColorIssue", "color updated to " + player.getColor());
 

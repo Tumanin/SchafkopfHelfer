@@ -37,6 +37,8 @@ public class PlayersFragment extends Fragment {
     LayoutInflater inflater;
     View itemView;
 
+    boolean managePlayers = false;
+
     public PlayersFragment() {
         // Required empty public constructor
     }
@@ -53,6 +55,12 @@ public class PlayersFragment extends Fragment {
 
         listContainer = (LinearLayout) mRootView.findViewById(R.id.listContainer);
         fabGo = (FloatingActionButton) mRootView.findViewById(R.id.fab);
+
+        if(managePlayers){
+            fabGo.setVisibility(View.GONE);
+        }else{
+            fabGo.setVisibility(View.VISIBLE);
+        }
 
         fabGo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,9 +94,15 @@ public class PlayersFragment extends Fragment {
         populatePlayers();
     }
 
+    public void setManagePlayers(boolean managePlayers){
+        this.managePlayers = managePlayers;
+    }
+
     private void populatePlayers(){
 
         listContainer.removeAllViews();
+        Game game = Game.lastGame();
+        game.updateActivePlayers(new ArrayList<Player>());
         List<Player> loadedPlayers = Player.getPlayers();
         if(loadedPlayers!=null){
             players.clear();
@@ -103,15 +117,37 @@ public class PlayersFragment extends Fragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!activePlayers.contains(player)){
-                            player.setState(Player.State.PLAY);
-                            player.setColor(-1);
-                            activePlayers.add(player);
-                            v.setBackgroundResource(R.drawable.user_item_frame_checked);
-                        }else{
-                            activePlayers.remove(player);
-                            player.setState(Player.State.OUT);
-                            v.setBackgroundResource(R.drawable.user_item_frame);
+                        if (!managePlayers) {
+                            if(!activePlayers.contains(player)){
+                                player.setState(Player.State.PLAY);
+                                player.setColor(-1);
+                                activePlayers.add(player);
+                                v.setBackgroundResource(R.drawable.user_item_frame_checked);
+                            }else{
+                                activePlayers.remove(player);
+                                player.setState(Player.State.OUT);
+                                v.setBackgroundResource(R.drawable.user_item_frame);
+                            }
+                        } else {
+                            AlertDialog dialog = new AlertDialog.Builder(activity)
+                                    .setTitle("Spieler entfernen")
+                                    .setMessage("Möchten Sie wirklich den Spieler "+player.getName()+" entfernen?")
+                                    .setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton(getResources().getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            player.delete();
+                                            populatePlayers();
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .create();
+                            dialog.show();
                         }
                     }
                 });

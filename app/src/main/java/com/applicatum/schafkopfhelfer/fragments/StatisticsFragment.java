@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.adapters.UsersDynamicAdapter;
+import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.applicatum.schafkopfhelfer.utils.PlayersList;
 
@@ -53,6 +54,16 @@ public class StatisticsFragment extends Fragment {
         setChartLines();
         setGridView();
         return mRootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    public void updateChart(){
+
     }
 
     private void setChartLines(){
@@ -119,7 +130,9 @@ public class StatisticsFragment extends Fragment {
     private void setGridView(){
 
         List<Player> players = new ArrayList<>();
-        players.addAll(PlayersList.getInstance().getList());
+        Game game = Game.lastGame();
+        players.addAll(
+                game.getActivePlayers());
 
         final UsersDynamicAdapter usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
         usersDynamicAdapter.setStatistic(true);

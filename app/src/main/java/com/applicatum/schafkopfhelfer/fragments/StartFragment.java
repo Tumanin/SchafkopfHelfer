@@ -63,6 +63,15 @@ public class StartFragment extends Fragment {
                 activity.startActivity(intent);
             }
         });
+
+        buttonStatistic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlayersFragment fragment = new PlayersFragment();
+                fragment.setManagePlayers(true);
+                activity.startFragment(fragment, true);
+            }
+        });
     }
 
 }

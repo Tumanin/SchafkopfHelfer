@@ -215,6 +215,25 @@ public class GameMainFragment extends Fragment {
                     klopfen = 0;
                     buttonLaufende.setText(String.valueOf(laufende));
                     buttonKlopfen.setText(String.valueOf(klopfen));
+
+                    buttonSau.setEnabled(false);
+                    buttonSau.setSelected(false);
+                    buttonRamsch.setEnabled(false);
+                    buttonRamsch.setSelected(false);
+                    buttonSolo.setEnabled(false);
+                    buttonSolo.setSelected(false);
+
+                    buttonSchneider.setSelected(false);
+                    buttonSchwarz.setSelected(false);
+
+                    if(players!=null){
+                        for(Player player : players){
+                            if(player.getState()== Player.State.WIN){
+                                player.setState(Player.State.PLAY);
+                            }
+                        }
+                    }
+                    usersDynamicAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -224,6 +243,12 @@ public class GameMainFragment extends Fragment {
     private void setGridView(){
 
         players = game.getActivePlayers();
+
+        if(players.size()==4){
+            aussetzer=false;
+            aussetzerLayout.setVisibility(View.GONE);
+            gameLayout.setVisibility(View.VISIBLE);
+        }
 
         usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
         gridView.setAdapter(usersDynamicAdapter);
