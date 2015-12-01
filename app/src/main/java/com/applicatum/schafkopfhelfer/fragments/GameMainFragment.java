@@ -56,7 +56,7 @@ public class GameMainFragment extends Fragment {
     private View gameLayout;
     private View aussetzerLayout;
 
-    List<Player> players;
+    private List<Player> players;
 
     int laufende;
     int klopfen;
@@ -227,10 +227,15 @@ public class GameMainFragment extends Fragment {
                     buttonSchwarz.setSelected(false);
 
                     if(players!=null){
+                        Player previousPlayer = players.get(players.size()-1);
                         for(Player player : players){
                             if(player.getState()== Player.State.WIN){
                                 player.setState(Player.State.PLAY);
                             }
+                            if(previousPlayer.getState()== Player.State.WAIT){
+                                player.setState(Player.State.WAIT);
+                            }
+                            previousPlayer = player;
                         }
                     }
                     usersDynamicAdapter.notifyDataSetChanged();
@@ -257,6 +262,8 @@ public class GameMainFragment extends Fragment {
             @Override
             public void onActionDrop() {
                 gridView.stopEditMode();
+                players.clear();
+                players.addAll(usersDynamicAdapter.getAllItems());
             }
         });
         gridView.setOnDragListener(new DynamicGridView.OnDragListener() {
