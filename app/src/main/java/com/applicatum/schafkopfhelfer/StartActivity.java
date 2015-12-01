@@ -26,13 +26,14 @@ public class StartActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        StartFragment fragment = new StartFragment();
-        startFragment(fragment, false);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        StartFragment fragment = new StartFragment();
+        startFragment(fragment, false);
     }
 
     @Override

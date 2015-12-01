@@ -65,6 +65,11 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
     }
 
     @Override
+    public void set(List<?> items) {
+        super.set(items);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         UserViewHolder holder;
         Player player = (Player) getItem(position);

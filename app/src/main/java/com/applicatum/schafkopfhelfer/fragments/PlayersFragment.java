@@ -44,7 +44,7 @@ public class PlayersFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_players, container, false);
@@ -76,6 +76,7 @@ public class PlayersFragment extends Fragment {
                     game = Game.lastGame();
 
                     Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     activity.startActivity(intent);
                 } else {
                     Toast.makeText(activity, "Anzahl der Spieler muss zwischen 4 und 7 sein!", Toast.LENGTH_LONG).show();

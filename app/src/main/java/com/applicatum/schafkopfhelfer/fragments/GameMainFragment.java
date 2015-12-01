@@ -92,7 +92,13 @@ public class GameMainFragment extends Fragment {
         schneider = false;
         schwarz = false;
 
+
+        activity = (MainActivity) getActivity();
+        game = Game.lastGame();
+        setGridView();
+
         setButtons();
+
         return view;
     }
 
@@ -100,10 +106,9 @@ public class GameMainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        activity = (MainActivity) getActivity();
-        game = Game.lastGame();
-        setGridView();
+
     }
+
 
     private void setButtons(){
         buttonSau = (Button)view.findViewById(R.id.buttonSau);
@@ -227,16 +232,22 @@ public class GameMainFragment extends Fragment {
                     buttonSchwarz.setSelected(false);
 
                     if(players!=null){
-                        String precedingState = players.get(players.size()-1).getState();
+                        String precedingState = players.get(players.size()-1).getState().name();
                         for(Player player : players){
-							String newState = Player.State.PLAY;
-                            if(precedingState== Player.State.WAIT){
-                                newState = Player.State.WAIT;
+							String newState = Player.State.PLAY.name();
+                            if(precedingState.equals(Player.State.WAIT.name())){
+                                newState = Player.State.WAIT.name();
                             }
-                            precedingState = player.getState();
-							player.setState(newState);
+                            precedingState = player.getState().name();
+							if(newState.equals(Player.State.WAIT.name())){
+                                player.setState(Player.State.WAIT);
+                            }else{
+                                player.setState(Player.State.PLAY);
+                            }
                         }
                     }
+                    winnerCount=0;
+                    usersDynamicAdapter.set(players);
                     usersDynamicAdapter.notifyDataSetChanged();
                 }
 
@@ -248,7 +259,12 @@ public class GameMainFragment extends Fragment {
 
         players = game.getActivePlayers();
 
-        if(players.size()==4){
+        int waitCount = 0;
+        for(Player player : players){
+            if(player.getState()== Player.State.WAIT) waitCount+=1;
+        }
+
+        if(players.size()-waitCount==4 || players.size()==0){
             aussetzer=false;
             aussetzerLayout.setVisibility(View.GONE);
             gameLayout.setVisibility(View.VISIBLE);
@@ -288,7 +304,7 @@ public class GameMainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Player player = (Player) usersDynamicAdapter.getItem(position);
+                Player player = (Player) players.get(position);
                 if (!aussetzer) {
                     if (player.getState() == Player.State.PLAY) {
                         if (winnerCount < 3) {

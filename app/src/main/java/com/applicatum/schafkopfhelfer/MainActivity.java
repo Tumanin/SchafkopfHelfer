@@ -1,5 +1,6 @@
 package com.applicatum.schafkopfhelfer;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -118,6 +119,14 @@ public class MainActivity extends AppCompatActivity {
         if(tableFragment!=null){
             tableFragment.updateTable();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this.getBaseContext(), StartActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        this.startActivity(intent);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
