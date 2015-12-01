@@ -78,6 +78,7 @@ public class Game extends SugarRecord<Game>{
     }
 
     public void updateActivePlayers(List<Player> activePlayers) {
+        GamePlayers.deleteGamePlayers(this);
         for(Player p : activePlayers){
             System.out.println(p);
             GamePlayers gp = new GamePlayers(this, p);
