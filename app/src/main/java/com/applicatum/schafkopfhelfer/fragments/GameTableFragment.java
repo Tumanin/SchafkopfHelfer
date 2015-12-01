@@ -82,25 +82,29 @@ public class GameTableFragment extends Fragment {
         table.addView(titleRow);
 
         for(int i=1; i<=roundCount; i++){
-            Log.d(TAG, "round: "+i);
-            LinearLayout newRow = new LinearLayout(mActivity);
-            newRow.setLayoutParams(rowParams);
-
-            newRow.setOrientation(LinearLayout.HORIZONTAL);
+            Log.d(TAG, "round: " + i);
+            LinearLayout newRow = (LinearLayout) inflater.inflate(R.layout.table_row_layout, null);
+            //newRow.setLayoutParams(rowParams);
+            newRow.setVisibility(View.VISIBLE);
+            newRow.setTag("row"+i);
+            //newRow.setId(i);
+            //newRow.setOrientation(LinearLayout.HORIZONTAL);
             newRow.setWeightSum(activePlayers.size() + 1);
             TextView roundView = createtableItem();
             roundView.setText(String.valueOf(i));
+            roundView.setTag(i);
             newRow.addView(roundView);
             Log.d(TAG, "newRow.addView(roundView)");
             for(Player player : activePlayers){
                 TextView pointView = createtableItem();
                 int points = player.getPoints();
                 pointView.setText(String.valueOf(points));
+                pointView.setTag(points);
                 newRow.addView(pointView);
                 Log.d(TAG, "newRow.addView(pointView): "+points);
             }
             table.addView(newRow);
-            Log.d(TAG, "table.addView(newRow)");
+            Log.d(TAG, "views: "+table);
         }
     }
 
@@ -111,6 +115,7 @@ public class GameTableFragment extends Fragment {
         item.setLayoutParams(params);
         item.setText("0");
         item.setPadding(2, 2, 2, 2);
+        item.setVisibility(View.VISIBLE);
         item.setBackgroundResource(R.drawable.background_cell_border);
         item.setGravity(Gravity.CENTER);
         return item;
