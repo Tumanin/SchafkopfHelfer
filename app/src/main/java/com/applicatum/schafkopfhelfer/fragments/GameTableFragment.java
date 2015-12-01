@@ -1,11 +1,14 @@
 package com.applicatum.schafkopfhelfer.fragments;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ActionMenuView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -21,10 +24,10 @@ import java.util.Random;
 
 public class GameTableFragment extends Fragment {
 
-    private static final String TAG = "GameMainFragment";
+    private static final String TAG = "GameTableFragment";
 
     View mRootView;
-    TableLayout table;
+    LinearLayout table;
     MainActivity mActivity;
     LayoutInflater inflater;
 
@@ -39,7 +42,7 @@ public class GameTableFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_game_table, container, false);
-        table = (TableLayout) mRootView.findViewById(R.id.table);
+        table = (LinearLayout) mRootView.findViewById(R.id.table);
         mActivity = (MainActivity) getActivity();
         this.inflater = inflater;
 
@@ -57,44 +60,60 @@ public class GameTableFragment extends Fragment {
     public void updateTable(){
         Log.d(TAG, "updateTable");
         roundCount+=1;
+        Log.d(TAG, "roundCount: "+roundCount);
         Game game = Game.lastGame();
-        Random random = new Random();
         //game.
         table.removeAllViews();
         List<Player> activePlayers = game.getActivePlayers();
-        TableRow titleRow = new TableRow(mActivity);
-        TextView connorItem = (TextView) inflater.inflate(R.layout.item_table_player, null);
+        LinearLayout titleRow = new LinearLayout(mActivity);
+        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        titleRow.setLayoutParams(rowParams);
+        titleRow.setOrientation(LinearLayout.HORIZONTAL);
+        titleRow.setWeightSum(activePlayers.size()+1);
+        TextView connorItem = createtableItem();
         connorItem.setText(".");
         titleRow.addView(connorItem);
         for (Player player : activePlayers){
-            TextView playerView = (TextView) inflater.inflate(R.layout.item_table_player, null);
+            TextView playerView = createtableItem();
             playerView.setText(player.getName());
+            playerView.setTypeface(null, Typeface.BOLD);
             titleRow.addView(playerView);
         }
         table.addView(titleRow);
 
         for(int i=1; i<=roundCount; i++){
-            TableRow newRow = new TableRow(mActivity);
+            Log.d(TAG, "round: "+i);
+            LinearLayout newRow = new LinearLayout(mActivity);
+            newRow.setLayoutParams(rowParams);
 
-            TextView roundView = (TextView) inflater.inflate(R.layout.item_table_round, null);
+            newRow.setOrientation(LinearLayout.HORIZONTAL);
+            newRow.setWeightSum(activePlayers.size() + 1);
+            TextView roundView = createtableItem();
             roundView.setText(String.valueOf(i));
             newRow.addView(roundView);
-
+            Log.d(TAG, "newRow.addView(roundView)");
             for(Player player : activePlayers){
-                TextView pointView = (TextView) inflater.inflate(R.layout.item_table_points, null);
+                TextView pointView = createtableItem();
                 int points = player.getPoints();
                 pointView.setText(String.valueOf(points));
                 newRow.addView(pointView);
+                Log.d(TAG, "newRow.addView(pointView): "+points);
             }
             table.addView(newRow);
+            Log.d(TAG, "table.addView(newRow)");
         }
     }
 
-    /*
     private TextView createtableItem(){
         TextView item = new TextView(mActivity);
         item.setMaxEms(4);
-        item.setLayoutParams(new LinearLayout.LayoutParams(mActivity, ));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        item.setLayoutParams(params);
+        item.setText("0");
+        item.setPadding(2, 2, 2, 2);
+        item.setBackgroundResource(R.drawable.background_cell_border);
+        item.setGravity(Gravity.CENTER);
+        return item;
     }
-    */
+
 }

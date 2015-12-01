@@ -226,7 +226,8 @@ public class GameMainFragment extends Fragment {
                     buttonSchneider.setSelected(false);
                     buttonSchwarz.setSelected(false);
 
-                    if(players!=null){
+
+                    if(players.size()>0){
                         for(Player player : players){
                             if(player.getState()== Player.State.WIN){
                                 player.setState(Player.State.PLAY);
