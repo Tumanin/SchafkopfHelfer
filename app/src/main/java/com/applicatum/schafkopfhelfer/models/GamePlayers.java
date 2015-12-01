@@ -34,12 +34,19 @@ public class GamePlayers extends SugarRecord<GamePlayers> {
     }
 
     public static List<Player> returnPlayers(Game game){
-        List<GamePlayers> gp = PlayerRound.find(GamePlayers.class, "game = ?", String.valueOf(game.getId()));
+        List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ?", String.valueOf(game.getId()));
         List<Player> players = new ArrayList<>();
-        for(GamePlayers e : gp){
+        for(GamePlayers e : gps){
             players.add(e.getPlayer());
         }
         return players;
+    }
+
+    public static void deleteGamePlayers(Game game){
+        List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ?", String.valueOf(game.getId()));
+        for(GamePlayers e : gps){
+            e.delete();
+        }
     }
 
 
