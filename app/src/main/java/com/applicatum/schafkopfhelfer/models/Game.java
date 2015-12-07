@@ -91,6 +91,8 @@ public class Game extends SugarRecord{
 
     public void recordNewRound(String type, List<Player> winners, List<Player> losers, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf){
         Log.d("Game", "Recording new Round of type "+type+" with winners: "+winners.size()+", losers: "+losers.size()+", jungfrauen: "+jungfrauen.size()+", schneider: "+schneider+", schwarz: "+schwarz+", laufende: "+laufende+", geklopft: "+klopf);
+        List<Player> activePlayers = this.getActivePlayers();
+
         float difference = GameTypes.getValue(this, type) + laufende * GameTypes.getValue(this, Types.LAUFENDE);
         Log.d("Game", "The price for a game of type "+type+" is "+GameTypes.getValue(this, type));
         if(schneider){
@@ -128,17 +130,25 @@ public class Game extends SugarRecord{
         for(Player p : winners){
             Log.d("Game", "Writing new Player Round for winner. Player: "+p.getId()+" round: "+round.getId()+" win: "+win+"");
             new PlayerRound(p, round, true, (int) win, false);
+            activePlayers.remove(p);
         }
 
         for(Player p : losers){
             Log.d("Game", "Writing new Player Round for loser. Player: "+p.getId()+" round: "+round.getId()+" win: "+lose+"");
             new PlayerRound(p, round, false, (int) lose, false);
+            activePlayers.remove(p);
         }
 
         for(Player p : jungfrauen){
             Log.d("Game", "Writing new Player Round for Jungfrau. Player: "+p.getId()+" round: "+round.getId()+" win: "+2*win+"");
             new PlayerRound(p, round, true, (int) (2*win), true);
+            activePlayers.remove(p);
         }
+
+        for(Player p : activePlayers){
+            p.resetChangePoints();
+        }
+
         this.save();
     }
 }

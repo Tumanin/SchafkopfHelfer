@@ -44,4 +44,11 @@ public class PlayerRound extends SugarRecord {
         PlayerRound.deleteAll(PlayerRound.class, "round = ?", String.valueOf(r.getId()));
     }
 
+    public int getGamePoints() {
+        return gamePoints;
+    }
+
+    public int getChangePoints() {
+        return changePoints;
+    }
 }
