@@ -1,5 +1,7 @@
 package com.applicatum.schafkopfhelfer.models;
 
+import android.util.Log;
+
 import com.applicatum.schafkopfhelfer.utils.Types;
 import com.orm.SugarRecord;
 
@@ -88,21 +90,28 @@ public class Game extends SugarRecord{
     }
 
     public void recordNewRound(String type, List<Player> winners, List<Player> losers, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf){
-        int difference = GameTypes.getValue(this, type) + laufende * GameTypes.getValue(this, Types.LAUFENDE);
+        Log.d("Game", "Recording new Round of type "+type+" with winners: "+winners.size()+", losers: "+losers.size()+", jungfrauen: "+jungfrauen.size()+", schneider: "+schneider+", schwarz: "+schwarz+", laufende: "+laufende+", geklopft: "+klopf);
+        float difference = GameTypes.getValue(this, type) + laufende * GameTypes.getValue(this, Types.LAUFENDE);
+        Log.d("Game", "The price for a game of type "+type+" is "+GameTypes.getValue(this, type));
         if(schneider){
             difference += GameTypes.getValue(this, Types.SCHNEIDER);
         }
         if(schwarz){
             difference += GameTypes.getValue(this, Types.SCHWARZ);
         }
-        difference = difference * klopf;
-
+        if(klopf>0){
+            difference = difference * klopf;
+        }
+        //Log.d("Game", "Therefore, the difference is "+difference);
         int NumberOfWinners = winners.size();
         int NumberOfLosers = losers.size();
 
-        int winSum = ((NumberOfWinners+NumberOfLosers)-Math.min(NumberOfWinners,NumberOfLosers))+difference;
-        int win = winSum / NumberOfWinners;
-        int lose = - winSum / NumberOfLosers;
+        float winSum = ((NumberOfWinners+NumberOfLosers)-Math.min(NumberOfWinners,NumberOfLosers))*difference;
+        Log.d("Game", "The winSum is: "+winSum);
+        float win = winSum / NumberOfWinners;
+        float lose = - winSum / NumberOfLosers;
+        Log.d("Game", "WIN: "+win);
+        Log.d("Game", "LOSE: "+lose);
 
         if(jungfrauen != null){
             lose += jungfrauen.size() * win / NumberOfLosers;
@@ -114,18 +123,21 @@ public class Game extends SugarRecord{
             win += pot/NumberOfWinners;
         }
 
-        Round round = new Round(type, laufende, klopf, schneider, schwarz, Math.min(win, lose), this);
+        Round round = new Round(type, laufende, klopf, schneider, schwarz, (int) Math.min(win, lose), this);
 
         for(Player p : winners){
-            new PlayerRound(p, round, true, win, false);
+            Log.d("Game", "Writing new Player Round for winner. Player: "+p.getId()+" round: "+round.getId()+" win: "+win+"");
+            new PlayerRound(p, round, true, (int) win, false);
         }
 
         for(Player p : losers){
-            new PlayerRound(p, round, false, lose, false);
+            Log.d("Game", "Writing new Player Round for loser. Player: "+p.getId()+" round: "+round.getId()+" win: "+lose+"");
+            new PlayerRound(p, round, false, (int) lose, false);
         }
 
         for(Player p : jungfrauen){
-            new PlayerRound(p, round, true, 2*win, true);
+            Log.d("Game", "Writing new Player Round for Jungfrau. Player: "+p.getId()+" round: "+round.getId()+" win: "+2*win+"");
+            new PlayerRound(p, round, true, (int) (2*win), true);
         }
         this.save();
     }

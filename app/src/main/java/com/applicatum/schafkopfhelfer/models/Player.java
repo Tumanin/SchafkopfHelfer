@@ -1,6 +1,8 @@
 package com.applicatum.schafkopfhelfer.models;
 
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 
 import java.util.List;
@@ -44,6 +46,7 @@ public class Player extends SugarRecord {
     }
 
     public void addPoints(int pointDifference){
+        //Log.d("Player", "Adding points to player: " + this.getId() + " points global: " + this.globalPoints + " gamePoints: " + this.gamePoints + " pointDifference: " + pointDifference);
         this.changePoints = pointDifference;
         this.globalPoints += pointDifference;
         this.gamePoints += pointDifference;
