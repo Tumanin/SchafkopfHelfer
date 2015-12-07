@@ -101,7 +101,6 @@ public class GameMainFragment extends Fragment {
             Log.d(TAG, "no last game found");
         }else{
             Log.d(TAG, "game id: "+game.getId());
-            Log.d(TAG, "game time: "+game.getSqlName());
             List<Player> players = game.getActivePlayers();
             if (players.size()>0) {
                 for(Player player : players){
@@ -117,11 +116,15 @@ public class GameMainFragment extends Fragment {
                 Game localGame = gPlayers.getGame();
                 count++;
                 Log.d(TAG, "count: "+count);
-                Log.d(TAG, "localGame id: "+localGame.getId());
-                Log.d(TAG, "localGame id: "+localGame.getSqlName());
-                if(gPlayers.getGame().getId()== game.getId()){
-                    Log.d(TAG, "GamePlayers of this game with player: "+gPlayers.getPlayer().getName());
+                if (localGame!=null) {
+                    Log.d(TAG, "localGame id: "+localGame.getId());
+                    if(gPlayers.getGame().getId() == game.getId()){
+                        Log.d(TAG, "GamePlayers of this game with player: "+gPlayers.getPlayer().getName());
+                    }
+                } else {
+                    Log.d(TAG, "localGame has no id");
                 }
+
             }
         }
         setGridView();

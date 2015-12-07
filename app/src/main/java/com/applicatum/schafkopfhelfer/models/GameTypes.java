@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Dominik on 30.11.2015.
  */
-public class GameTypes extends SugarRecord<GameTypes> {
+public class GameTypes extends SugarRecord {
     String type;
     Game game;
     int value;

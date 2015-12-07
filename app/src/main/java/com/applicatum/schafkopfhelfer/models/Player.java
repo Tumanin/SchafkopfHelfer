@@ -1,16 +1,14 @@
 package com.applicatum.schafkopfhelfer.models;
 
+
 import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.util.List;
 
 /**
  * Created by Alexx on 02.11.2015.
  */
-public class Player extends SugarRecord<Player>{
+public class Player extends SugarRecord {
 
     private String name;
     private boolean visible;
@@ -26,15 +24,15 @@ public class Player extends SugarRecord<Player>{
     }
 
     public Player(String name){
-        //Player player = new Player();
-        this.name = name;
-        this.globalPoints = 0;
-        this.gamePoints = 0;
-        this.changePoints = 0;
-        this.state = State.OUT;
-        this.visible = true;
-        this.color = -1;
-        this.save();
+        Player player = new Player();
+        player.name = name;
+        player.globalPoints = 0;
+        player.gamePoints = 0;
+        player.changePoints = 0;
+        player.state = State.OUT;
+        player.visible = true;
+        player.color = -1;
+        player.save();
 
     }
 
@@ -66,6 +64,12 @@ public class Player extends SugarRecord<Player>{
         return gamePoints;
     }
 
+    public void resetPoints(){
+        gamePoints = 0;
+        changePoints = 0;
+        save();
+    }
+
     public State getState() {
         return state;
     }
@@ -93,7 +97,7 @@ public class Player extends SugarRecord<Player>{
         this.save();
     }
 
-    public void delete(){
+    public void deletePlayer(){
         this.visible = false;
         this.name = this.name + "_deleted";
         this.save();

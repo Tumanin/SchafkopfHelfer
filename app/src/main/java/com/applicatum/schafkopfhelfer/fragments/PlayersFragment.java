@@ -69,9 +69,9 @@ public class PlayersFragment extends Fragment {
             public void onClick(View view) {
                 if (activePlayers.size() > 3 && activePlayers.size() < 8) {
                     PlayersList.getInstance().setList(activePlayers);
-                    System.out.println("calling game");
+                    Log.d(TAG, "calling game");
                     Game game = Game.lastGame();
-                    System.out.println("calling updateActivePlayers");
+                    Log.d(TAG, "calling updateActivePlayers");
                     game.updateActivePlayers(activePlayers);
                     activePlayers.clear();
 
@@ -107,7 +107,8 @@ public class PlayersFragment extends Fragment {
         Game game = Game.lastGame();
         Log.d(TAG, "game id: "+game.getId());
         if (game!=null) {
-            game.updateActivePlayers(new ArrayList<Player>());
+            //Log.d(TAG, "populatePlayers updateActivePlayers");
+            //game.updateActivePlayers(new ArrayList<Player>());
         }
         List<Player> loadedPlayers = Player.getPlayers();
         if(loadedPlayers!=null){
@@ -119,6 +120,7 @@ public class PlayersFragment extends Fragment {
             for(int i=0; i < adapter.getCount(); i++){
                 itemView = adapter.getView(i, null, null);
                 final Player player = (Player)adapter.getItem(i);
+                player.resetPoints();
                 itemView.setTag(player);
                 if (!managePlayers) {
                     itemView.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +158,7 @@ public class PlayersFragment extends Fragment {
                                     .setPositiveButton(getResources().getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            player.delete();
+                                            player.deletePlayer();
                                             populatePlayers();
                                             dialog.dismiss();
                                         }

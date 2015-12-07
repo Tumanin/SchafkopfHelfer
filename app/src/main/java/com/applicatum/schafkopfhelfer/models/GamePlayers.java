@@ -1,5 +1,7 @@
 package com.applicatum.schafkopfhelfer.models;
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.List;
 /**
  * Created by Dominik on 30.11.2015.
  */
-public class GamePlayers extends SugarRecord<GamePlayers> {
+public class GamePlayers extends SugarRecord {
 
     Player player;
     Game game;
@@ -22,7 +24,6 @@ public class GamePlayers extends SugarRecord<GamePlayers> {
         //GamePlayers gp = new GamePlayers();
         this.player = player;
         this.game = game;
-        this.save();
     }
 
     public Player getPlayer() {
@@ -44,6 +45,7 @@ public class GamePlayers extends SugarRecord<GamePlayers> {
 
     public static void deleteGamePlayers(Game game){
         List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ?", String.valueOf(game.getId()));
+        Log.d("GamePlayers", "calling updateActivePlayers");
         for(GamePlayers e : gps){
             e.delete();
         }

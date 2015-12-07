@@ -17,7 +17,7 @@ import com.orm.query.Select;
 /**
  * Created by Alexx on 09.11.2015.
  */
-public class Game extends SugarRecord<Game>{
+public class Game extends SugarRecord{
 
     long date;
     int pot;
