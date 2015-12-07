@@ -4,11 +4,27 @@
     android:layout_height="match_parent"
     tools:context="com.applicatum.schafkopfhelfer.fragments.GameTableFragment">
 
-    <LinearLayout
-        android:id="@+id/table"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonRemove"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:background="@drawable/bg_button_red"
+        android:layout_gravity="bottom"
+        android:layout_margin="4dp"
+        android:text="@string/button_remove_last_round"
+        android:textColor="#ffffff"
+        android:textSize="24sp"/>
+
 
 </FrameLayout>

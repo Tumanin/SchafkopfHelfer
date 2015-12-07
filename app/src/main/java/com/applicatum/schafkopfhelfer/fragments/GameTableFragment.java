@@ -1,5 +1,7 @@
 package com.applicatum.schafkopfhelfer.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ActionMenuView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -30,6 +33,7 @@ public class GameTableFragment extends Fragment {
     LinearLayout table;
     MainActivity mActivity;
     LayoutInflater inflater;
+    Button buttonRemove;
 
     int roundCount;
 
@@ -44,12 +48,41 @@ public class GameTableFragment extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_game_table, container, false);
         table = (LinearLayout) mRootView.findViewById(R.id.table);
         mActivity = (MainActivity) getActivity();
+        buttonRemove = (Button) mRootView.findViewById(R.id.buttonRemove);
         this.inflater = inflater;
 
         roundCount = -1;
 
         updateTable();
+
+        buttonRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog dialog = new AlertDialog.Builder(mActivity)
+                        .setTitle(getResources().getString(R.string.button_remove_last_round))
+                        .setMessage(getResources().getString(R.string.text_remove_last_round))
+                        .setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton(getResources().getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeLastRound();
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                dialog.show();
+            }
+        });
         return mRootView;
+    }
+
+    private void removeLastRound(){
+
     }
 
     @Override

@@ -24,7 +24,6 @@ import java.util.List;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -37,6 +36,7 @@ public class StatisticsFragment extends Fragment {
     View mRootView;
     MainActivity activity;
     LineChartView chartView;
+    Game game;
     private DynamicGridView gridView;
 
     public StatisticsFragment() {
@@ -51,6 +51,7 @@ public class StatisticsFragment extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_statistics, container, false);
         chartView = (LineChartView) mRootView.findViewById(R.id.chart);
         gridView = (DynamicGridView) mRootView.findViewById(R.id.usersGrid);
+        game = Game.lastGame();
         setChartLines();
         setGridView();
         return mRootView;

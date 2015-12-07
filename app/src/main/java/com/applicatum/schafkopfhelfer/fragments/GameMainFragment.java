@@ -1,6 +1,7 @@
 package com.applicatum.schafkopfhelfer.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class GameMainFragment extends Fragment {
     private Game game;
     private HashMap <String, Integer> gameTypes;
     UsersDynamicAdapter usersDynamicAdapter;
-
+    FloatingActionButton fabGo;
     private Button buttonSau;
     private Button buttonRamsch;
     private Button buttonSolo;
@@ -137,6 +138,26 @@ public class GameMainFragment extends Fragment {
         return view;
     }
 
+    private void enableSetup(){
+
+        if(players.size()<5){
+            aussetzer=false;
+            aussetzerLayout.setVisibility(View.GONE);
+            gameLayout.setVisibility(View.VISIBLE);
+        } else{
+            winnerCount = 0;
+            for(Player player : players){
+                if(player.getState()== Player.State.WIN){
+                    player.setState(Player.State.PLAY);
+                }
+            }
+            aussetzer=true;
+            aussetzerLayout.setVisibility(View.VISIBLE);
+            gameLayout.setVisibility(View.GONE);
+            fabGo.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -158,6 +179,20 @@ public class GameMainFragment extends Fragment {
         buttonOk = (Button)view.findViewById(R.id.buttonOk);
         buttonAussetzer = (Button) view.findViewById(R.id.buttonAussetzer);
 
+        fabGo = (FloatingActionButton) view.findViewById(R.id.fab);
+
+        fabGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enableSetup();
+            }
+        });
+        if (aussetzer || players.size()<5) {
+            fabGo.setVisibility(View.GONE);
+        } else {
+            fabGo.setVisibility(View.VISIBLE);
+        }
+
         buttonSau.setEnabled(false);
         buttonSau.setSelected(false);
         buttonRamsch.setEnabled(false);
@@ -170,8 +205,6 @@ public class GameMainFragment extends Fragment {
             buttonRamsch.setText(getResources().getString(R.string.ramsch));
         }else if (gameTypes.get(Types.POTT)!=-1){
             buttonRamsch.setText(getResources().getString(R.string.pott));
-        }else if (gameTypes.get(Types.PFLICHT)!=-1){
-            buttonRamsch.setText(getResources().getString(R.string.pflicht));
         }
 
         List<String> solisArray = new ArrayList<>();
@@ -198,11 +231,16 @@ public class GameMainFragment extends Fragment {
         buttonAussetzer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(usersDynamicAdapter.getCount()-aussetzerCount==4){
+                if (usersDynamicAdapter.getCount() - aussetzerCount == 4) {
                     aussetzer = false;
                     aussetzerLayout.setVisibility(View.GONE);
                     gameLayout.setVisibility(View.VISIBLE);
-                }else{
+                    if (usersDynamicAdapter.getCount()>4) {
+                        fabGo.setVisibility(View.VISIBLE);
+                    }else{
+                        fabGo.setVisibility(View.GONE);
+                    }
+                } else {
                     Toast.makeText(activity, "Es müssen genau 4 Spieler spielen!",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -256,13 +294,18 @@ public class GameMainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 buttonSchwarz.setSelected(!buttonSchwarz.isSelected());
+                buttonSchneider.setSelected(buttonSchwarz.isSelected());
             }
         });
 
         buttonLaufende.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                laufende+=1;
+                if (laufende==0) {
+                    laufende+=2;
+                } else {
+                    laufende+=1;
+                }
                 buttonLaufende.setText(String.valueOf(laufende));
             }
         });
@@ -281,6 +324,9 @@ public class GameMainFragment extends Fragment {
                 if(!buttonSau.isSelected() && !buttonSolo.isSelected() && !buttonRamsch.isSelected()){
                     Toast.makeText(activity, "Wähle Gewinner und Spiel!",
                             Toast.LENGTH_SHORT).show();
+                }else if(buttonSau.isSelected() && laufende==2){
+                    Toast.makeText(activity, getResources().getString(R.string.text_sau_2_laufende), Toast.LENGTH_LONG).show();
+
                 }else{
                     recordNewRound();
                     activity.updateTable();
@@ -462,8 +508,6 @@ public class GameMainFragment extends Fragment {
                 type = Types.RAMSCH;
             } else if (gameTypes.get(Types.POTT)!=-1){
                 type = Types.POTT;
-            } else if (gameTypes.get(Types.PFLICHT)!=-1){
-                type = Types.PFLICHT;
             }
         }
 

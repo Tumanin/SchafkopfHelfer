@@ -17,6 +17,15 @@
     <string name="button_cancel">Abbrechen</string>
     <string name="button_close">Schliessen</string>
 
+    <!-- GameMainFragment -->
+
+    <string name="text_sau_2_laufende">Ab 3 Laufende beim SAUSPIEL!</string>
+
+    <!-- GameTableFragment -->
+
+    <string name="button_remove_last_round">Letzte Runde löschen</string>
+    <string name="text_remove_last_round">Möchten Sie wirklich die letzte Runde löschen?</string>
+
     <!-- StartFragment -->
 
     <string name="button_new_game">Neues Spiel</string>
