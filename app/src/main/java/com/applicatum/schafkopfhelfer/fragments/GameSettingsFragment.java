@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.StartActivity;
 import com.applicatum.schafkopfhelfer.models.Game;
+import com.applicatum.schafkopfhelfer.models.GameTypes;
 import com.applicatum.schafkopfhelfer.utils.PreferenceUtils;
 import com.applicatum.schafkopfhelfer.utils.Types;
 
@@ -28,6 +29,7 @@ public class GameSettingsFragment extends Fragment {
     FloatingActionButton fabGo;
     View mRootView;
     StartActivity activity;
+    Game game;
 
     RadioGroup ramschGroup;
     RadioButton radioRamsch;
@@ -91,22 +93,47 @@ public class GameSettingsFragment extends Fragment {
         editSchneider = (EditText) mRootView.findViewById(R.id.editSchneider);
         editSchwarz = (EditText) mRootView.findViewById(R.id.editSchwarz);
 
-        radioRamsch.setChecked(true);
-        radioPott.setChecked(false);
-        radioPflicht.setChecked(false);
-
-        editRamsch.setEnabled(true);
-        editPott.setEnabled(false);
-        editPflicht.setEnabled(false);
-
-        checkSauspiel.setChecked(true);
-        editSauspiel.setEnabled(true);
-        checkSolo.setChecked(true);
-        editSolo.setEnabled(true);
-        checkWenz.setChecked(true);
-        editWenz.setEnabled(true);
-
         mPreferenceUtils = PreferenceUtils.getInstance(getActivity());
+
+        game = Game.lastGame();
+
+        if(game==null){
+            game = Game.createGame();
+        }
+        HashMap<String, Integer> gameTypes = game.getGameTypes();
+
+        radioRamsch.setChecked(gameTypes.get(Types.RAMSCH)!=-1);
+        radioPott.setChecked(gameTypes.get(Types.POTT)!=-1);
+        radioPflicht.setChecked(gameTypes.get(Types.PFLICHT) != -1);
+
+        editRamsch.setEnabled(gameTypes.get(Types.RAMSCH) != -1);
+        editPott.setEnabled(gameTypes.get(Types.POTT) != -1);
+        editPflicht.setEnabled(gameTypes.get(Types.PFLICHT) != -1);
+
+        editRamsch.setText(String.valueOf(mPreferenceUtils.getInt(Types.RAMSCH)));
+        editPott.setText(String.valueOf(mPreferenceUtils.getInt(Types.POTT)));
+        editPflicht.setText(String.valueOf(mPreferenceUtils.getInt(Types.PFLICHT)));
+
+        checkSauspiel.setChecked(gameTypes.get(Types.SAUSPIEL) != -1);
+        editSauspiel.setEnabled(gameTypes.get(Types.SAUSPIEL) != -1);
+        editSauspiel.setText(String.valueOf(mPreferenceUtils.getInt(Types.SAUSPIEL)));
+
+        checkSolo.setChecked(gameTypes.get(Types.FARBSOLO) != -1);
+        editSolo.setEnabled(gameTypes.get(Types.FARBSOLO) != -1);
+        editSolo.setText(String.valueOf(mPreferenceUtils.getInt(Types.FARBSOLO)));
+
+        checkWenz.setChecked(gameTypes.get(Types.WENZ) != -1);
+        editWenz.setEnabled(gameTypes.get(Types.WENZ) != -1);
+        editWenz.setText(String.valueOf(mPreferenceUtils.getInt(Types.WENZ)));
+
+        checkGeier.setChecked(gameTypes.get(Types.GEIER) != -1);
+        editGeier.setEnabled(gameTypes.get(Types.GEIER) != -1);
+        editGeier.setText(String.valueOf(mPreferenceUtils.getInt(Types.GEIER)));
+
+        checkBettel.setChecked(gameTypes.get(Types.BETTEL) != -1);
+        editBettel.setEnabled(gameTypes.get(Types.BETTEL) != -1);
+        editBettel.setText(String.valueOf(mPreferenceUtils.getInt(Types.BETTEL)));
+
 
         activity = (StartActivity) getActivity();
         fabGo = (FloatingActionButton) mRootView.findViewById(R.id.fab);
@@ -128,10 +155,13 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.RAMSCH, Integer.parseInt(editRamsch.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.RAMSCH, Integer.parseInt(editRamsch.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.RAMSCH, -1);
+                        mPreferenceUtils.storeInt(Types.RAMSCH, Integer.parseInt(editRamsch.getText().toString()));
                     }
+
                     if(radioPott.isChecked()){
                         if(editPott.getText().toString().equals("")){
                             Toast.makeText(activity, "Pott Preis darf nicht leer sein!",
@@ -139,10 +169,13 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.POTT, Integer.parseInt(editPott.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.POTT, Integer.parseInt(editPott.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.POTT, -1);
+                        mPreferenceUtils.storeInt(Types.POTT, Integer.parseInt(editPott.getText().toString()));
                     }
+
                     if(radioPflicht.isChecked()){
                         if(editPflicht.getText().toString().equals("")){
                             Toast.makeText(activity, "Pflicht Preis darf nicht leer sein!",
@@ -150,10 +183,13 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.PFLICHT, Integer.parseInt(editPflicht.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.PFLICHT, Integer.parseInt(editPflicht.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.PFLICHT, -1);
+                        mPreferenceUtils.storeInt(Types.PFLICHT, Integer.parseInt(editPflicht.getText().toString()));
                     }
+
                     if(checkSauspiel.isChecked()){
                         if(editSauspiel.getText().toString().equals("")){
                             Toast.makeText(activity, "Sauspiel Preis darf nicht leer sein!",
@@ -161,10 +197,13 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.SAUSPIEL, Integer.parseInt(editSauspiel.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.SAUSPIEL, Integer.parseInt(editSauspiel.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.SAUSPIEL, -1);
+                        mPreferenceUtils.storeInt(Types.SAUSPIEL, Integer.parseInt(editSauspiel.getText().toString()));
                     }
+
                     if(checkSolo.isChecked()){
                         if(editSolo.getText().toString().equals("")){
                             Toast.makeText(activity, "Solo Preis darf nicht leer sein!",
@@ -172,10 +211,13 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.FARBSOLO, Integer.parseInt(editSolo.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.FARBSOLO, Integer.parseInt(editSolo.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.FARBSOLO, -1);
+                        mPreferenceUtils.storeInt(Types.FARBSOLO, Integer.parseInt(editSolo.getText().toString()));
                     }
+
                     if(checkWenz.isChecked()){
                         if(editWenz.getText().toString().equals("")){
                             Toast.makeText(activity, "Wenz Preis darf nicht leer sein!",
@@ -183,10 +225,13 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.WENZ, Integer.parseInt(editWenz.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.WENZ, Integer.parseInt(editWenz.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.WENZ, -1);
+                        mPreferenceUtils.storeInt(Types.WENZ, Integer.parseInt(editWenz.getText().toString()));
                     }
+
                     if(checkGeier.isChecked()){
                         if(editGeier.getText().toString().equals("")){
                             Toast.makeText(activity, "Geier Preis darf nicht leer sein!",
@@ -194,10 +239,13 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.GEIER, Integer.parseInt(editGeier.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.GEIER, Integer.parseInt(editGeier.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.GEIER, -1);
+                        mPreferenceUtils.storeInt(Types.GEIER, Integer.parseInt(editGeier.getText().toString()));
                     }
+
                     if(checkBettel.isChecked()){
                         if(editBettel.getText().toString().equals("")){
                             Toast.makeText(activity, "Bettel Preis darf nicht leer sein!",
@@ -205,30 +253,37 @@ public class GameSettingsFragment extends Fragment {
                             return;
                         }else{
                             hashMap.put(Types.BETTEL, Integer.parseInt(editBettel.getText().toString()));
+                            mPreferenceUtils.storeInt(Types.BETTEL, Integer.parseInt(editBettel.getText().toString()));
                         }
                     }else{
                         hashMap.put(Types.BETTEL, -1);
+                        mPreferenceUtils.storeInt(Types.BETTEL, Integer.parseInt(editBettel.getText().toString()));
                     }
+
                     if(editKlopfen.getText().toString().equals("")){
                         Toast.makeText(activity, "Klopfen Preis darf nicht leer sein!",
                                 Toast.LENGTH_LONG).show();
                         return;
-                    }else{
+                    } else {
                         hashMap.put(Types.KLOPFEN, Integer.parseInt(editKlopfen.getText().toString()));
                     }
+                    mPreferenceUtils.storeInt(Types.KLOPFEN, Integer.parseInt(editKlopfen.getText().toString()));
                     if(editLaufende.getText().toString().equals("")){
                         Toast.makeText(activity, "Laufende Preis darf nicht leer sein!",
                                 Toast.LENGTH_LONG).show();
                         return;
                     }else{
                         hashMap.put(Types.LAUFENDE, Integer.parseInt(editLaufende.getText().toString()));
+                        mPreferenceUtils.storeInt(Types.LAUFENDE, Integer.parseInt(editLaufende.getText().toString()));
                     }
+
                     if(editSchneider.getText().toString().equals("")){
                         Toast.makeText(activity, "Schneider Preis darf nicht leer sein!",
                                 Toast.LENGTH_LONG).show();
                         return;
                     }else{
                         hashMap.put(Types.SCHNEIDER, Integer.parseInt(editSchneider.getText().toString()));
+                        mPreferenceUtils.storeInt(Types.SCHNEIDER, Integer.parseInt(editSchneider.getText().toString()));
                     }
                     if(editSchwarz.getText().toString().equals("")){
                         Toast.makeText(activity, "Schwarz Preis darf nicht leer sein!",
@@ -236,6 +291,7 @@ public class GameSettingsFragment extends Fragment {
                         return;
                     }else{
                         hashMap.put(Types.SCHWARZ, Integer.parseInt(editSchwarz.getText().toString()));
+                        mPreferenceUtils.storeInt(Types.SCHWARZ, Integer.parseInt(editSchwarz.getText().toString()));
                     }
 
                     Game game = Game.createGame();

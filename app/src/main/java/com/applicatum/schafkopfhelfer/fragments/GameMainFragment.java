@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -39,6 +40,7 @@ public class GameMainFragment extends Fragment {
     private MainActivity activity;
     private View view;
     private Game game;
+    private HashMap <String, Integer> gameTypes;
     UsersDynamicAdapter usersDynamicAdapter;
 
     private Button buttonSau;
@@ -100,6 +102,7 @@ public class GameMainFragment extends Fragment {
         if(game==null){
             Log.d(TAG, "no last game found");
         }else{
+            gameTypes = game.getGameTypes();
             Log.d(TAG, "game id: "+game.getId());
             List<Player> players = game.getActivePlayers();
             if (players.size()>0) {
@@ -161,6 +164,36 @@ public class GameMainFragment extends Fragment {
         buttonRamsch.setSelected(false);
         buttonSolo.setEnabled(false);
         buttonSolo.setSelected(false);
+        soloSpinner.setEnabled(false);
+
+        if(gameTypes.get(Types.RAMSCH)!=-1){
+            buttonRamsch.setText(getResources().getString(R.string.ramsch));
+        }else if (gameTypes.get(Types.POTT)!=-1){
+            buttonRamsch.setText(getResources().getString(R.string.pott));
+        }else if (gameTypes.get(Types.PFLICHT)!=-1){
+            buttonRamsch.setText(getResources().getString(R.string.pflicht));
+        }
+
+        List<String> solisArray = new ArrayList<>();
+        if(gameTypes.get(Types.FARBSOLO)!=-1){
+            solisArray.add(getResources().getString(R.string.farbsolo));
+        }
+        if(gameTypes.get(Types.WENZ)!=-1){
+            solisArray.add(getResources().getString(R.string.wenz));
+        }
+        if(gameTypes.get(Types.GEIER)!=-1){
+            solisArray.add(getResources().getString(R.string.geier));
+        }
+        if(gameTypes.get(Types.BETTEL)!=-1){
+            solisArray.add(getResources().getString(R.string.bettel));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.spinner_item, solisArray);
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        //        R.array.planets_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        soloSpinner.setAdapter(adapter);
 
         buttonAussetzer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +216,7 @@ public class GameMainFragment extends Fragment {
                     buttonSau.setSelected(true);
                     buttonRamsch.setSelected(false);
                     buttonSolo.setSelected(false);
+                    soloSpinner.setEnabled(false);
                 }
             }
         });
@@ -194,6 +228,7 @@ public class GameMainFragment extends Fragment {
                     buttonRamsch.setSelected(true);
                     buttonSau.setSelected(false);
                     buttonSolo.setSelected(false);
+                    soloSpinner.setEnabled(false);
                 }
             }
         });
@@ -205,6 +240,7 @@ public class GameMainFragment extends Fragment {
                     buttonSolo.setSelected(true);
                     buttonSau.setSelected(false);
                     buttonRamsch.setSelected(false);
+                    soloSpinner.setEnabled(true);
                 }
             }
         });
@@ -354,6 +390,7 @@ public class GameMainFragment extends Fragment {
                                 buttonRamsch.setSelected(false);
                                 buttonSolo.setEnabled(false);
                                 buttonSolo.setSelected(false);
+                                soloSpinner.setEnabled(false);
                             }
                         } else {
                             Toast.makeText(activity, "Zu viele Gewinner!",
@@ -411,9 +448,23 @@ public class GameMainFragment extends Fragment {
     private void recordNewRound(){
         String type = Types.SAUSPIEL;
         if(buttonSolo.isSelected()){
-            type = Types.FARBSOLO;
+            if ((soloSpinner.getSelectedItem()).equals(getResources().getString(R.string.farbsolo))) {
+                type = Types.FARBSOLO;
+            } else if ((soloSpinner.getSelectedItem()).equals(getResources().getString(R.string.wenz))){
+                type = Types.WENZ;
+            } else if ((soloSpinner.getSelectedItem()).equals(getResources().getString(R.string.geier))){
+                type = Types.GEIER;
+            } else if ((soloSpinner.getSelectedItem()).equals(getResources().getString(R.string.bettel))){
+                type = Types.BETTEL;
+            }
         } else if(buttonRamsch.isSelected()){
-            type = Types.RAMSCH;
+            if (gameTypes.get(Types.RAMSCH)!=-1) {
+                type = Types.RAMSCH;
+            } else if (gameTypes.get(Types.POTT)!=-1){
+                type = Types.POTT;
+            } else if (gameTypes.get(Types.PFLICHT)!=-1){
+                type = Types.PFLICHT;
+            }
         }
 
         List<Player> winners = new ArrayList<>();

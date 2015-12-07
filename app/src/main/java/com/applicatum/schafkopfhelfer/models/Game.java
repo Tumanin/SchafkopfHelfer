@@ -35,8 +35,7 @@ public class Game extends SugarRecord{
         game.date = (new Date().getTime())/1000L;
         game.pot = 0;
         game.save();
-        GameTypes gt = new GameTypes();
-        new GameTypes(game, Types.RAMSCH, 10);
+        //GameTypes gt = new GameTypes();
         new GameTypes(game, Types.RAMSCH, 10);
         new GameTypes(game, Types.POTT, -1);
         new GameTypes(game, Types.PFLICHT, -1);
