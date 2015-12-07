@@ -24,16 +24,16 @@ public class Round extends SugarRecord<Round>{
     }
 
     public Round(String type, int laufende, int klopfen, boolean schneider, boolean schwarz, int price, Game game){
-        Round round = new Round();
-        round.type = type;
-        round.laufende = laufende;
-        round.klopfen = klopfen;
-        round.schneider = schneider;
-        round.schwarz = schwarz;
-        round.price = price;
-        round.date = (new Date().getTime())/1000L;
-        round.game = game;
-        round.save();
+        //Round round = new Round();
+        this.type = type;
+        this.laufende = laufende;
+        this.klopfen = klopfen;
+        this.schneider = schneider;
+        this.schwarz = schwarz;
+        this.price = price;
+        this.date = (new Date().getTime())/1000L;
+        this.game = game;
+        this.save();
     }
 
     public void setDate(long date) {

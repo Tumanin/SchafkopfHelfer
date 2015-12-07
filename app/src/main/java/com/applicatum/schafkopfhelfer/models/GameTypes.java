@@ -17,11 +17,11 @@ public class GameTypes extends SugarRecord<GameTypes> {
     }
 
     public GameTypes(Game game, String type, int value){
-        GameTypes gt = new GameTypes();
-        gt.type = type;
-        gt.value = value;
-        gt.game = game;
-        gt.save();
+        //GameTypes gt = new GameTypes();
+        this.type = type;
+        this.value = value;
+        this.game = game;
+        this.save();
     }
 
     public String getType() {

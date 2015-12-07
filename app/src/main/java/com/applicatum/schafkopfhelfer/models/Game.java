@@ -22,16 +22,18 @@ public class Game extends SugarRecord<Game>{
     long date;
     int pot;
     @Ignore
-    List<Player> activePlayers;
+    //List<Player> activePlayers;
 
     public Game(){
-        this.date = (new Date().getTime())/1000L;
-        pot = 0;
-        activePlayers = new ArrayList<>();
+        //this.date = (new Date().getTime())/1000L;
+        //pot = 0;
+        //activePlayers = new ArrayList<>();
     }
 
     public static Game createGame(){
         Game game = new Game();
+        game.date = (new Date().getTime())/1000L;
+        game.pot = 0;
         game.save();
         GameTypes gt = new GameTypes();
         new GameTypes(game, Types.RAMSCH, 10);
@@ -82,6 +84,7 @@ public class Game extends SugarRecord<Game>{
         for(Player p : activePlayers){
             System.out.println(p);
             GamePlayers gp = new GamePlayers(this, p);
+            gp.save();
         }
     }
 

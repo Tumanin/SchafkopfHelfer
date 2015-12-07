@@ -17,6 +17,7 @@ import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.adapters.UsersDynamicAdapter;
 import com.applicatum.schafkopfhelfer.models.Game;
+import com.applicatum.schafkopfhelfer.models.GamePlayers;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.applicatum.schafkopfhelfer.utils.PlayersList;
 import com.applicatum.schafkopfhelfer.utils.Types;
@@ -95,6 +96,34 @@ public class GameMainFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         game = Game.lastGame();
+
+        if(game==null){
+            Log.d(TAG, "no last game found");
+        }else{
+            Log.d(TAG, "game id: "+game.getId());
+            Log.d(TAG, "game time: "+game.getSqlName());
+            List<Player> players = game.getActivePlayers();
+            if (players.size()>0) {
+                for(Player player : players){
+                    Log.d(TAG, "player: "+player.getName());
+                }
+            } else {
+                Log.d(TAG, "no players found");
+            }
+            List<GamePlayers> gp = GamePlayers.getAll();
+            Log.d(TAG, "GamePlayers found: "+gp.size());
+            int count = 0;
+            for(GamePlayers gPlayers : gp){
+                Game localGame = gPlayers.getGame();
+                count++;
+                Log.d(TAG, "count: "+count);
+                Log.d(TAG, "localGame id: "+localGame.getId());
+                Log.d(TAG, "localGame id: "+localGame.getSqlName());
+                if(gPlayers.getGame().getId()== game.getId()){
+                    Log.d(TAG, "GamePlayers of this game with player: "+gPlayers.getPlayer().getName());
+                }
+            }
+        }
         setGridView();
 
         setButtons();

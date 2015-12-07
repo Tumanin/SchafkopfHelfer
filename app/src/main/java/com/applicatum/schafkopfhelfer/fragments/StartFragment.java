@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.StartActivity;
+import com.applicatum.schafkopfhelfer.models.Game;
 
 
 public class StartFragment extends Fragment {
@@ -59,8 +61,13 @@ public class StartFragment extends Fragment {
             public void onClick(View v) {
                 //GameMainFragment fragment = new GameMainFragment();
                 //activity.startFragment(fragment, true);
-                Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
-                activity.startActivity(intent);
+                Game game = Game.lastGame();
+                if (game!=null) {
+                    Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
+                    activity.startActivity(intent);
+                } else {
+                    Toast.makeText(activity, "Es gibt kein altes Spiel", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

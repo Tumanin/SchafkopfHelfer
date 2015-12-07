@@ -27,6 +27,7 @@
 
     <string name="hint_name">Name</string>
     <string name="title_new_player">Neuer Spieler</string>
+    <string name="title_rename_player">Name ändern</string>
 
     <!-- Games -->
 

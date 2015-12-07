@@ -22,12 +22,14 @@ public class PlayersListAdapter extends BaseAdapter{
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Player> mList;
+    private boolean managePlayers;
 
-    public PlayersListAdapter (Context context, List<Player> list){
+    public PlayersListAdapter (Context context, List<Player> list, boolean managePlayers){
 
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mList = list;
+        this.managePlayers = managePlayers;
     }
 
     @Override
@@ -52,7 +54,11 @@ public class PlayersListAdapter extends BaseAdapter{
         Player player = (Player)getItem(position);
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.player_list_item, null);
+            if (!managePlayers) {
+                convertView = mInflater.inflate(R.layout.player_list_item, null);
+            } else {
+                convertView = mInflater.inflate(R.layout.player_list_item_full, null);
+            }
             holder.playerName = (TextView) convertView.findViewById(R.id.playerName);
             convertView.setTag(holder);
         }else {

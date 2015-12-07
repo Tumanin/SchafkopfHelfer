@@ -26,15 +26,16 @@ public class Player extends SugarRecord<Player>{
     }
 
     public Player(String name){
-        Player player = new Player();
-        player.name = name;
-        player.globalPoints = 0;
-        player.gamePoints = 0;
-        player.changePoints = 0;
-        player.state = State.OUT;
-        player.visible = true;
-        player.save();
-        color = -1;
+        //Player player = new Player();
+        this.name = name;
+        this.globalPoints = 0;
+        this.gamePoints = 0;
+        this.changePoints = 0;
+        this.state = State.OUT;
+        this.visible = true;
+        this.color = -1;
+        this.save();
+
     }
 
     public String getName() { return name; }

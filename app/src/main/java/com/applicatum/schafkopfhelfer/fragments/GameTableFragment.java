@@ -113,6 +113,7 @@ public class GameTableFragment extends Fragment {
         item.setMaxEms(4);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         item.setLayoutParams(params);
+        item.setSingleLine(true);
         item.setText("0");
         item.setPadding(2, 2, 2, 2);
         item.setVisibility(View.VISIBLE);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/user_item_frame">
+
+    <TextView
+        android:id="@+id/playerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="name"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/font_frame_active"
+        android:textSize="18sp"/>
+
+    <ImageView
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_delete"
+        android:layout_centerVertical="true"
+        android:paddingRight="10dp"
+        android:layout_alignParentRight="true"/>
+
+    <ImageView
+        android:id="@+id/buttonEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_edit"
+        android:layout_toLeftOf="@+id/buttonDelete"
+        android:layout_centerVertical="true"
+        android:paddingRight="10dp"/>
+
+</RelativeLayout>

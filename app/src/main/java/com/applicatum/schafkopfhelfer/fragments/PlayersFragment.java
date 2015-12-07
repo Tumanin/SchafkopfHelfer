@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class PlayersFragment extends Fragment {
 
+    private static final String TAG = "PlayersFragment";
     private View mRootView;
     StartActivity activity;
 
@@ -103,22 +105,25 @@ public class PlayersFragment extends Fragment {
 
         listContainer.removeAllViews();
         Game game = Game.lastGame();
-        game.updateActivePlayers(new ArrayList<Player>());
+        Log.d(TAG, "game id: "+game.getId());
+        if (game!=null) {
+            game.updateActivePlayers(new ArrayList<Player>());
+        }
         List<Player> loadedPlayers = Player.getPlayers();
         if(loadedPlayers!=null){
             players.clear();
             players.addAll(Player.getPlayers());
         }
-        adapter = new PlayersListAdapter(activity, players);
+        adapter = new PlayersListAdapter(activity, players, managePlayers);
         if(adapter.getCount()>0){
             for(int i=0; i < adapter.getCount(); i++){
                 itemView = adapter.getView(i, null, null);
                 final Player player = (Player)adapter.getItem(i);
                 itemView.setTag(player);
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!managePlayers) {
+                if (!managePlayers) {
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
                             if(!activePlayers.contains(player)){
                                 player.setState(Player.State.PLAY);
                                 player.setColor(-1);
@@ -129,10 +134,19 @@ public class PlayersFragment extends Fragment {
                                 player.setState(Player.State.OUT);
                                 v.setBackgroundResource(R.drawable.user_item_frame);
                             }
-                        } else {
+                        }
+                    });
+                    itemView.setClickable(true);
+                } else {
+                    View buttonDelete = itemView.findViewById(R.id.buttonDelete);
+                    View buttonEdit = itemView.findViewById(R.id.buttonEdit);
+
+                    buttonDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
                             AlertDialog dialog = new AlertDialog.Builder(activity)
                                     .setTitle("Spieler entfernen")
-                                    .setMessage("Möchten Sie wirklich den Spieler "+player.getName()+" entfernen?")
+                                    .setMessage("Möchten Sie wirklich den Spieler " + player.getName() + " entfernen?")
                                     .setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -150,9 +164,42 @@ public class PlayersFragment extends Fragment {
                                     .create();
                             dialog.show();
                         }
-                    }
-                });
-                itemView.setClickable(true);
+                    });
+                    buttonEdit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            View view = inflater.inflate(R.layout.dialog_new_player, null);
+                            final EditText inputPlayerName = (EditText) view.findViewById(R.id.inputPlayerName);
+                            inputPlayerName.setText(player.getName());
+                            AlertDialog dialog = new AlertDialog.Builder(activity)
+                                    .setTitle(getResources().getString(R.string.title_rename_player))
+                                    .setView(view)
+                                    .setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton(getResources().getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            String playerName = inputPlayerName.getText().toString().replace(",", "").trim();
+                                            if(playerName.equals("")) {
+                                                Toast.makeText(activity, "Der Name darf nicht leer sein!", Toast.LENGTH_LONG).show();
+                                            } else if(Player.nameIsUnique(playerName) || playerName.equals(player.getName())){
+                                                player.rename(playerName);
+                                                populatePlayers();
+                                                dialog.dismiss();
+                                            } else {
+                                                Toast.makeText(activity, "Der Name existiert bereits!", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    })
+                                    .create();
+                            dialog.show();
+                        }
+                    });
+                }
                 listContainer.addView(itemView);
             }
         }

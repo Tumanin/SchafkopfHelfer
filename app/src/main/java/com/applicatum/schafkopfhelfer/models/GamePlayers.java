@@ -19,10 +19,10 @@ public class GamePlayers extends SugarRecord<GamePlayers> {
     }
 
     public GamePlayers(Game game, Player player){
-        GamePlayers gp = new GamePlayers();
-        gp.player = player;
-        gp.game = game;
-        gp.save();
+        //GamePlayers gp = new GamePlayers();
+        this.player = player;
+        this.game = game;
+        this.save();
     }
 
     public Player getPlayer() {
@@ -49,5 +49,9 @@ public class GamePlayers extends SugarRecord<GamePlayers> {
         }
     }
 
+    public static List<GamePlayers> getAll(){
+        List<GamePlayers> gp = GamePlayers.listAll(GamePlayers.class);
+        return gp;
+    }
 
 }
