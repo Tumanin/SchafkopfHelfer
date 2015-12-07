@@ -70,11 +70,11 @@ public class Player extends SugarRecord {
     }
 
     public void restorePoints(Game game) {
-        PlayerRound lastPR = Select.from(PlayerRound.class).where(Condition.prop("game").eq(game.getId()),
-                Condition.prop("player").eq(this.getId())).orderBy("id desc").first();
-        if(lastPR != null){
-            gamePoints = lastPR.getGamePoints();
-            changePoints = lastPR.getChangePoints();
+        //PlayerRound lastPR = Select.from(PlayerRound.class).where(Condition.prop("game").eq(game.getId()),
+        //        Condition.prop("player").eq(this.getId())).orderBy("id desc").first();
+        if(false){
+            //gamePoints = lastPR.getGamePoints();
+            //changePoints = lastPR.getChangePoints();
         } else {
             gamePoints = 0;
             changePoints = 0;

@@ -14,6 +14,7 @@ public class GamePlayers extends SugarRecord {
 
     Player player;
     Game game;
+    boolean active;
 
 
     public GamePlayers(){
@@ -24,6 +25,8 @@ public class GamePlayers extends SugarRecord {
         //GamePlayers gp = new GamePlayers();
         this.player = player;
         this.game = game;
+        this.active = true;
+        this.save();
     }
 
     public Player getPlayer() {
@@ -34,8 +37,17 @@ public class GamePlayers extends SugarRecord {
         return game;
     }
 
-    public static List<Player> returnPlayers(Game game){
+    public static List<Player> getPlayers(Game game){
         List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ?", String.valueOf(game.getId()));
+        List<Player> players = new ArrayList<>();
+        for(GamePlayers e : gps){
+            players.add(e.getPlayer());
+        }
+        return players;
+    }
+
+    public static List<Player> getActivePlayers(Game game){
+        List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ? and active = ?", String.valueOf(game.getId()),"1");
         List<Player> players = new ArrayList<>();
         for(GamePlayers e : gps){
             players.add(e.getPlayer());
@@ -56,4 +68,12 @@ public class GamePlayers extends SugarRecord {
         return gp;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+        this.save();
+    }
 }

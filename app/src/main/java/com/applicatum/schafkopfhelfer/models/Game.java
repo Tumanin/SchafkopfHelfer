@@ -77,7 +77,7 @@ public class Game extends SugarRecord{
     }
 
     public List<Player> getActivePlayers() {
-        return GamePlayers.returnPlayers(this);
+        return GamePlayers.getActivePlayers(this);
     }
 
     public void updateActivePlayers(List<Player> activePlayers) {
@@ -151,4 +151,9 @@ public class Game extends SugarRecord{
 
         this.save();
     }
+
+    //public HashMap<Player, ArrayList<Integer>> getRoundsTable(){
+
+    //}
+
 }
