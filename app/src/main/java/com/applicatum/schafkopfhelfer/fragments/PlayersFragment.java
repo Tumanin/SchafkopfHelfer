@@ -120,7 +120,7 @@ public class PlayersFragment extends Fragment {
             for(int i=0; i < adapter.getCount(); i++){
                 itemView = adapter.getView(i, null, null);
                 final Player player = (Player)adapter.getItem(i);
-                player.resetPoints();
+                player.restorePoints(game);
                 itemView.setTag(player);
                 if (!managePlayers) {
                     itemView.setOnClickListener(new View.OnClickListener() {

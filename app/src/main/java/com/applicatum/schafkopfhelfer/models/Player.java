@@ -4,6 +4,8 @@ package com.applicatum.schafkopfhelfer.models;
 import android.util.Log;
 
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.List;
 
@@ -67,8 +69,26 @@ public class Player extends SugarRecord {
         return gamePoints;
     }
 
-    public void resetPoints(){
+    public void restorePoints(Game game) {
+        //PlayerRound lastPR = Select.from(PlayerRound.class).where(Condition.prop("game").eq(game.getId()),
+        //        Condition.prop("player").eq(this.getId())).orderBy("id desc").first();
+        if(false){
+            //gamePoints = lastPR.getGamePoints();
+            //changePoints = lastPR.getChangePoints();
+        } else {
+            gamePoints = 0;
+            changePoints = 0;
+        }
+        this.save();
+    }
+
+    public void resetPoints(Game game){
         gamePoints = 0;
+        changePoints = 0;
+        save();
+    }
+
+    public void resetChangePoints(){
         changePoints = 0;
         save();
     }
