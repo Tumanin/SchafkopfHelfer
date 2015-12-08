@@ -6,3 +6,7 @@
 /captures
 .idea
 /.idea
+.idea/gradle.xml
+.idea/gradle.xml
+.idea/misc.xml
+*.iml
