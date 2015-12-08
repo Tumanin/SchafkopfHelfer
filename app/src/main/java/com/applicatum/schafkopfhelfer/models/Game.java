@@ -21,6 +21,8 @@ import com.orm.query.Select;
  */
 public class Game extends SugarRecord{
 
+    private static final String TAG = "GameModel";
+
     long date;
     int pot;
     @Ignore
@@ -90,20 +92,19 @@ public class Game extends SugarRecord{
     }
 
     public void recordNewRound(String type, List<Player> winners, List<Player> losers, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf){
-        Log.d("Game", "Recording new Round of type "+type+" with winners: "+winners.size()+", losers: "+losers.size()+", jungfrauen: "+jungfrauen.size()+", schneider: "+schneider+", schwarz: "+schwarz+", laufende: "+laufende+", geklopft: "+klopf);
-        List<Player> activePlayers = this.getActivePlayers();
+        Log.d(TAG, "Recording new Round of type "+type+" with winners: "+winners.size()+", losers: "+losers.size()+", jungfrauen: "+jungfrauen.size()+", schneider: "+schneider+", schwarz: "+schwarz+", laufende: "+laufende+", geklopft: "+klopf);
 
         float difference = GameTypes.getValue(this, type) + laufende * GameTypes.getValue(this, Types.LAUFENDE);
-        Log.d("Game", "The price for a game of type "+type+" is "+GameTypes.getValue(this, type));
+        Log.d(TAG, "The price for a game of type "+type+" is "+GameTypes.getValue(this, type));
         if(schneider){
             difference += GameTypes.getValue(this, Types.SCHNEIDER);
         }
         if(schwarz){
             difference += GameTypes.getValue(this, Types.SCHWARZ);
         }
-        if(klopf>0){
-            difference = difference * klopf;
-        }
+
+        difference = (float) (difference * Math.pow(2, klopf));
+
         //Log.d("Game", "Therefore, the difference is "+difference);
         int NumberOfWinners = winners.size();
         int NumberOfLosers = losers.size();
@@ -112,8 +113,8 @@ public class Game extends SugarRecord{
         Log.d("Game", "The winSum is: "+winSum);
         float win = winSum / NumberOfWinners;
         float lose = - winSum / NumberOfLosers;
-        Log.d("Game", "WIN: "+win);
-        Log.d("Game", "LOSE: "+lose);
+        Log.d(TAG, "WIN: "+win);
+        Log.d(TAG, "LOSE: "+lose);
 
         if(jungfrauen != null){
             lose += jungfrauen.size() * win / NumberOfLosers;
@@ -128,24 +129,22 @@ public class Game extends SugarRecord{
         Round round = new Round(type, laufende, klopf, schneider, schwarz, (int) Math.min(win, lose), this);
 
         for(Player p : winners){
-            Log.d("Game", "Writing new Player Round for winner. Player: "+p.getId()+" round: "+round.getId()+" win: "+win+"");
+            Log.d(TAG, "Writing new Player Round for winner. Player: "+p.getId()+" round: "+round.getId()+" win: "+win+"");
             new PlayerRound(p, round, true, (int) win, false);
-            activePlayers.remove(p);
         }
 
         for(Player p : losers){
-            Log.d("Game", "Writing new Player Round for loser. Player: "+p.getId()+" round: "+round.getId()+" win: "+lose+"");
+            Log.d(TAG, "Writing new Player Round for loser. Player: "+p.getId()+" round: "+round.getId()+" win: "+lose+"");
             new PlayerRound(p, round, false, (int) lose, false);
-            activePlayers.remove(p);
         }
 
         for(Player p : jungfrauen){
-            Log.d("Game", "Writing new Player Round for Jungfrau. Player: "+p.getId()+" round: "+round.getId()+" win: "+2*win+"");
+            Log.d(TAG, "Writing new Player Round for Jungfrau. Player: "+p.getId()+" round: "+round.getId()+" win: "+2*win+"");
             new PlayerRound(p, round, true, (int) (2*win), true);
-            activePlayers.remove(p);
         }
 
-        for(Player p : activePlayers){
+        for(Player p : this.getActivePlayers()){
+            Log.d(TAG, "Reset ChangePoints of Player: "+p.getId());
             p.resetChangePoints();
         }
 
