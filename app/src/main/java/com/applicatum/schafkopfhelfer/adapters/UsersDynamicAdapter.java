@@ -11,6 +11,7 @@ import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.models.Player;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,7 +103,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
         } else {
             view.setBackgroundResource(getRandomColor(player.getColor()));
         }
-        holder.build(player.getName(), player.getPoints(), getState(player), player.getColor());
+        holder.build(player.getName(), player.getPoints(), player.getChangePoints(), getState(player), player.getColor());
         return convertView;
     }
 
@@ -149,18 +150,21 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
     private class UserViewHolder {
         private TextView txtName;
         private TextView txtPoints;
+        private TextView txtChangePoints;
         private TextView txtState;
 
         private UserViewHolder(View view) {
             txtName = (TextView) view.findViewById(R.id.userName);
             txtPoints = (TextView) view.findViewById(R.id.userPoints);
+            txtChangePoints = (TextView) view.findViewById(R.id.userChangePoints);
             txtState = (TextView) view.findViewById(R.id.userState);
         }
 
-        void build(String name, int points, String state, int color) {
+        void build(String name, int points, int pointChange, String state, int color) {
             txtName.setText(name);
             //txtName.setTextColor(context.getResources().getColor(color));
             txtPoints.setText(String.valueOf(points));
+            txtChangePoints.setText("("+String.valueOf(pointChange)+")");
             //txtPoints.setTextColor(context.getResources().getColor(color));
             txtState.setText(state);
         }

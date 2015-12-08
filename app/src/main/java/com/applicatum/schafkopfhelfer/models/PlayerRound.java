@@ -23,17 +23,15 @@ public class PlayerRound extends SugarRecord {
     }
 
     public PlayerRound(Player player, Round round, boolean gewonnen, int changePoints, boolean jungfrau){
-        PlayerRound pr = new PlayerRound();
-        pr.player = player;
-        pr.player.addPoints(changePoints);
-        pr.player.save();
-        pr.round = round;
-        pr.gewonnen = gewonnen;
-        pr.globalPoints = player.getGlobalPoints();
-        pr.gamePoints = player.getPoints();
-        pr.changePoints = changePoints;
-        pr.jungfrau = jungfrau;
-        pr.save();
+        this.player = player;
+        this.player.addPoints(changePoints);
+        this.round = round;
+        this.gewonnen = gewonnen;
+        this.globalPoints = player.getGlobalPoints();
+        this.gamePoints = player.getPoints();
+        this.changePoints = changePoints;
+        this.jungfrau = jungfrau;
+        this.save();
     }
 
     public static List<PlayerRound> getRounds(){

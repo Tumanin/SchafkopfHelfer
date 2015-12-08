@@ -27,22 +27,42 @@
             android:paddingBottom="6dp"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal" />
 
-        <TextView
-            android:id="@+id/userPoints"
+        <LinearLayout
+            android:id="@+id/userPointBox"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="6dp"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:text="150"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/userPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-150"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/userChangePoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="2dp"
+                android:text="(+150)"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:textStyle="normal"
+                android:layout_gravity="right"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/userState"

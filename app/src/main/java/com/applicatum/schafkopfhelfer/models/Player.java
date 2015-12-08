@@ -28,16 +28,15 @@ public class Player extends SugarRecord {
     }
 
     public Player(String name){
-        Player player = new Player();
-        player.name = name;
-        player.globalPoints = 0;
-        player.gamePoints = 0;
-        player.changePoints = 0;
-        player.state = State.OUT;
-        player.visible = true;
-        player.color = -1;
-        player.save();
-
+        this.name = name;
+        this.globalPoints = 0;
+        this.gamePoints = 0;
+        this.changePoints = 0;
+        this.state = State.OUT;
+        this.visible = true;
+        this.color = -1;
+        this.save();
+        Log.d("Player", "Created new Player with id "+this.getId());
     }
 
     public String getName() { return name; }
@@ -52,10 +51,12 @@ public class Player extends SugarRecord {
         this.changePoints = pointDifference;
         this.globalPoints += pointDifference;
         this.gamePoints += pointDifference;
+        this.save();
     }
 
     public int getChangePoints() {
-        return changePoints;
+        Log.d("Player", "ChangePoints for player "+this.getId()+": "+this.changePoints);
+        return this.changePoints;
     }
 
     public int getGlobalPoints() {
@@ -83,14 +84,15 @@ public class Player extends SugarRecord {
     }
 
     public void resetPoints(Game game){
-        gamePoints = 0;
-        changePoints = 0;
-        save();
+        this.gamePoints = 0;
+        this.changePoints = 0;
+        this.save();
     }
 
     public void resetChangePoints(){
-        changePoints = 0;
-        save();
+        this.changePoints = 0;
+        Log.d("Player", "New changePoints is: "+this.getChangePoints());
+        this.save();
     }
 
     public State getState() {
@@ -99,6 +101,7 @@ public class Player extends SugarRecord {
 
     public void setState(State state) {
         this.state = state;
+        Log.d("Player", "Set state of player "+this.getId()+" to "+state);
         this.save();
     }
 
@@ -108,6 +111,7 @@ public class Player extends SugarRecord {
 
     public void setColor(int color) {
         this.color = color;
+        Log.d("Player", "Set color of player "+this.getId()+" to "+color);
         this.save();
     }
 
