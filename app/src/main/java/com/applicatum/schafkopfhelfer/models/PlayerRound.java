@@ -1,5 +1,7 @@
 package com.applicatum.schafkopfhelfer.models;
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 
 import java.util.Iterator;
@@ -22,6 +24,10 @@ public class PlayerRound extends SugarRecord {
 
     }
 
+    public Round getRound() {
+        return round;
+    }
+
     public PlayerRound(Player player, Round round, boolean gewonnen, int changePoints, boolean jungfrau){
         this.player = player;
         this.player.addPoints(changePoints);
@@ -39,6 +45,7 @@ public class PlayerRound extends SugarRecord {
     }
 
     public static void deletePlayerRound(Round r) {
+        Log.d("PlayerRound", "DeletePlayerRounds for round " + r.getId() + " called");
         PlayerRound.deleteAll(PlayerRound.class, "round = ?", String.valueOf(r.getId()));
     }
 

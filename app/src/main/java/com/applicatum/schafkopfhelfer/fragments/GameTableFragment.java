@@ -21,6 +21,7 @@ import com.applicatum.schafkopfhelfer.MainActivity;
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.Player;
+import com.applicatum.schafkopfhelfer.models.Round;
 
 import java.util.List;
 import java.util.Random;
@@ -71,6 +72,7 @@ public class GameTableFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 removeLastRound();
+                                // TODO: update view
                                 dialog.dismiss();
                             }
                         })
@@ -82,7 +84,7 @@ public class GameTableFragment extends Fragment {
     }
 
     private void removeLastRound(){
-
+        Round.removeLastRound();
     }
 
     @Override

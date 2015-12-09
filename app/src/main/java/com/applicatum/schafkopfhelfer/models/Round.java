@@ -1,7 +1,12 @@
 package com.applicatum.schafkopfhelfer.models;
 
-import com.orm.SugarRecord;
+import android.util.Log;
 
+import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,10 +61,35 @@ public class Round extends SugarRecord{
         return Round.listAll(Round.class);
     }
 
-    public static void deleteRound(Round r){
-        PlayerRound.deletePlayerRound(r);
-        r.delete();
+    public Game getGame() {
+        return game;
+    }
 
+    public static void removeLastRound(){
+        Log.d("Round", "Remove last Round called");
+        Round r = Round.getLastRound();
+        Game game = r.getGame();
+        PlayerRound.deletePlayerRound(r);
+        Log.d("Round", "Delete Round "+r.getId());
+        r.delete();
+        List<Player> activePlayers = game.getActivePlayers();
+        for(Player p : activePlayers){
+            p.restorePoints(game);
+        }
+    }
+
+    public static Round getLastRound(Game game){
+        Log.d("Round", "GetLastRound called for game " + game.getId());
+        return Select.from(Round.class).where(Condition.prop("game").eq(game.getId())).orderBy("id desc").first();
+    }
+
+    public static List<Round> getRoundsDesc(Game game){
+        return Select.from(Round.class).where(Condition.prop("game").eq(game.getId())).orderBy("id desc").list();
+    }
+
+    public static Round getLastRound(){
+        Log.d("Round", "GetLastRound called");
+        return Select.from(Round.class).orderBy("id desc").first();
     }
 
 

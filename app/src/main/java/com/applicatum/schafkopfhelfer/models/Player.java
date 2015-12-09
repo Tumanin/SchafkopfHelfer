@@ -71,16 +71,32 @@ public class Player extends SugarRecord {
     }
 
     public void restorePoints(Game game) {
-        //PlayerRound lastPR = Select.from(PlayerRound.class).where(Condition.prop("game").eq(game.getId()),
-        //        Condition.prop("player").eq(this.getId())).orderBy("id desc").first();
-        if(false){
-            //gamePoints = lastPR.getGamePoints();
-            //changePoints = lastPR.getChangePoints();
+        Log.d("Player", "RestorePoints called for player "+this.getId()+" and game "+game.getId());
+        PlayerRound lastPR = this.getLastPR(game);
+
+        if(lastPR != null){
+            Log.d("Player", "LastPR is " + lastPR.getId() + ", last Round is "+lastPR.getRound().getId());
+            gamePoints = lastPR.getGamePoints();
+            changePoints = lastPR.getChangePoints();
         } else {
             gamePoints = 0;
             changePoints = 0;
         }
+        Log.d("Player", "New gamePoints: " + gamePoints);
+        Log.d("Player", "New changePoints: " + changePoints);
         this.save();
+    }
+
+    public PlayerRound getLastPR(Game game){
+        List<Round> rounds = Round.getRoundsDesc(game);
+        PlayerRound pr = null;
+        for(Round r : rounds){
+            pr = Select.from(PlayerRound.class).where(Condition.prop("round").eq(r.getId()),Condition.prop("player").eq(this.getId())).first();
+            if(pr != null){
+                break;
+            }
+        }
+        return pr;
     }
 
     public void resetPoints(Game game){
@@ -91,8 +107,8 @@ public class Player extends SugarRecord {
 
     public void resetChangePoints(){
         this.changePoints = 0;
-        Log.d("Player", "New changePoints is: "+this.getChangePoints());
         this.save();
+        Log.d("Player", "New changePoints is: " + this.getChangePoints());
     }
 
     public State getState() {
