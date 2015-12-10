@@ -78,6 +78,7 @@ public class GameTableFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeLastRound();
                                 // TODO: update view
+                                updateTable();
                                 dialog.dismiss();
                             }
                         })
