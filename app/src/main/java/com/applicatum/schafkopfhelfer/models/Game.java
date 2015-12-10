@@ -169,4 +169,22 @@ public class Game extends SugarRecord{
         return hm;
     }
 
+    public HashMap<Player, ArrayList<Integer>> getPlayerCurves(){
+        HashMap<Player, ArrayList<Integer>> hm = new HashMap<>();
+        List<Round> rounds = Round.getRounds(this);
+        for(Player p : this.getActivePlayers()){
+            ArrayList<Integer> values = new ArrayList<>();
+            for(Round r : rounds){
+                PlayerRound pr = PlayerRound.getPR(r, p);
+                if(pr != null){
+                    values.add(pr.getGamePoints());
+                } else {
+                    values.add(values.get(values.size()-1)); //getLastValue
+                }
+            }
+            hm.put(p, values);
+        }
+        return hm;
+    }
+
 }
