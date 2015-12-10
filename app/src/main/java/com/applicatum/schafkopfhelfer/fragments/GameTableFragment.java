@@ -23,7 +23,11 @@ import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.applicatum.schafkopfhelfer.models.Round;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class GameTableFragment extends Fragment {
@@ -35,6 +39,7 @@ public class GameTableFragment extends Fragment {
     MainActivity mActivity;
     LayoutInflater inflater;
     Button buttonRemove;
+    //Game game;
 
     int roundCount;
 
@@ -94,17 +99,21 @@ public class GameTableFragment extends Fragment {
     }
     public void updateTable(){
         Log.d(TAG, "updateTable");
-        roundCount+=1;
-        Log.d(TAG, "roundCount: "+roundCount);
         Game game = Game.lastGame();
-        //game.
+        HashMap<Player, ArrayList<String>> tableMap = game.getRoundsTable();
+        if(tableMap == null){
+            return;
+        }
+
         table.removeAllViews();
-        List<Player> activePlayers = game.getActivePlayers();
+        //List<Player> activePlayers = game.getActivePlayers();
+        List<Player> activePlayers = new ArrayList<>();
+        activePlayers.addAll(tableMap.keySet());
         LinearLayout titleRow = new LinearLayout(mActivity);
         LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         titleRow.setLayoutParams(rowParams);
         titleRow.setOrientation(LinearLayout.HORIZONTAL);
-        titleRow.setWeightSum(activePlayers.size()+1);
+        titleRow.setWeightSum(activePlayers.size() + 1);
         TextView connorItem = createtableItem();
         connorItem.setText(".");
         titleRow.addView(connorItem);
@@ -116,24 +125,26 @@ public class GameTableFragment extends Fragment {
         }
         table.addView(titleRow);
 
-        for(int i=1; i<=roundCount; i++){
+        roundCount = tableMap.get(activePlayers.get(0)).size();
+
+        for(int i=0; i<roundCount; i++){
             Log.d(TAG, "round: " + i);
             LinearLayout newRow = (LinearLayout) inflater.inflate(R.layout.table_row_layout, null);
             //newRow.setLayoutParams(rowParams);
             newRow.setVisibility(View.VISIBLE);
-            newRow.setTag("row"+i);
+            newRow.setTag("row"+i+1);
             //newRow.setId(i);
             //newRow.setOrientation(LinearLayout.HORIZONTAL);
             newRow.setWeightSum(activePlayers.size() + 1);
             TextView roundView = createtableItem();
             roundView.setText(String.valueOf(i));
-            roundView.setTag(i);
+            roundView.setTag(i+1);
             newRow.addView(roundView);
             Log.d(TAG, "newRow.addView(roundView)");
             for(Player player : activePlayers){
                 TextView pointView = createtableItem();
-                int points = player.getPoints();
-                pointView.setText(String.valueOf(points));
+                String points = tableMap.get(player).get(i);
+                pointView.setText(points);
                 pointView.setTag(points);
                 newRow.addView(pointView);
                 Log.d(TAG, "newRow.addView(pointView): "+points);

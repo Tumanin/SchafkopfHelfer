@@ -3,6 +3,8 @@ package com.applicatum.schafkopfhelfer.models;
 import android.util.Log;
 
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +49,10 @@ public class PlayerRound extends SugarRecord {
     public static void deletePlayerRound(Round r) {
         Log.d("PlayerRound", "DeletePlayerRounds for round " + r.getId() + " called");
         PlayerRound.deleteAll(PlayerRound.class, "round = ?", String.valueOf(r.getId()));
+    }
+
+    public static PlayerRound getPR(Round r, Player p){
+        return Select.from(PlayerRound.class).where(Condition.prop("round").eq(r.getId()), Condition.prop("player").eq(p.getId())).first();
     }
 
     public int getGamePoints() {

@@ -83,6 +83,10 @@ public class Round extends SugarRecord{
         return Select.from(Round.class).where(Condition.prop("game").eq(game.getId())).orderBy("id desc").first();
     }
 
+    public static List<Round> getRounds(Game game){
+        return Select.from(Round.class).where(Condition.prop("game").eq(game.getId())).orderBy("id").list();
+    }
+
     public static List<Round> getRoundsDesc(Game game){
         return Select.from(Round.class).where(Condition.prop("game").eq(game.getId())).orderBy("id desc").list();
     }

@@ -151,8 +151,22 @@ public class Game extends SugarRecord{
         this.save();
     }
 
-    //public HashMap<Player, ArrayList<Integer>> getRoundsTable(){
-
-    //}
+    public HashMap<Player, ArrayList<String>> getRoundsTable(){
+        HashMap<Player, ArrayList<String>> hm = new HashMap<>();
+        List<Round> rounds = Round.getRounds(this);
+        for(Player p : this.getActivePlayers()){
+            ArrayList<String> values = new ArrayList<>();
+            for(Round r : rounds){
+                PlayerRound pr = PlayerRound.getPR(r, p);
+                if(pr != null){
+                    values.add(String.valueOf(pr.getGamePoints()));
+                } else {
+                    values.add("-");
+                }
+            }
+            hm.put(p, values);
+        }
+        return hm;
+    }
 
 }
