@@ -3,6 +3,8 @@ package com.applicatum.schafkopfhelfer.models;
 import android.util.Log;
 
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class GamePlayers extends SugarRecord {
 
     Player player;
     Game game;
+    Integer seat;
     boolean active;
 
 
@@ -23,6 +26,7 @@ public class GamePlayers extends SugarRecord {
 
     public GamePlayers(Game game, Player player){
         //GamePlayers gp = new GamePlayers();
+        this.seat = GamePlayers.getPlayers(game).size()+1;
         this.player = player;
         this.game = game;
         this.active = true;
@@ -37,8 +41,26 @@ public class GamePlayers extends SugarRecord {
         return game;
     }
 
+    public Integer getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Integer seat) {
+        this.seat = seat;
+        this.save();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+        this.save();
+    }
+
     public static List<Player> getPlayers(Game game){
-        List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ?", String.valueOf(game.getId()));
+        List<GamePlayers> gps = Select.from(GamePlayers.class).where(Condition.prop("game").eq(game.getId())).orderBy("seat").list();
         List<Player> players = new ArrayList<>();
         for(GamePlayers e : gps){
             players.add(e.getPlayer());
@@ -47,7 +69,7 @@ public class GamePlayers extends SugarRecord {
     }
 
     public static List<Player> getActivePlayers(Game game){
-        List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ? and active = ?", String.valueOf(game.getId()),"1");
+        List<GamePlayers> gps = Select.from(GamePlayers.class).where(Condition.prop("game").eq(game.getId()), Condition.prop("active").eq(1)).orderBy("seat").list();
         List<Player> players = new ArrayList<>();
         for(GamePlayers e : gps){
             players.add(e.getPlayer());
@@ -68,12 +90,7 @@ public class GamePlayers extends SugarRecord {
         return gp;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-        this.save();
+    public static GamePlayers getGamePlayer(Game game, Player player){
+        return Select.from(GamePlayers.class).where(Condition.prop("game").eq(game.getId()), Condition.prop("player").eq(player.getId())).first();
     }
 }

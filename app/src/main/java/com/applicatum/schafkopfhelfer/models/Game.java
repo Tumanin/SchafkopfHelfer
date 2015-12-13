@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 /**
@@ -185,6 +186,15 @@ public class Game extends SugarRecord{
             hm.put(p, values);
         }
         return hm;
+    }
+
+    public void swapSeats(Player player1, Player player2){
+        GamePlayers gp1, gp2;
+        gp1 = GamePlayers.getGamePlayer(this, player1);
+        gp2 = GamePlayers.getGamePlayer(this, player2);
+        int seat = gp1.getSeat();
+        gp1.setSeat(gp2.getSeat());
+        gp2.setSeat(seat);
     }
 
 }
