@@ -70,6 +70,10 @@ public class Player extends SugarRecord {
         return gamePoints;
     }
 
+    public long getPlayerId(){
+        return this.getId();
+    }
+
     public void restorePoints(Game game) {
         Log.d("Player", "RestorePoints called for player "+this.getId()+" and game "+game.getId());
         PlayerRound lastPR = this.getLastPR(game);
