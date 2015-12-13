@@ -68,13 +68,16 @@ public class Round extends SugarRecord{
     public static void removeLastRound(){
         Log.d("Round", "Remove last Round called");
         Round r = Round.getLastRound();
-        Game game = r.getGame();
-        PlayerRound.deletePlayerRound(r);
-        Log.d("Round", "Delete Round "+r.getId());
-        r.delete();
-        List<Player> activePlayers = game.getActivePlayers();
-        for(Player p : activePlayers){
-            p.restorePoints(game);
+        if (r!=null) {
+            Game game = r.getGame();
+            PlayerRound.deletePlayerRound(r);
+            Log.d("Round", "Delete Round "+r.getId());
+            r.delete();
+            List<Player> activePlayers = game.getActivePlayers();
+            for(Player p : activePlayers){
+                p.restorePoints(game);
+            }
+        } else {
         }
     }
 

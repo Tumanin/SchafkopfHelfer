@@ -5,14 +5,18 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ActionMenuView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -22,6 +26,7 @@ import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.applicatum.schafkopfhelfer.models.Round;
+import com.applicatum.schafkopfhelfer.utils.CustomScrollView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +41,9 @@ public class GameTableFragment extends Fragment {
 
     View mRootView;
     LinearLayout table;
+    LinearLayout tableTitle;
+    CustomScrollView scrollTable;
+    ViewPager parentPager;
     MainActivity mActivity;
     LayoutInflater inflater;
     Button buttonRemove;
@@ -53,9 +61,13 @@ public class GameTableFragment extends Fragment {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_game_table, container, false);
         table = (LinearLayout) mRootView.findViewById(R.id.table);
+        tableTitle = (LinearLayout) mRootView.findViewById(R.id.tableTitle);
+        parentPager = (ViewPager) container;
+        scrollTable = (CustomScrollView) mRootView.findViewById(R.id.scrollTable);
         mActivity = (MainActivity) getActivity();
         buttonRemove = (Button) mRootView.findViewById(R.id.buttonRemove);
         this.inflater = inflater;
+        scrollTable.setParentPager(parentPager);
 
         roundCount = -1;
 
@@ -105,26 +117,29 @@ public class GameTableFragment extends Fragment {
         if(tableMap == null){
             return;
         }
-
+        tableTitle.removeAllViews();
         table.removeAllViews();
         //List<Player> activePlayers = game.getActivePlayers();
         List<Player> activePlayers = new ArrayList<>();
         activePlayers.addAll(tableMap.keySet());
+        /*
         LinearLayout titleRow = new LinearLayout(mActivity);
         LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         titleRow.setLayoutParams(rowParams);
         titleRow.setOrientation(LinearLayout.HORIZONTAL);
-        titleRow.setWeightSum(activePlayers.size() + 1);
+        */
+
+        tableTitle.setWeightSum(activePlayers.size() + 1);
         TextView connorItem = createtableItem();
-        connorItem.setText(".");
-        titleRow.addView(connorItem);
+        connorItem.setText(getResources().getString(R.string.table_item_round));
+        tableTitle.addView(connorItem);
         for (Player player : activePlayers){
             TextView playerView = createtableItem();
             playerView.setText(player.getName());
             playerView.setTypeface(null, Typeface.BOLD);
-            titleRow.addView(playerView);
+            tableTitle.addView(playerView);
         }
-        table.addView(titleRow);
+        //table.addView(titleRow);
 
         roundCount = tableMap.get(activePlayers.get(0)).size();
 

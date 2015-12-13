@@ -25,6 +25,7 @@
 
     <string name="button_remove_last_round">Letzte Runde löschen</string>
     <string name="text_remove_last_round">Möchten Sie wirklich die letzte Runde löschen?</string>
+    <string name="table_item_round">Runde</string>
 
     <!-- StartFragment -->
 
