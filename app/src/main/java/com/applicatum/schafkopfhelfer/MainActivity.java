@@ -21,7 +21,11 @@ import com.applicatum.schafkopfhelfer.fragments.GameMainFragment;
 import com.applicatum.schafkopfhelfer.fragments.GameTableFragment;
 import com.applicatum.schafkopfhelfer.fragments.StartFragment;
 import com.applicatum.schafkopfhelfer.fragments.StatisticsFragment;
+import com.applicatum.schafkopfhelfer.models.Game;
+import com.applicatum.schafkopfhelfer.models.Player;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     MainActivity mActivity;
     GameTableFragment tableFragment;
+    GameMainFragment mainFragment;
+    public List<Player> players;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.title_game_main_fragment));
         setSupportActionBar(toolbar);
+        players = Game.lastGame().getActivePlayers();
         mActivity = this;
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         /*
@@ -131,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
             tableFragment.updateTable();
         }
     }
+    public void updateAdapter(){
+        mainFragment.updateAdapter();
+    }
 
     @Override
     public void onBackPressed() {
@@ -153,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
             switch (position){
                 case 0:
                     fragment = new GameMainFragment();
+                    mainFragment = (GameMainFragment) fragment;
                     break;
                 case 1:
                     fragment = new GameTableFragment();

@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class GameTableFragment extends Fragment {
 
@@ -90,7 +91,9 @@ public class GameTableFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeLastRound();
                                 // TODO: update view
+                                mActivity.updateAdapter();
                                 updateTable();
+
                                 dialog.dismiss();
                             }
                         })
@@ -113,15 +116,26 @@ public class GameTableFragment extends Fragment {
     public void updateTable(){
         Log.d(TAG, "updateTable");
         Game game = Game.lastGame();
-        HashMap<Player, ArrayList<String>> tableMap = game.getRoundsTable();
-        if(tableMap == null){
+        HashMap<Player, ArrayList<String>> tableMap = new HashMap<>();
+        HashMap<Player, ArrayList<String>> tableMapUnsorted = game.getRoundsTable();
+        if (tableMapUnsorted!=null) {
+            List<Player> setPlayers = new ArrayList<>();
+            setPlayers.addAll(tableMapUnsorted.keySet());
+            for(int i = 0; i<mActivity.players.size(); i++){
+                for(int j=0; j<setPlayers.size(); j++){
+                    if(mActivity.players.get(i).getName().equals(setPlayers.get(j).getName())){
+                        tableMap.put(mActivity.players.get(i), tableMapUnsorted.get(setPlayers.get(j)));
+                    }
+                }
+            }
+        }else{
             return;
         }
         tableTitle.removeAllViews();
         table.removeAllViews();
         //List<Player> activePlayers = game.getActivePlayers();
         List<Player> activePlayers = new ArrayList<>();
-        activePlayers.addAll(tableMap.keySet());
+        activePlayers.addAll(mActivity.players);
         /*
         LinearLayout titleRow = new LinearLayout(mActivity);
         LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

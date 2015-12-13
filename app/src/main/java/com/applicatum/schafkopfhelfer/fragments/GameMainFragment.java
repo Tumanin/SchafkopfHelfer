@@ -60,7 +60,7 @@ public class GameMainFragment extends Fragment {
     private View gameLayout;
     private View aussetzerLayout;
 
-    private List<Player> players;
+    //private List<Player> players;
 
     int laufende;
     int klopfen;
@@ -140,13 +140,13 @@ public class GameMainFragment extends Fragment {
 
     private void enableSetup(){
 
-        if(players.size()<5){
+        if(activity.players.size()<5){
             aussetzer=false;
             aussetzerLayout.setVisibility(View.GONE);
             gameLayout.setVisibility(View.VISIBLE);
         } else{
             winnerCount = 0;
-            for(Player player : players){
+            for(Player player : activity.players){
                 if(player.getState()== Player.State.WIN){
                     player.setState(Player.State.PLAY);
                 }
@@ -187,7 +187,7 @@ public class GameMainFragment extends Fragment {
                 enableSetup();
             }
         });
-        if (aussetzer || players.size()<5) {
+        if (aussetzer || activity.players.size()<5) {
             fabGo.setVisibility(View.GONE);
         } else {
             fabGo.setVisibility(View.VISIBLE);
@@ -345,9 +345,9 @@ public class GameMainFragment extends Fragment {
                     buttonSchneider.setSelected(false);
                     buttonSchwarz.setSelected(false);
 
-                    if(players!=null){
-                        String precedingState = players.get(players.size()-1).getState().name();
-                        for(Player player : players){
+                    if(activity.players!=null){
+                        String precedingState = activity.players.get(activity.players.size()-1).getState().name();
+                        for(Player player : activity.players){
 							String newState = Player.State.PLAY.name();
                             if(precedingState.equals(Player.State.WAIT.name())){
                                 newState = Player.State.WAIT.name();
@@ -361,7 +361,7 @@ public class GameMainFragment extends Fragment {
                         }
                     }
                     winnerCount=0;
-                    usersDynamicAdapter.set(players);
+                    usersDynamicAdapter.set(activity.players);
                     usersDynamicAdapter.notifyDataSetChanged();
                 }
 
@@ -371,28 +371,29 @@ public class GameMainFragment extends Fragment {
 
     private void setGridView(){
 
-        players = game.getActivePlayers();
+        //activity.players = game.getActivePlayers();
 
         int waitCount = 0;
-        for(Player player : players){
+        for(Player player : activity.players){
             if(player.getState()== Player.State.WAIT) waitCount+=1;
         }
 
-        if(players.size()-waitCount==4 || players.size()==0){
+        if(activity.players.size()-waitCount==4 || activity.players.size()==0){
             aussetzer=false;
             aussetzerLayout.setVisibility(View.GONE);
             gameLayout.setVisibility(View.VISIBLE);
         }
 
-        usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
+        usersDynamicAdapter = new UsersDynamicAdapter(activity, activity.players, 3);
         gridView.setAdapter(usersDynamicAdapter);
 //        add callback to stop edit mode if needed
         gridView.setOnDropListener(new DynamicGridView.OnDropListener() {
             @Override
             public void onActionDrop() {
                 gridView.stopEditMode();
-                players.clear();
-                players.addAll(usersDynamicAdapter.getAllItems());
+                activity.players.clear();
+                activity.players.addAll(usersDynamicAdapter.getAllItems());
+                activity.updateTable();
             }
         });
         gridView.setOnDragListener(new DynamicGridView.OnDragListener() {
@@ -418,7 +419,7 @@ public class GameMainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Player player = (Player) players.get(position);
+                Player player = (Player) activity.players.get(position);
                 if (!aussetzer) {
                     if (player.getState() == Player.State.PLAY) {
                         if (winnerCount < 3) {
@@ -515,7 +516,7 @@ public class GameMainFragment extends Fragment {
         List<Player> losers = new ArrayList<>();
         List<Player> jungfrauen = new ArrayList<>();
 
-        for(Player p : players){
+        for(Player p : activity.players){
             if(p.getState() == Player.State.WIN){
                 winners.add(p);
             } else if(p.getState() == Player.State.PLAY){
@@ -525,5 +526,9 @@ public class GameMainFragment extends Fragment {
 
         game.recordNewRound(type, winners, losers, jungfrauen, buttonSchneider.isSelected(),
                 buttonSchwarz.isSelected(), laufende, klopfen);
+    }
+
+    public void updateAdapter(){
+        usersDynamicAdapter.notifyDataSetChanged();
     }
 }
