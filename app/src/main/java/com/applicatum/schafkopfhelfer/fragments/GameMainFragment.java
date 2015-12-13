@@ -529,6 +529,7 @@ public class GameMainFragment extends Fragment {
     }
 
     public void updateAdapter(){
+        usersDynamicAdapter.set(activity.players);
         usersDynamicAdapter.notifyDataSetChanged();
     }
 }

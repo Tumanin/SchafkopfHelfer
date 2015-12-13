@@ -92,6 +92,7 @@ public class GameTableFragment extends Fragment {
                                 removeLastRound();
                                 // TODO: update view
                                 mActivity.updateAdapter();
+                                Log.d(TAG, "Spieler: "+mActivity.players.get(0).getName()+" Punkte: "+mActivity.players.get(0).getPoints());
                                 updateTable();
 
                                 dialog.dismiss();
@@ -158,7 +159,6 @@ public class GameTableFragment extends Fragment {
         roundCount = tableMap.get(activePlayers.get(0)).size();
 
         for(int i=0; i<roundCount; i++){
-            Log.d(TAG, "round: " + i);
             LinearLayout newRow = (LinearLayout) inflater.inflate(R.layout.table_row_layout, null);
             //newRow.setLayoutParams(rowParams);
             newRow.setVisibility(View.VISIBLE);
@@ -170,17 +170,14 @@ public class GameTableFragment extends Fragment {
             roundView.setText(String.valueOf(i));
             roundView.setTag(i+1);
             newRow.addView(roundView);
-            Log.d(TAG, "newRow.addView(roundView)");
             for(Player player : activePlayers){
                 TextView pointView = createtableItem();
                 String points = tableMap.get(player).get(i);
                 pointView.setText(points);
                 pointView.setTag(points);
                 newRow.addView(pointView);
-                Log.d(TAG, "newRow.addView(pointView): "+points);
             }
             table.addView(newRow);
-            Log.d(TAG, "views: "+table);
         }
     }
 
