@@ -55,7 +55,7 @@ public class Player extends SugarRecord {
     }
 
     public int getChangePoints() {
-        Log.d("Player", "ChangePoints for player "+this.getId()+": "+this.changePoints);
+        Log.d("Player", "ChangePoints for player " + this.getId() + ": " + this.changePoints);
         return this.changePoints;
     }
 
@@ -144,6 +144,10 @@ public class Player extends SugarRecord {
         this.visible = false;
         this.name = this.name + "_deleted";
         this.save();
+    }
+
+    public static Player findMitName(String name){
+        return Player.find(Player.class, "name = ?", name).get(0);
     }
 
     public static List<Player> getPlayers(){

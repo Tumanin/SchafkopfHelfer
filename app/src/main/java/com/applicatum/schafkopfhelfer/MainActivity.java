@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     MainActivity mActivity;
     GameTableFragment tableFragment;
     GameMainFragment mainFragment;
+    StatisticsFragment statisticsFragment;
     public List<Player> players;
 
     @Override
@@ -94,6 +95,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void updatePlayers(){
+        for(Player player : players){
+            player = Player.findMitName(player.getName());
+        }
+        for(int i=0; i<players.size(); i++){
+            Player player = Player.findMitName(players.get(i).getName());
+            players.remove(i);
+            players.add(i, player);
+        }
+    }
+
     /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void updateAdapter(){
         mainFragment.updateAdapter();
+        statisticsFragment.updateAdapter();
     }
 
     @Override
@@ -171,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 2:
                     fragment = new StatisticsFragment();
+                    statisticsFragment = (StatisticsFragment) fragment;
                     break;
                 default:
                     fragment = new GameMainFragment();
