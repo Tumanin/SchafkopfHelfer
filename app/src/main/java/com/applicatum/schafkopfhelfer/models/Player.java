@@ -146,6 +146,10 @@ public class Player extends SugarRecord {
         this.save();
     }
 
+    public static Player findMitName(String name){
+        return Player.find(Player.class, "name = ?", name).get(0);
+    }
+
     public static List<Player> getPlayers(){
         return Player.find(Player.class, "visible = ?", "1");
     }

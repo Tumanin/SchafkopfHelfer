@@ -38,6 +38,7 @@ public class StatisticsFragment extends Fragment {
     LineChartView chartView;
     Game game;
     private DynamicGridView gridView;
+    UsersDynamicAdapter usersDynamicAdapter;
 
     public StatisticsFragment() {
         // Required empty public constructor
@@ -130,12 +131,11 @@ public class StatisticsFragment extends Fragment {
 
     private void setGridView(){
 
-        List<Player> players = new ArrayList<>();
-        Game game = Game.lastGame();
-        players.addAll(
-                game.getActivePlayers());
+        //List<Player> players = new ArrayList<>();
+        //Game game = Game.lastGame();
+        //players.addAll(game.getActivePlayers());
 
-        final UsersDynamicAdapter usersDynamicAdapter = new UsersDynamicAdapter(activity, players, 3);
+        usersDynamicAdapter = new UsersDynamicAdapter(activity, activity.players, 3);
         usersDynamicAdapter.setStatistic(true);
         gridView.setAdapter(usersDynamicAdapter);
 //        add callback to stop edit mode if needed
@@ -176,6 +176,11 @@ public class StatisticsFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void updateAdapter(){
+        usersDynamicAdapter.set(activity.players);
+        usersDynamicAdapter.notifyDataSetChanged();
     }
 
     private int getPlayerColor(int randomNumber){

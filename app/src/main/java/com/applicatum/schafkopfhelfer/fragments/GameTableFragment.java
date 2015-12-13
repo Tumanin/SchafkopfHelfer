@@ -91,8 +91,11 @@ public class GameTableFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeLastRound();
                                 // TODO: update view
+                                mActivity.updatePlayers();
                                 mActivity.updateAdapter();
-                                Log.d(TAG, "Spieler: "+mActivity.players.get(0).getName()+" Punkte: "+mActivity.players.get(0).getPoints());
+                                Log.d(TAG, "Spieler: " + mActivity.players.get(0).getName() + " Punkte: " + mActivity.players.get(0).getPoints());
+                                Player player = Player.findMitName(mActivity.players.get(0).getName());
+                                Log.d(TAG, "SQL: Spieler: "+player.getName()+" Punkte: "+player.getPoints());
                                 updateTable();
 
                                 dialog.dismiss();
@@ -168,7 +171,7 @@ public class GameTableFragment extends Fragment {
             newRow.setWeightSum(activePlayers.size() + 1);
             TextView roundView = createtableItem();
             roundView.setText(String.valueOf(i));
-            roundView.setTag(i+1);
+            roundView.setTag(i + 1);
             newRow.addView(roundView);
             for(Player player : activePlayers){
                 TextView pointView = createtableItem();
