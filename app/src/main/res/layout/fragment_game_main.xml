@@ -240,12 +240,12 @@
             android:weightSum="2">
 
             <com.joanzapata.iconify.widget.IconButton
-                android:id="@+id/buttonRechner"
+                android:id="@+id/buttonClear"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_button_blue"
-                android:text="{fa-calculator}"
+                android:text="{fa-arrow-left}"
                 android:textSize="36sp"
                 android:textColor="@color/font_frame_active"
                 android:layout_margin="2dp"/>

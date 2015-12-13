@@ -52,7 +52,7 @@ public class GameMainFragment extends Fragment {
     private Button buttonSchwarz;
     private Button buttonLaufende;
     private Button buttonKlopfen;
-    private Button buttonRechner;
+    private Button buttonClear;
     private Button buttonOk;
     private Button buttonAussetzer;
     private TextView textAussetzer;
@@ -175,7 +175,7 @@ public class GameMainFragment extends Fragment {
         buttonSchwarz = (Button)view.findViewById(R.id.buttonSchwarz);
         buttonLaufende = (Button)view.findViewById(R.id.buttonLaufende);
         buttonKlopfen = (Button)view.findViewById(R.id.buttonKlopfen);
-        buttonRechner = (Button)view.findViewById(R.id.buttonRechner);
+        buttonClear = (Button)view.findViewById(R.id.buttonClear);
         buttonOk = (Button)view.findViewById(R.id.buttonOk);
         buttonAussetzer = (Button) view.findViewById(R.id.buttonAussetzer);
 
@@ -235,9 +235,9 @@ public class GameMainFragment extends Fragment {
                     aussetzer = false;
                     aussetzerLayout.setVisibility(View.GONE);
                     gameLayout.setVisibility(View.VISIBLE);
-                    if (usersDynamicAdapter.getCount()>4) {
+                    if (usersDynamicAdapter.getCount() > 4) {
                         fabGo.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         fabGo.setVisibility(View.GONE);
                     }
                 } else {
@@ -286,6 +286,10 @@ public class GameMainFragment extends Fragment {
         buttonSchneider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(buttonSchneider.isSelected()){
+                    buttonSchwarz.setSelected(false);
+                }
                 buttonSchneider.setSelected(!buttonSchneider.isSelected());
             }
         });
@@ -313,6 +317,16 @@ public class GameMainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 klopfen+=1;
+                buttonKlopfen.setText(String.valueOf(klopfen));
+            }
+        });
+
+        buttonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                laufende = 0;
+                klopfen = 0;
+                buttonLaufende.setText(String.valueOf(laufende));
                 buttonKlopfen.setText(String.valueOf(klopfen));
             }
         });
