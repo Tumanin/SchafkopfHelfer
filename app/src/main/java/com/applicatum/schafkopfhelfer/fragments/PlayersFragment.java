@@ -104,8 +104,11 @@ public class PlayersFragment extends Fragment {
     private void populatePlayers(){
 
         listContainer.removeAllViews();
-        Game game = Game.lastGame();
-        Log.d(TAG, "game id: "+game.getId());
+        Game game = null;
+        if (!managePlayers) {
+            game = Game.lastGame();
+            Log.d(TAG, "game id: "+game.getId());
+        }
         if (game!=null) {
             //Log.d(TAG, "populatePlayers updateActivePlayers");
             //game.updateActivePlayers(new ArrayList<Player>());
