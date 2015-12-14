@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.applicatum.schafkopfhelfer.fragments.GameMainFragment;
+import com.applicatum.schafkopfhelfer.fragments.GameStatisticsFragment;
 import com.applicatum.schafkopfhelfer.fragments.GameTableFragment;
-import com.applicatum.schafkopfhelfer.fragments.StartFragment;
-import com.applicatum.schafkopfhelfer.fragments.StatisticsFragment;
 import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -36,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     MainActivity mActivity;
     GameTableFragment tableFragment;
     GameMainFragment mainFragment;
-    StatisticsFragment statisticsFragment;
+    GameStatisticsFragment gameStatisticsFragment;
     public List<Player> players;
 
     @Override
@@ -152,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void updateAdapter(){
         mainFragment.updateAdapter();
-        statisticsFragment.updateAdapter();
+        gameStatisticsFragment.updateAdapter();
     }
 
     @Override
@@ -183,8 +178,8 @@ public class MainActivity extends AppCompatActivity {
                     tableFragment = (GameTableFragment)fragment;
                     break;
                 case 2:
-                    fragment = new StatisticsFragment();
-                    statisticsFragment = (StatisticsFragment) fragment;
+                    fragment = new GameStatisticsFragment();
+                    gameStatisticsFragment = (GameStatisticsFragment) fragment;
                     break;
                 default:
                     fragment = new GameMainFragment();
@@ -231,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         public int getItemPosition(Object object) {
             if(object instanceof GameMainFragment) return 0;
             if(object instanceof GameTableFragment) return 1;
-            if (object instanceof StatisticsFragment) return 2;
+            if (object instanceof GameStatisticsFragment) return 2;
             else return POSITION_NONE;
         }
     }

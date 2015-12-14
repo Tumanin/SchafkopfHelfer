@@ -20,6 +20,7 @@ import com.applicatum.schafkopfhelfer.utils.PlayersList;
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Axis;
@@ -29,9 +30,9 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class StatisticsFragment extends Fragment {
+public class GameStatisticsFragment extends Fragment {
 
-    private static final String TAG = "StatisticsFragment";
+    private static final String TAG = "GameStatisticsFragment";
 
     View mRootView;
     MainActivity activity;
@@ -39,8 +40,9 @@ public class StatisticsFragment extends Fragment {
     Game game;
     private DynamicGridView gridView;
     UsersDynamicAdapter usersDynamicAdapter;
+    int roundCount;
 
-    public StatisticsFragment() {
+    public GameStatisticsFragment() {
         // Required empty public constructor
     }
 
@@ -53,7 +55,8 @@ public class StatisticsFragment extends Fragment {
         chartView = (LineChartView) mRootView.findViewById(R.id.chart);
         gridView = (DynamicGridView) mRootView.findViewById(R.id.usersGrid);
         game = Game.lastGame();
-        setChartLines();
+        //setChartLines();
+        updateChart();
         setGridView();
         return mRootView;
     }
@@ -65,64 +68,46 @@ public class StatisticsFragment extends Fragment {
     }
 
     public void updateChart(){
+        Game game = Game.lastGame();
+        HashMap<Player, ArrayList<String>> tableMap = game.getRoundsTable();
 
-    }
+        List<Player> activePlayers = new ArrayList<>();
+        activePlayers.addAll(tableMap.keySet());
 
-    private void setChartLines(){
+        roundCount = tableMap.get(activePlayers.get(0)).size();
 
-        List<PointValue> values = new ArrayList<PointValue>();
-        values.add(new PointValue(0, 0));
-        values.add(new PointValue(1, 10));
-        values.add(new PointValue(2, 10));
-        values.add(new PointValue(3, 20));
-
-
-        Line line = new Line(values).setColor(Color.BLUE).setCubic(false);
-        List<Line> lines = new ArrayList<Line>();
-        lines.add(line);
-
-        List<PointValue> values2 = new ArrayList<PointValue>();
-        values2.add(new PointValue(0, 0));
-        values2.add(new PointValue(1, 0));
-        values2.add(new PointValue(2, -10));
-        values2.add(new PointValue(3, 10));
-
-
-        Line line2 = new Line(values2).setColor(Color.RED).setCubic(false);
-        lines.add(line2);
-
-        List<PointValue> values3 = new ArrayList<PointValue>();
-        values3.add(new PointValue(0, 10));
-        values3.add(new PointValue(1, 20));
-        values3.add(new PointValue(2, 10));
-        values3.add(new PointValue(3, 0));
-
-
-        Line line3 = new Line(values3).setColor(Color.GREEN).setCubic(false);
-        lines.add(line3);
-
+        List<Line> lines = new ArrayList<>();
         LineChartData data = new LineChartData();
-        data.setLines(lines);
-
         Axis axisX = new Axis();
-        List<AxisValue> axisValues = new ArrayList<>();
-        axisValues.add(new AxisValue(0));
-        axisValues.add(new AxisValue(1));
-        axisValues.add(new AxisValue(2));
-        axisValues.add(new AxisValue(3));
-        axisX.setValues(axisValues);
-
         Axis axisY = new Axis().setHasLines(true);
+        List<AxisValue> axisValues = new ArrayList<>();
+
+        for(Player player : activePlayers){
+            List<PointValue> values = new ArrayList<>();
+            int last = 0;
+            for(int i=0; i<roundCount; i++){
+                String point = tableMap.get(player).get(i);
+                if(point.equals("-")){
+                    values.add(new PointValue(i+1, last));
+                }else{
+                    values.add(new PointValue(i+1, Float.parseFloat(point)));
+                }
+
+            }
+            Line line = new Line(values).setColor(getResources().getColor(getPlayerColor(player.getColor()))).setCubic(false);
+            lines.add(line);
+        }
+        for(int i=0; i<roundCount; i++){
+            axisValues.add(new AxisValue(i+1));
+        }
+        axisX.setValues(axisValues);
         axisX.setLineColor(R.color.blue_dark);
         axisY.setLineColor(R.color.blue_dark);
         axisX.setTextColor(R.color.blue_dark);
         axisY.setTextColor(R.color.blue_dark);
-        /*
-        if (hasAxesNames) {
-            axisX.setName("Axis X");
-            axisY.setName("Axis Y");
-        }
-        */
+
+        data.setLines(lines);
+
         data.setAxisXBottom(axisX);
         data.setAxisYLeft(axisY);
 
@@ -179,6 +164,7 @@ public class StatisticsFragment extends Fragment {
     }
 
     public void updateAdapter(){
+        updateChart();
         usersDynamicAdapter.set(activity.players);
         usersDynamicAdapter.notifyDataSetChanged();
     }

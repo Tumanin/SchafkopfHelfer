@@ -170,7 +170,7 @@ public class GameTableFragment extends Fragment {
             //newRow.setOrientation(LinearLayout.HORIZONTAL);
             newRow.setWeightSum(activePlayers.size() + 1);
             TextView roundView = createtableItem();
-            roundView.setText(String.valueOf(i));
+            roundView.setText(String.valueOf(i+1));
             roundView.setTag(i + 1);
             newRow.addView(roundView);
             for(Player player : activePlayers){
