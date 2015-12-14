@@ -91,6 +91,7 @@ public class GameStatisticsFragment extends Fragment {
                     values.add(new PointValue(i+1, last));
                 }else{
                     values.add(new PointValue(i+1, Float.parseFloat(point)));
+                    last = Integer.parseInt(point);
                 }
 
             }

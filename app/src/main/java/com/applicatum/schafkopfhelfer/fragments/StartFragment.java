@@ -63,8 +63,14 @@ public class StartFragment extends Fragment {
                 //activity.startFragment(fragment, true);
                 Game game = Game.lastGame();
                 if (game!=null) {
-                    Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
-                    activity.startActivity(intent);
+                    if (game.getActivePlayers().size()>0) {
+                        Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
+                        activity.startActivity(intent);
+                    } else {
+                        PlayersFragment fragment = new PlayersFragment();
+                        fragment.setManagePlayers(false);
+                        activity.startFragment(fragment, true);
+                    }
                 } else {
                     Toast.makeText(activity, "Es gibt kein altes Spiel", Toast.LENGTH_LONG).show();
                 }
