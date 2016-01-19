@@ -14,7 +14,7 @@
     <com.applicatum.schafkopfhelfer.utils.CustomScrollView
         android:id="@+id/scrollTable"
         android:layout_below="@+id/tableTitle"
-        android:layout_above="@+id/buttonRemove"
+        android:layout_above="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -25,13 +25,20 @@
             android:orientation="vertical"/>
     </com.applicatum.schafkopfhelfer.utils.CustomScrollView>
 
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom"
+        android:layout_above="@+id/buttonRemove"
+        android:background="@drawable/game_shadow" />
+
     <Button
         android:id="@+id/buttonRemove"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_button_red"
+        android:background="@drawable/bg_button_blue"
         android:layout_alignParentBottom="true"
-        android:layout_margin="4dp"
         android:text="@string/button_remove_last_round"
         android:textColor="#ffffff"
         android:textSize="24sp"/>
