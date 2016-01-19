@@ -1,6 +1,7 @@
 package com.applicatum.schafkopfhelfer.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,13 +96,25 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
         if (!statistic) {
             if (player.getState()== Player.State.WIN) {
                 view.setBackgroundResource(R.drawable.bg_button_green);
+                //view.setForeground(getContext().getResources().getDrawable(R.drawable.bg_button_green, null));
+                //view.setCardBackgroundColor(R.color.green_light);
+                Log.d("ColorIssue", "WIN");
             }else if(player.getState()== Player.State.PLAY){
+                //view.setForeground(getContext().getResources().getDrawable(R.drawable.bg_button_teal, null));
                 view.setBackgroundResource(R.drawable.bg_button_teal);
+                //view.setCardBackgroundColor(R.color.teal_dark);
+                Log.d("ColorIssue", "PLAY");
             }else if(player.getState()== Player.State.WAIT){
+                //view.setForeground(getContext().getResources().getDrawable(R.drawable.bg_button_gray, null));
                 view.setBackgroundResource(R.drawable.bg_button_gray);
+                //view.setCardBackgroundColor(R.color.gray_dark);
+                Log.d("ColorIssue", "WAIT");
             }
         } else {
+            //view.setForeground(getContext().getResources().getDrawable(getRandomColor(player.getColor()), null));
             view.setBackgroundResource(getRandomColor(player.getColor()));
+            //view.setCardBackgroundColor(getRandomColor(player.getColor()));
+            Log.d("ColorIssue", "statistic");
         }
         holder.build(player.getName(), player.getPoints(), player.getChangePoints(), getState(player), player.getColor());
         return convertView;
@@ -132,7 +145,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
             default:
                 return R.drawable.bg_button_red;
         }
-
+        //return R.color.purple_dark;
     }
 
     private String getState(Player player){
