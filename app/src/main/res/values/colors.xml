@@ -20,6 +20,7 @@
     <color name="red_light">#f9bdbb</color>
     <color name="red_normal">#f69988</color>
     <color name="red_dark">#f36c60</color>
+    <color name="red_flying_button">#FF4081</color>
 
     <color name="pink_light">#f8bbd0</color>
     <color name="pink_normal">#f48fb1</color>

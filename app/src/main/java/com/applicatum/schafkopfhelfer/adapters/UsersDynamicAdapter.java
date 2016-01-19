@@ -1,12 +1,14 @@
 package com.applicatum.schafkopfhelfer.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.applicatum.schafkopfhelfer.R;
 import com.applicatum.schafkopfhelfer.models.Player;
@@ -93,6 +95,15 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
             holder = (UserViewHolder) convertView.getTag();
         }
         View view = convertView.findViewById(R.id.playerCard);
+        /*
+        if (Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT) {
+            view.setBackgroundResource(android.R.drawable.dialog_holo_dark_frame);
+            Toast.makeText(getContext(), "LOLLIPOP", Toast.LENGTH_LONG).show();
+        }else{
+            Log.d("ColorIssue", "SDK: "+Build.VERSION.SDK_INT);
+            Toast.makeText(getContext(), "SDK: "+Build.VERSION.SDK_INT, Toast.LENGTH_LONG).show();
+        }
+        */
         if (!statistic) {
             if (player.getState()== Player.State.WIN) {
                 view.setBackgroundResource(R.drawable.bg_button_green);
