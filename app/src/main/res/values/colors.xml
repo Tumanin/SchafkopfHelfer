@@ -41,6 +41,11 @@
     <color name="blue_normal">#91a7ff</color>
     <color name="blue_dark">#738ffe</color>
     <color name="blue_darker">#2a36b1</color>
+    <color name="blue_bavarian">#0098D4</color>
+
+    <color name="primary_normal">#2196F3</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="primary_dark">#1976d2</color>
 
     <color name="cyan_light">#80deea</color>
     <color name="cyan_normal">#26c6da</color>

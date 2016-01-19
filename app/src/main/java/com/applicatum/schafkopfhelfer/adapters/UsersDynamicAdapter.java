@@ -101,7 +101,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
                 Log.d("ColorIssue", "WIN");
             }else if(player.getState()== Player.State.PLAY){
                 //view.setForeground(getContext().getResources().getDrawable(R.drawable.bg_button_teal, null));
-                view.setBackgroundResource(R.drawable.bg_button_teal);
+                view.setBackgroundResource(R.drawable.bg_button_primary);
                 //view.setCardBackgroundColor(R.color.teal_dark);
                 Log.d("ColorIssue", "PLAY");
             }else if(player.getState()== Player.State.WAIT){
