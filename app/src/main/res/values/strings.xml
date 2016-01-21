@@ -8,7 +8,7 @@
     <string name="title_players_fragment">Spieler</string>
     <string name="title_game_main_fragment">Spiel</string>
     <string name="title_game_settings_fragment">Einstellungen</string>
-    <string name="title_game_table_fragment">Spielverlauf</string>
+    <string name="title_game_table_fragment">Tabelle</string>
     <string name="title_statistic_fragment">Statistik</string>
 
     <!-- Main Buttons -->
@@ -53,6 +53,10 @@
     <string name="farbwenz">Farbwenz</string>
     <string name="farbgeier">Farbgeier</string>
     <string name="bettel">Bettel</string>
+
+    <string name="gewinner">Gewinner:</string>
+    <string name="wahl">Wähle oben aus!</string>
+    <string name="Spielverlauf">Spielverlauf</string>
 
     <string name="laufende">Laufende</string>
     <string name="schneider">Schneider</string>

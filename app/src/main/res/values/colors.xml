@@ -8,6 +8,7 @@
     <color name="background_waiting">#aaaaaa</color>
 
     <color name="font_frame_active">#ffffff</color>
+    <color name="font_frame_active_1">#000000</color>
     <color name="background_active">#ff33b5e5</color>
 
     <color name="background_winner">#ff99cc00</color>
@@ -20,6 +21,7 @@
     <color name="red_light">#f9bdbb</color>
     <color name="red_normal">#f69988</color>
     <color name="red_dark">#f36c60</color>
+    <color name="red_flying_button">#FF4081</color>
 
     <color name="pink_light">#f8bbd0</color>
     <color name="pink_normal">#f48fb1</color>
@@ -79,4 +81,21 @@
     <color name="gray_light">#e0e0e0</color>
     <color name="gray_normal">#bdbdbd</color>
     <color name="gray_dark">#9e9e9e</color>
+
+
+    <!-- alternative color scheme wood -->
+    <color name="brown_dark1">#3C2516</color>
+    <color name="brown_dark">#432B18</color>
+    204156
+    <color name="blue_dark_wood">#204156</color>
+    <color name="blue_dark_wood_transparent">#96204156</color>
+    <color name="blue_light_wood">#306382</color>
+    <color name="highlight_wood">#F2EB79</color>
+    <color name="purple_dark_wood">#6A2B73</color>
+    <color name="green_dark_wood">#1D4E2F</color>
+    <color name="green_light_wood">#59732B</color>
+
+
+
+
 </resources>

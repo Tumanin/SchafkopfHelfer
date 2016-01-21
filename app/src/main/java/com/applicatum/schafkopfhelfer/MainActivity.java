@@ -1,6 +1,7 @@
 package com.applicatum.schafkopfhelfer;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -38,11 +39,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getResources().getString(R.string.title_game_main_fragment));
-        setSupportActionBar(toolbar);
+        //toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar.setTitle(getResources().getString(R.string.title_game_main_fragment));
+        //setSupportActionBar(toolbar);
         players = Game.lastGame().getActivePlayers();
         mActivity = this;
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.title_game_main_fragment)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.title_game_table_fragment)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.title_statistic_fragment)));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         /*
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +66,24 @@ public class MainActivity extends AppCompatActivity {
         circlePageIndicator = (CirclePageIndicator) findViewById(R.id.indicatorGame);
         circlePageIndicator.setViewPager(mViewPager);
 
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        /*
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        */
     }
 
     public void updatePlayers(){
@@ -232,6 +258,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setTitle(String title){
-        toolbar.setTitle(title);
+        //toolbar.setTitle(title);
     }
 }

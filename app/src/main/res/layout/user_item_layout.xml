@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     card_view:cardElevation="2dp"
     card_view:cardUseCompatPadding="true"
-    card_view:cardCornerRadius="4dp"
+    card_view:cardCornerRadius="2dp"
     card_view:cardBackgroundColor="@android:color/transparent"
     android:layout_gravity="center"
     android:gravity="center">
@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_button_primary"
+        android:background="@color/blue_dark_wood"
         android:layout_gravity="center"
         android:gravity="center_horizontal">
 
