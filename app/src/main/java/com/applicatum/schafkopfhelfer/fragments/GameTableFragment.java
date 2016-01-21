@@ -191,6 +191,7 @@ public class GameTableFragment extends Fragment {
         item.setLayoutParams(params);
         item.setSingleLine(true);
         item.setText("0");
+        item.setTextColor(getResources().getColor(R.color.button_text_selector));
         item.setPadding(2, 2, 2, 2);
         item.setVisibility(View.VISIBLE);
         item.setBackgroundResource(R.drawable.background_cell_border);

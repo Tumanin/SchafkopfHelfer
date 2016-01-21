@@ -198,8 +198,9 @@ public class GameMainFragment extends Fragment {
         buttonRamsch.setEnabled(false);
         buttonRamsch.setSelected(false);
         buttonSolo.setEnabled(false);
-        buttonSolo.setSelected(false);
+        buttonSolo.setSelected(true);
         soloSpinner.setEnabled(false);
+        soloSpinner.setVisibility(View.GONE);
 
         if(gameTypes.get(Types.RAMSCH)!=-1){
             buttonRamsch.setText(getResources().getString(R.string.ramsch));
@@ -255,6 +256,7 @@ public class GameMainFragment extends Fragment {
                     buttonRamsch.setSelected(false);
                     buttonSolo.setSelected(false);
                     soloSpinner.setEnabled(false);
+                    soloSpinner.setVisibility(View.GONE);
                 }
             }
         });
@@ -267,6 +269,7 @@ public class GameMainFragment extends Fragment {
                     buttonSau.setSelected(false);
                     buttonSolo.setSelected(false);
                     soloSpinner.setEnabled(false);
+                    soloSpinner.setVisibility(View.GONE);
                 }
             }
         });
@@ -279,6 +282,7 @@ public class GameMainFragment extends Fragment {
                     buttonSau.setSelected(false);
                     buttonRamsch.setSelected(false);
                     soloSpinner.setEnabled(true);
+                    soloSpinner.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -444,6 +448,9 @@ public class GameMainFragment extends Fragment {
                                 buttonSau.setSelected(false);
                                 buttonRamsch.setEnabled(true);
                                 buttonSolo.setEnabled(true);
+                                buttonSolo.setSelected(true);
+                                soloSpinner.setEnabled(true);
+                                soloSpinner.setVisibility(View.VISIBLE);
                             } else {
                                 buttonSau.setEnabled(true);
                                 buttonSau.setSelected(true);
@@ -452,6 +459,7 @@ public class GameMainFragment extends Fragment {
                                 buttonSolo.setEnabled(false);
                                 buttonSolo.setSelected(false);
                                 soloSpinner.setEnabled(false);
+                                soloSpinner.setVisibility(View.GONE);
                             }
                         } else {
                             Toast.makeText(activity, "Zu viele Gewinner!",
@@ -466,6 +474,9 @@ public class GameMainFragment extends Fragment {
                                 buttonSau.setSelected(false);
                                 buttonRamsch.setEnabled(true);
                                 buttonSolo.setEnabled(true);
+                                buttonSolo.setSelected(true);
+                                soloSpinner.setEnabled(true);
+                                soloSpinner.setVisibility(View.VISIBLE);
                             } else {
                                 buttonSau.setEnabled(true);
                                 buttonSau.setSelected(true);
@@ -482,6 +493,7 @@ public class GameMainFragment extends Fragment {
                             buttonRamsch.setSelected(false);
                             buttonSolo.setEnabled(false);
                             buttonSolo.setSelected(false);
+                            soloSpinner.setVisibility(View.GONE);
                         }
                     }
                 } else {

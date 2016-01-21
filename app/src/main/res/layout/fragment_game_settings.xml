@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue_dark_wood_transparent"
     android:fitsSystemWindows="true">
 
     <ScrollView
@@ -38,6 +39,7 @@
                         android:id="@+id/textRamsch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:layout_toRightOf="@+id/radioRamsch"
                         android:layout_centerVertical="true"
                         android:text="@string/ramsch"/>
@@ -46,6 +48,7 @@
                         android:id="@+id/editRamsch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:text="10"
@@ -72,6 +75,7 @@
                         android:id="@+id/textPott"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:layout_toRightOf="@+id/radioPott"
                         android:layout_centerVertical="true"
                         android:text="@string/pott"/>
@@ -80,6 +84,7 @@
                         android:id="@+id/editPott"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:text="10"
@@ -108,6 +113,7 @@
                         android:id="@+id/textPflicht"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:layout_toRightOf="@+id/radioPflicht"
                         android:layout_centerVertical="true"
                         android:text="@string/pflicht"/>
@@ -116,6 +122,7 @@
                         android:id="@+id/editPflicht"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:text="10"
@@ -147,6 +154,7 @@
                     android:id="@+id/textSauspiel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_toRightOf="@+id/checkSauspiel"
                     android:layout_centerVertical="true"
                     android:text="@string/sauspiel"/>
@@ -155,6 +163,7 @@
                     android:id="@+id/editSauspiel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="10"
@@ -186,6 +195,7 @@
                     android:id="@+id/textSolo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_toRightOf="@+id/checkSolo"
                     android:layout_centerVertical="true"
                     android:text="@string/solo"/>
@@ -194,6 +204,7 @@
                     android:id="@+id/editSolo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="50"
@@ -225,6 +236,7 @@
                     android:id="@+id/textWenz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_toRightOf="@+id/checkWenz"
                     android:layout_centerVertical="true"
                     android:text="@string/wenz"/>
@@ -233,6 +245,7 @@
                     android:id="@+id/editWenz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="50"
@@ -264,6 +277,7 @@
                     android:id="@+id/textGeier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_toRightOf="@+id/checkGeier"
                     android:layout_centerVertical="true"
                     android:text="@string/geier"/>
@@ -272,6 +286,7 @@
                     android:id="@+id/editGeier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="50"
@@ -303,6 +318,7 @@
                     android:id="@+id/textBettel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_toRightOf="@+id/checkBettel"
                     android:layout_centerVertical="true"
                     android:text="@string/bettel"/>
@@ -311,6 +327,7 @@
                     android:id="@+id/editBettel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_text_selector"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="50"
@@ -342,12 +359,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="@string/klopfen"/>
 
                     <EditText
                         android:id="@+id/editKlopfen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="10"
                         android:maxEms="3"
                         android:singleLine="true"
@@ -365,12 +384,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="@string/laufende"/>
 
                     <EditText
                         android:id="@+id/editLaufende"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="10"
                         android:maxEms="3"
                         android:singleLine="true"
@@ -388,12 +409,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="@string/schneider"/>
 
                     <EditText
                         android:id="@+id/editSchneider"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="10"
                         android:maxEms="3"
                         android:singleLine="true"
@@ -411,12 +434,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="@string/schwarz"/>
 
                     <EditText
                         android:id="@+id/editSchwarz"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/button_text_selector"
                         android:text="10"
                         android:maxEms="3"
                         android:singleLine="true"

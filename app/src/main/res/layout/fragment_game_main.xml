@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:weightSum="4"
+                    android:weightSum="3"
                     android:orientation="horizontal">
 
                     <Button
@@ -80,6 +80,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:textSize="18dp"
                         android:text="@string/sauspiel"
                         android:layout_margin="2dp"
                         android:textColor="@color/button_text_selector"
@@ -90,6 +91,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:textSize="18dp"
                         android:text="@string/ramsch"
                         android:layout_margin="2dp"
                         android:textColor="@color/button_text_selector"
@@ -100,37 +102,50 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:textSize="18dp"
                         android:text="@string/solo"
                         android:layout_margin="2dp"
                         android:textColor="@color/button_text_selector"
                         android:background="#00ffffff"/>
 
-                    <LinearLayout
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:weightSum="3"
+                    android:orientation="horizontal">
+
+                    <Button
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:weightSum="1"
-                        android:orientation="horizontal">
+                        android:text="@string/wenz"
+                        android:visibility="invisible"
+                        android:layout_margin="2dp"
+                        android:textColor="@color/font_frame_active"
+                        android:background="@drawable/button_shape_round_white_border"/>
 
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="@string/wenz"
-                            android:visibility="gone"
-                            android:layout_margin="2dp"
-                            android:textColor="@color/font_frame_active"
-                            android:background="@drawable/button_shape_round_white_border"/>
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/wenz"
+                        android:visibility="invisible"
+                        android:layout_margin="2dp"
+                        android:textColor="@color/font_frame_active"
+                        android:background="@drawable/button_shape_round_white_border"/>
 
-                        <Spinner
-                            android:id="@+id/soloSpinner"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:visibility="gone">
-                        </Spinner>
-
-                    </LinearLayout>
+                    <Spinner
+                        android:id="@+id/soloSpinner"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textColor="@color/font_frame_active"
+                        android:visibility="visible"
+                        android:gravity="center_horizontal">
+                    </Spinner>
 
                 </LinearLayout>
 
@@ -186,7 +201,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:weightSum="4"
-                        android:padding="4dp"
+                        android:padding="0dp"
                         android:orientation="vertical" >
 
                         <LinearLayout
@@ -254,15 +269,14 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:weightSum="2">
+                            android:weightSum="1">
 
                             <Button
                                 android:id="@+id/buttonClear"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
-                                android:text="@string/schwarz"
-                                android:layout_margin="0dp"
+                                android:text="@string/reset"
                                 android:textColor="@color/button_text_selector"
                                 android:background="#00ffffff"/>
 

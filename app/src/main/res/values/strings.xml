@@ -56,7 +56,7 @@
 
     <string name="gewinner">Gewinner:</string>
     <string name="wahl">Wähle oben aus!</string>
-    <string name="Spielverlauf">Spielverlauf</string>
+    <string name="reset">reset</string>
 
     <string name="laufende">Laufende</string>
     <string name="schneider">Schneider</string>

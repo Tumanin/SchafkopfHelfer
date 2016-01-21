@@ -102,10 +102,10 @@ public class GameStatisticsFragment extends Fragment {
             axisValues.add(new AxisValue(i+1));
         }
         axisX.setValues(axisValues);
-        axisX.setLineColor(R.color.blue_dark);
-        axisY.setLineColor(R.color.blue_dark);
-        axisX.setTextColor(R.color.blue_dark);
-        axisY.setTextColor(R.color.blue_dark);
+        axisX.setLineColor(R.color.white);
+        axisY.setLineColor(R.color.white);
+        axisX.setTextColor(R.color.white);
+        axisY.setTextColor(R.color.white);
 
         data.setLines(lines);
 

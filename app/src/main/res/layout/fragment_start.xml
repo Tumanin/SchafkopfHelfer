@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/buttons_start_margin"
-                android:background="@color/blue_dark_wood"
+                android:background="@color/blue_light_wood"
                 android:text="@string/button_new_game"
                 android:textColor="#ffffff"/>
 
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/buttons_start_margin"
-                android:background="@color/blue_dark_wood"
+                android:background="@color/blue_light_wood"
                 android:text="@string/button_old_game"
                 android:textColor="#ffffff"/>
 
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/buttons_start_margin"
-                android:background="@color/blue_dark_wood"
+                android:background="@color/blue_light_wood"
                 android:text="Spieler"
                 android:textColor="#ffffff"/>
 
