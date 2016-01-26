@@ -46,6 +46,13 @@ public class StartFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        String title = getResources().getString(R.string.title_start_fragment);
+        activity.setToolbarTitle(title);
+    }
+
     private void setListeners(){
 
         buttonNewGame.setOnClickListener(new View.OnClickListener() {

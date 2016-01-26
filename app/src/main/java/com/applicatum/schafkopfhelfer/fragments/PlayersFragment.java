@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -95,6 +96,8 @@ public class PlayersFragment extends Fragment {
     public void onResume() {
         super.onResume();
         populatePlayers();
+        String title = getResources().getString(R.string.title_players_fragment);
+        activity.setToolbarTitle(title);
     }
 
     public void setManagePlayers(boolean managePlayers){
@@ -131,15 +134,19 @@ public class PlayersFragment extends Fragment {
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            View view = v.findViewById(R.id.playerView);
+                            CheckBox playerCheck = (CheckBox) v.findViewById(R.id.playerCheck);
                             if(!activePlayers.contains(player)){
                                 player.setState(Player.State.PLAY);
                                 player.setColor(-1);
                                 activePlayers.add(player);
-                                v.setBackgroundResource(R.drawable.user_item_frame_checked);
+                                view.setBackgroundResource(R.drawable.user_item_frame_checked);
+                                playerCheck.setChecked(true);
                             }else{
                                 activePlayers.remove(player);
                                 player.setState(Player.State.OUT);
-                                v.setBackgroundResource(R.drawable.user_item_frame);
+                                view.setBackgroundResource(R.drawable.user_item_frame);
+                                playerCheck.setChecked(false);
                             }
                         }
                     });

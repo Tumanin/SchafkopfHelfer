@@ -399,6 +399,13 @@ public class GameSettingsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        String title = getResources().getString(R.string.title_game_settings_fragment);
+        activity.setToolbarTitle(title);
+    }
+
     private void setStoredPrices(){
         /*
         radioRamsch.setChecked(mPreferenceUtils.getBoolean(PreferenceUtils.PREF_RAMSCH_PLAY));

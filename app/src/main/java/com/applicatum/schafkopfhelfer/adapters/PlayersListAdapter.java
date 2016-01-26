@@ -55,9 +55,9 @@ public class PlayersListAdapter extends BaseAdapter{
         if (convertView == null) {
             holder = new ViewHolder();
             if (!managePlayers) {
-                convertView = mInflater.inflate(R.layout.player_list_item, null);
+                convertView = mInflater.inflate(R.layout.player_list_item, parent);
             } else {
-                convertView = mInflater.inflate(R.layout.player_list_item_full, null);
+                convertView = mInflater.inflate(R.layout.player_list_item_full, parent);
             }
             holder.playerName = (TextView) convertView.findViewById(R.id.playerName);
             convertView.setTag(holder);

@@ -15,7 +15,7 @@ import com.applicatum.schafkopfhelfer.models.Player;
  */
 public class StartActivity extends AppCompatActivity {
 
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +23,14 @@ public class StartActivity extends AppCompatActivity {
 
         Player.findById(Player.class, (long)1);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
+    }
+
+    public void setToolbarTitle(String title){
+        toolbar.setTitle(title);
     }
 
     @Override
