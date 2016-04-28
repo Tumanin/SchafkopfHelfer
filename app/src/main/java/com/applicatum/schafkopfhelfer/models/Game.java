@@ -92,7 +92,7 @@ public class Game extends SugarRecord{
         }
     }
 
-    public void recordNewRound(String type, List<Player> winners, List<Player> losers, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf){
+    public void recordNewRound(String type, List<Player> winners, List<Player> losers, List<Player> aussetzer, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf){
         Log.d(TAG, "Recording new Round of type "+type+" with winners: "+winners.size()+", losers: "+losers.size()+", jungfrauen: "+jungfrauen.size()+", schneider: "+schneider+", schwarz: "+schwarz+", laufende: "+laufende+", geklopft: "+klopf);
 
         float difference = GameTypes.getValue(this, type) + laufende * GameTypes.getValue(this, Types.LAUFENDE);
@@ -144,7 +144,7 @@ public class Game extends SugarRecord{
             new PlayerRound(p, round, true, (int) (2*win), true);
         }
 
-        for(Player p : this.getActivePlayers()){
+        for(Player p : aussetzer){
             Log.d(TAG, "Reset ChangePoints of Player: "+p.getId());
             p.resetChangePoints();
         }

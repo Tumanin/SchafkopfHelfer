@@ -540,6 +540,7 @@ public class GameMainFragment extends Fragment {
 
         List<Player> winners = new ArrayList<>();
         List<Player> losers = new ArrayList<>();
+        List<Player> aussetzer = new ArrayList<>();
         List<Player> jungfrauen = new ArrayList<>();
 
         for(Player p : activity.players){
@@ -547,10 +548,12 @@ public class GameMainFragment extends Fragment {
                 winners.add(p);
             } else if(p.getState() == Player.State.PLAY){
                 losers.add(p);
+            }else if(p.getState() == Player.State.WAIT){
+                aussetzer.add(p);
             }
         }
 
-        game.recordNewRound(type, winners, losers, jungfrauen, buttonSchneider.isSelected(),
+        game.recordNewRound(type, winners, losers,aussetzer, jungfrauen, buttonSchneider.isSelected(),
                 buttonSchwarz.isSelected(), laufende, klopfen);
     }
 

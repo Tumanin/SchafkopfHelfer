@@ -127,6 +127,7 @@ public class UsersDynamicAdapter extends BaseDynamicGridAdapter {
             //view.setCardBackgroundColor(getRandomColor(player.getColor()));
             Log.d("ColorIssue", "statistic");
         }
+        Log.d("UsersDynamicAdapter", "player.getChangePoints()");
         holder.build(player.getName(), player.getPoints(), player.getChangePoints(), getState(player), player.getColor());
         return convertView;
     }

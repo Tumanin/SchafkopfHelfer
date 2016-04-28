@@ -96,16 +96,19 @@ public class GameStatisticsFragment extends Fragment {
 
             }
             Line line = new Line(values).setColor(getResources().getColor(getPlayerColor(player.getColor()))).setCubic(false);
+            line.setHasPoints(false);
             lines.add(line);
         }
         for(int i=0; i<roundCount; i++){
             axisValues.add(new AxisValue(i+1));
         }
         axisX.setValues(axisValues);
-        axisX.setLineColor(R.color.white);
+        /*
+        axisX.setLineColor(activity.getResources().getColor(R.color.white));
         axisY.setLineColor(R.color.white);
         axisX.setTextColor(R.color.white);
         axisY.setTextColor(R.color.white);
+        */
 
         data.setLines(lines);
 
