@@ -16,6 +16,7 @@ public class CustomScrollView extends ScrollView {
 
     float touchX = 0;
     float touchY = 0;
+    boolean vertical = false;
 
     ViewPager parentPager;
 
@@ -41,18 +42,24 @@ public class CustomScrollView extends ScrollView {
                 Log.d(TAG, "ACTION_DOWN");
                 touchX = ev.getX();
                 touchY = ev.getY();
+                Log.d(TAG, "ACTION_DOWN:vertical: "+vertical);
                 return super.onTouchEvent(ev);
             case MotionEvent.ACTION_MOVE:
                 Log.d(TAG, "ACTION_MOVE: "+ Math.abs(touchX-ev.getX()));
+                Log.d(TAG, "ACTION_MOVE:vertical: "+vertical);
+                if(Math.abs(touchY-ev.getY())>30){
+                    vertical = true;
+                }
                 if(Math.abs(touchX-ev.getX())<40){
                     Log.d(TAG, "ACTION_MOVE<40");
+
                     return super.onTouchEvent(ev);
                 }else{
                     Log.d(TAG, "ACTION_MOVE to pager");
-                    if (parentPager==null) {
-                        return false;
-                    } else {
+                    if(parentPager !=null && !vertical){
                         return parentPager.onTouchEvent(ev);
+                    }else{
+                        return false;
                     }
                 }
             case MotionEvent.ACTION_CANCEL:
@@ -60,6 +67,8 @@ public class CustomScrollView extends ScrollView {
                 Log.d(TAG, "ACTION_UP");
                 touchX=0;
                 touchY=0;
+                vertical = false;
+                Log.d(TAG, "ACTION_UP:vertical: "+vertical);
                 break;
         }
         //return false;

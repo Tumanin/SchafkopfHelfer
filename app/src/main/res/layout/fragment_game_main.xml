@@ -297,7 +297,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:background="#00ffffff"
+                        android:background="@drawable/button_ok"
                         android:text="OK"
                         android:textSize="36sp"
                         android:textColor="@color/font_frame_active"

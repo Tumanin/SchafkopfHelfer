@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class GamePlayers extends SugarRecord {
 
+    private static final String TAG = "GamePlayers";
     Player player;
     Game game;
     Integer seat;
@@ -26,6 +27,7 @@ public class GamePlayers extends SugarRecord {
 
     public GamePlayers(Game game, Player player){
         //GamePlayers gp = new GamePlayers();
+        Log.d(TAG, "GamePlayers create");
         this.seat = GamePlayers.getPlayers(game).size()+1;
         this.player = player;
         this.game = game;
@@ -60,6 +62,7 @@ public class GamePlayers extends SugarRecord {
     }
 
     public static List<Player> getPlayers(Game game){
+        Log.d(TAG, "getPlayers start");
         List<GamePlayers> gps = Select.from(GamePlayers.class).where(Condition.prop("game").eq(game.getId())).orderBy("seat").list();
         List<Player> players = new ArrayList<>();
         for(GamePlayers e : gps){
@@ -68,7 +71,12 @@ public class GamePlayers extends SugarRecord {
         return players;
     }
 
+    public static List<GamePlayers> getGamePlayers(Game game){
+        return Select.from(GamePlayers.class).where(Condition.prop("game").eq(game.getId())).orderBy("seat").list();
+    }
+
     public static List<Player> getActivePlayers(Game game){
+        Log.d(TAG, "getActivePlayers start");
         List<GamePlayers> gps = Select.from(GamePlayers.class).where(Condition.prop("game").eq(game.getId()), Condition.prop("active").eq(1)).orderBy("seat").list();
         List<Player> players = new ArrayList<>();
         for(GamePlayers e : gps){
@@ -78,19 +86,22 @@ public class GamePlayers extends SugarRecord {
     }
 
     public static void deleteGamePlayers(Game game){
+        Log.d(TAG, "deleteGamePlayers start");
         List<GamePlayers> gps = GamePlayers.find(GamePlayers.class, "game = ?", String.valueOf(game.getId()));
-        Log.d("GamePlayers", "calling updateActivePlayers");
+        Log.d(TAG, "calling updateActivePlayers");
         for(GamePlayers e : gps){
             e.delete();
         }
     }
 
     public static List<GamePlayers> getAll(){
+        Log.d(TAG, "getAll start");
         List<GamePlayers> gp = GamePlayers.listAll(GamePlayers.class);
         return gp;
     }
 
     public static GamePlayers getGamePlayer(Game game, Player player){
+        Log.d(TAG, "getGamePlayer start");
         return Select.from(GamePlayers.class).where(Condition.prop("game").eq(game.getId()), Condition.prop("player").eq(player.getId())).first();
     }
 }

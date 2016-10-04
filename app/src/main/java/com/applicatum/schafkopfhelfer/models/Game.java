@@ -7,6 +7,7 @@ import com.orm.SugarRecord;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,19 +27,36 @@ public class Game extends SugarRecord{
 
     long date;
     int pot;
-    @Ignore
+    //@Ignore
     //List<Player> activePlayers;
+    static Game lastGame;
+    @Ignore
+    ArrayList<Round> rounds;
+    @Ignore
+    ArrayList<PlayerRound> playerRounds;
+    @Ignore
+    ArrayList<GamePlayers> gamePlayerses;
 
     public Game(){
         //this.date = (new Date().getTime())/1000L;
         //pot = 0;
         //activePlayers = new ArrayList<>();
+//        rounds = new ArrayList<>();
+//        playerRounds = new ArrayList<>();
+//        gamePlayerses = new ArrayList<>();
+//        lastGame = this;
+        Log.d(TAG, "Game() called");
     }
 
     public static Game createGame(){
+        Log.d(TAG, "createGame() called");
         Game game = new Game();
         game.date = (new Date().getTime())/1000L;
         game.pot = 0;
+        game.rounds = new ArrayList<>();
+        game.playerRounds = new ArrayList<>();
+        game.gamePlayerses = new ArrayList<>();
+        lastGame = game;
         game.save();
         //GameTypes gt = new GameTypes();
         new GameTypes(game, Types.RAMSCH, 10);
@@ -56,8 +74,59 @@ public class Game extends SugarRecord{
         return game;
     }
 
-    public static Game lastGame(){
-        return Select.from(Game.class).orderBy("id desc").first();
+    public static Game lastGame(String caller){
+        Log.d(TAG, "lastGame start: "+caller);
+        if(lastGame != null){
+            Log.d(TAG, "lastGame already exists");
+            Log.d(TAG, "lastGame rounds size: " + lastGame.getRounds().size());
+            Log.d(TAG, "lastGame playerRounds size: "+lastGame.getPlayerRounds().size());
+            return lastGame;
+        }
+        else{
+            Log.d(TAG, "lastGame load from SQL");
+
+            Game game = Select.from(Game.class).orderBy("id desc").first();
+            List<Round> localRounds = Round.getRounds(game);
+            game.addRounds(localRounds);
+            //game.getPlayerRounds().clear();
+            for(Round round : localRounds){
+                List<PlayerRound> localPRs = PlayerRound.getPRforRound(round);
+                game.addPRs(localPRs);
+            }
+            lastGame = game;
+            return  game;
+        }
+
+    }
+
+    public ArrayList<Round> getRounds(){
+        if(rounds==null) rounds = new ArrayList<>();
+        return rounds;
+    }
+
+    public ArrayList<PlayerRound> getPlayerRounds() {
+        if(playerRounds==null) playerRounds = new ArrayList<>();
+        return playerRounds;
+    }
+
+    public void addRounds(Collection<Round> newRounds){
+        Log.d(TAG, "newRounds start");
+        if (rounds!=null) {
+            rounds.clear();
+        } else {
+
+            rounds = new ArrayList<>();
+        }
+        rounds.addAll(newRounds);
+    }
+
+    public void addPRs (Collection<PlayerRound> newPlayerRounds){
+        Log.d(TAG, "newPlayerRounds start");
+        if (playerRounds==null) {
+            playerRounds = new ArrayList<>();
+        }
+
+        playerRounds.addAll(newPlayerRounds);
     }
 
     public void updateGameTypes(HashMap<String, Integer> gameTypes){
@@ -80,14 +149,30 @@ public class Game extends SugarRecord{
     }
 
     public List<Player> getActivePlayers() {
+        Log.d(TAG, "getActivePlayers start");
+        if(gamePlayerses==null) gamePlayerses = new ArrayList<>();
+        if(gamePlayerses.size()>0){
+            Log.d(TAG, "getActivePlayers already exists");
+            List<Player> players = new ArrayList<>();
+            for(GamePlayers e : gamePlayerses){
+                players.add(e.getPlayer());
+            }
+            return players;
+        }
+        Log.d(TAG, "getActivePlayers load from SQL");
+        gamePlayerses.addAll(GamePlayers.getGamePlayers(this));
+        //lastGame = this;
         return GamePlayers.getActivePlayers(this);
     }
 
     public void updateActivePlayers(List<Player> activePlayers) {
+        Log.d(TAG, "updateActivePlayers start");
         GamePlayers.deleteGamePlayers(this);
+        gamePlayerses.clear();
         for(Player p : activePlayers){
             System.out.println(p);
             GamePlayers gp = new GamePlayers(this, p);
+            gamePlayerses.add(gp);
             gp.save();
         }
     }
@@ -117,31 +202,35 @@ public class Game extends SugarRecord{
         Log.d(TAG, "WIN: "+win);
         Log.d(TAG, "LOSE: "+lose);
 
-        if(jungfrauen != null){
+        if(jungfrauen.size()>0){
             lose += jungfrauen.size() * win / NumberOfLosers;
             for(Player e : jungfrauen){
                 winners.remove(e);
             }
         }
-        if((GameTypes.getValue(this, Types.POTT)==1)&&(type == Types.SAUSPIEL)){
+        if((GameTypes.getValue(this, Types.POTT)==1)&&(type.equals(Types.SAUSPIEL))){
             win += pot/NumberOfWinners;
         }
 
         Round round = new Round(type, laufende, klopf, schneider, schwarz, (int) Math.min(win, lose), this);
+        rounds.add(round);
 
         for(Player p : winners){
             Log.d(TAG, "Writing new Player Round for winner. Player: "+p.getId()+" round: "+round.getId()+" win: "+win+"");
-            new PlayerRound(p, round, true, (int) win, false);
+            PlayerRound playerRound = new PlayerRound(p, round, true, (int) win, false);
+            playerRounds.add(playerRound);
         }
 
         for(Player p : losers){
             Log.d(TAG, "Writing new Player Round for loser. Player: "+p.getId()+" round: "+round.getId()+" win: "+lose+"");
-            new PlayerRound(p, round, false, (int) lose, false);
+            PlayerRound playerRound = new PlayerRound(p, round, false, (int) lose, false);
+            playerRounds.add(playerRound);
         }
 
         for(Player p : jungfrauen){
             Log.d(TAG, "Writing new Player Round for Jungfrau. Player: "+p.getId()+" round: "+round.getId()+" win: "+2*win+"");
-            new PlayerRound(p, round, true, (int) (2*win), true);
+            PlayerRound playerRound = new PlayerRound(p, round, true, (int) (2*win), true);
+            playerRounds.add(playerRound);
         }
 
         for(Player p : aussetzer){
@@ -152,16 +241,58 @@ public class Game extends SugarRecord{
         this.save();
     }
 
-    public HashMap<Player, ArrayList<String>> getRoundsTable(){
+    private PlayerRound getPRLocal(Round round, Player player){
+        Log.d(TAG, "getPRLocal: start. Round: "+round.getId()+"; player: "+player.getName());
+        if(playerRounds == null) playerRounds = new ArrayList<>();
+        if (playerRounds.size()>0) {
+            Log.d(TAG, "getPRLocal: playerRounds already exists");
+            for(PlayerRound playerRound : playerRounds){
+                if(playerRound.getRound().getId()==round.getId() && playerRound.getPlayer().getId()==player.getId()) return playerRound;
+            }
+            Log.d(TAG, "getPRLocal: playerRounds not found");
+        } else {
+            Log.d(TAG, "getPRLocal: playerRounds load from SQL");
+
+            if(this.rounds.size()>0){
+
+                Log.d(TAG, "getRoundsTable: rounds already exists");
+            }else{
+                Log.d(TAG, "getRoundsTable: rounds load from SQL");
+
+                rounds.addAll(Round.getRounds(this));
+            }
+            for(Round round1:rounds){
+                playerRounds.addAll(PlayerRound.getPRforRound(round1));
+            }
+
+            for(PlayerRound playerRound : playerRounds){
+                if(playerRound.getRound()==round && playerRound.getPlayer()==player) return playerRound;
+            }
+        }
+        return null;
+    }
+
+    public HashMap<Player, ArrayList<String>> getRoundsTable(String caller){
+        Log.d(TAG, "getRoundsTable: start: "+caller);
         HashMap<Player, ArrayList<String>> hm = new HashMap<>();
-        List<Round> rounds = Round.getRounds(this);
+        if(rounds==null) rounds = new ArrayList<>();
+        if(rounds.size()>0){
+            //localRounds = this.rounds;
+            Log.d(TAG, "getRoundsTable: rounds already exists");
+        }else{
+            Log.d(TAG, "getRoundsTable: rounds load from SQL");
+
+            rounds.addAll(Round.getRounds(this));
+        }
         for(Player p : this.getActivePlayers()){
             ArrayList<String> values = new ArrayList<>();
             for(Round r : rounds){
-                PlayerRound pr = PlayerRound.getPR(r, p);
+                PlayerRound pr = getPRLocal(r, p);
                 if(pr != null){
+                    Log.d(TAG, "getRoundsTable: pr points: "+pr.getGamePoints());
                     values.add(String.valueOf(pr.getGamePoints()));
                 } else {
+                    Log.d(TAG, "getRoundsTable: pr is null");
                     values.add("-");
                 }
             }
@@ -195,6 +326,13 @@ public class Game extends SugarRecord{
         int seat = gp1.getSeat();
         gp1.setSeat(gp2.getSeat());
         gp2.setSeat(seat);
+    }
+
+    public void deleteRound(Round round){
+        for (PlayerRound playerRound : playerRounds){
+            if(playerRound.getRound()==round) playerRounds.remove(playerRound);
+        }
+        rounds.remove(round);
     }
 
 }

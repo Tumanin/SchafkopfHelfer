@@ -71,12 +71,12 @@ public class PlayersFragment extends Fragment {
                 if (activePlayers.size() > 3 && activePlayers.size() < 8) {
                     PlayersList.getInstance().setList(activePlayers);
                     Log.d(TAG, "calling game");
-                    Game game = Game.lastGame();
+                    Game game = Game.lastGame(TAG);
                     Log.d(TAG, "calling updateActivePlayers");
                     game.updateActivePlayers(activePlayers);
                     activePlayers.clear();
 
-                    game = Game.lastGame();
+                    game = Game.lastGame(TAG);
 
                     Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -109,7 +109,7 @@ public class PlayersFragment extends Fragment {
         listContainer.removeAllViews();
         Game game = null;
         if (!managePlayers) {
-            game = Game.lastGame();
+            game = Game.lastGame(TAG);
             Log.d(TAG, "game id: "+game.getId());
         }
         if (game!=null) {

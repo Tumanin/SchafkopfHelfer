@@ -119,9 +119,9 @@ public class GameTableFragment extends Fragment {
     }
     public void updateTable(){
         Log.d(TAG, "updateTable");
-        Game game = Game.lastGame();
+        Game game = Game.lastGame(TAG);
         HashMap<Player, ArrayList<String>> tableMap = new HashMap<>();
-        HashMap<Player, ArrayList<String>> tableMapUnsorted = game.getRoundsTable();
+        HashMap<Player, ArrayList<String>> tableMapUnsorted = game.getRoundsTable(TAG);
         if (tableMapUnsorted!=null) {
             List<Player> setPlayers = new ArrayList<>();
             setPlayers.addAll(tableMapUnsorted.keySet());

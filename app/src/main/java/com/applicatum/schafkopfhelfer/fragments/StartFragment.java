@@ -19,6 +19,8 @@ import com.applicatum.schafkopfhelfer.models.Game;
 
 public class StartFragment extends Fragment {
 
+    private static final String TAG = "StartFragment";
+
     private View view;
     private StartActivity activity;
 
@@ -68,7 +70,7 @@ public class StartFragment extends Fragment {
             public void onClick(View v) {
                 //GameMainFragment fragment = new GameMainFragment();
                 //activity.startFragment(fragment, true);
-                Game game = Game.lastGame();
+                Game game = Game.lastGame(TAG);
                 if (game!=null) {
                     if (game.getActivePlayers().size()>0) {
                         Intent intent = new Intent(activity.getBaseContext(), MainActivity.class);

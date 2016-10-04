@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class PlayerRound extends SugarRecord {
 
+    private static final String TAG = "PlayerRound";
     Player player;
     Round round;
     boolean gewonnen;
@@ -28,6 +29,10 @@ public class PlayerRound extends SugarRecord {
 
     public Round getRound() {
         return round;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public PlayerRound(Player player, Round round, boolean gewonnen, int changePoints, boolean jungfrau){
@@ -47,12 +52,18 @@ public class PlayerRound extends SugarRecord {
     }
 
     public static void deletePlayerRound(Round r) {
-        Log.d("PlayerRound", "DeletePlayerRounds for round " + r.getId() + " called");
+        Log.d(TAG, "DeletePlayerRounds for round " + r.getId() + " called");
         PlayerRound.deleteAll(PlayerRound.class, "round = ?", String.valueOf(r.getId()));
     }
 
     public static PlayerRound getPR(Round r, Player p){
+        Log.d(TAG, "getPR start");
         return Select.from(PlayerRound.class).where(Condition.prop("round").eq(r.getId()), Condition.prop("player").eq(p.getId())).first();
+    }
+
+    public static List<PlayerRound> getPRforRound(Round round){
+        Log.d(TAG, "getPRforRound start");
+        return Select.from(PlayerRound.class).where(Condition.prop("round").eq(round.getId())).orderBy("id").list();
     }
 
     public int getGamePoints() {

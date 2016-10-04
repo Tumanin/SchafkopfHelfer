@@ -25,6 +25,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     SectionsPagerAdapter mSectionsPagerAdapter;
     private CirclePageIndicator circlePageIndicator;
     ViewPager mViewPager;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         //toolbar = (Toolbar) findViewById(R.id.toolbar);
         //toolbar.setTitle(getResources().getString(R.string.title_game_main_fragment));
         //setSupportActionBar(toolbar);
-        players = Game.lastGame().getActivePlayers();
+        players = Game.lastGame(TAG).getActivePlayers();
         mActivity = this;
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         circlePageIndicator.setViewPager(mViewPager);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());

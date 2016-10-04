@@ -1,5 +1,7 @@
 package com.applicatum.schafkopfhelfer.fragments;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,8 @@ import com.applicatum.schafkopfhelfer.models.Game;
 import com.applicatum.schafkopfhelfer.models.GamePlayers;
 import com.applicatum.schafkopfhelfer.models.Player;
 import com.applicatum.schafkopfhelfer.utils.PlayersList;
+import com.applicatum.schafkopfhelfer.utils.ProgressDialogHelper;
+import com.applicatum.schafkopfhelfer.utils.RecordRoundListener;
 import com.applicatum.schafkopfhelfer.utils.Types;
 
 import org.askerov.dynamicgrid.DynamicGridView;
@@ -33,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GameMainFragment extends Fragment {
+public class GameMainFragment extends Fragment implements RecordRoundListener {
 
     private static final String TAG = "GameMainFragment";
 
@@ -98,7 +102,7 @@ public class GameMainFragment extends Fragment {
 
 
         activity = (MainActivity) getActivity();
-        game = Game.lastGame();
+        game = Game.lastGame(TAG);
 
         if(game==null){
             Log.d(TAG, "no last game found");
@@ -145,11 +149,13 @@ public class GameMainFragment extends Fragment {
             aussetzerLayout.setVisibility(View.GONE);
             gameLayout.setVisibility(View.VISIBLE);
         } else{
+            aussetzerCount = 0;
             winnerCount = 0;
             for(Player player : activity.players){
                 if(player.getState()== Player.State.WIN){
                     player.setState(Player.State.PLAY);
                 }
+                if(player.getState()== Player.State.WAIT) aussetzerCount += 1;
             }
             aussetzer=true;
             aussetzerLayout.setVisibility(View.VISIBLE);
@@ -346,41 +352,13 @@ public class GameMainFragment extends Fragment {
                     Toast.makeText(activity, getResources().getString(R.string.text_sau_2_laufende), Toast.LENGTH_LONG).show();
 
                 }else{
+//                    ProgressDialog dialog = new ProgressDialog(activity);
+//                    dialog.setMessage("Please wait...");
+//                    dialog.show();
+                    ProgressDialogHelper.getInstance().showProgress(activity);
+                    Log.d(TAG, "showProgress");
                     recordNewRound();
-                    activity.updateTable();
-                    laufende = 0;
-                    klopfen = 0;
-                    buttonLaufende.setText(String.valueOf(laufende));
-                    buttonKlopfen.setText(String.valueOf(klopfen));
 
-                    buttonSau.setEnabled(false);
-                    buttonSau.setSelected(false);
-                    buttonRamsch.setEnabled(false);
-                    buttonRamsch.setSelected(false);
-                    buttonSolo.setEnabled(false);
-                    buttonSolo.setSelected(false);
-
-                    buttonSchneider.setSelected(false);
-                    buttonSchwarz.setSelected(false);
-
-                    if(activity.players!=null){
-                        String precedingState = activity.players.get(activity.players.size()-1).getState().name();
-                        for(Player player : activity.players){
-							String newState = Player.State.PLAY.name();
-                            if(precedingState.equals(Player.State.WAIT.name())){
-                                newState = Player.State.WAIT.name();
-                            }
-                            precedingState = player.getState().name();
-							if(newState.equals(Player.State.WAIT.name())){
-                                player.setState(Player.State.WAIT);
-                            }else{
-                                player.setState(Player.State.PLAY);
-                            }
-                        }
-                    }
-                    winnerCount=0;
-                    usersDynamicAdapter.set(activity.players);
-                    usersDynamicAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -552,13 +530,98 @@ public class GameMainFragment extends Fragment {
                 aussetzer.add(p);
             }
         }
-
-        game.recordNewRound(type, winners, losers,aussetzer, jungfrauen, buttonSchneider.isSelected(),
-                buttonSchwarz.isSelected(), laufende, klopfen);
+        RecordRoundAsyncTask task = new RecordRoundAsyncTask(type, winners, losers,aussetzer, jungfrauen, buttonSchneider.isSelected(),
+                buttonSchwarz.isSelected(), laufende, klopfen, this);
+        task.execute();
+//        game.recordNewRound(type, winners, losers,aussetzer, jungfrauen, buttonSchneider.isSelected(),
+//                buttonSchwarz.isSelected(), laufende, klopfen);
     }
 
     public void updateAdapter(){
         usersDynamicAdapter.set(activity.players);
         usersDynamicAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccess() {
+
+        activity.updateTable();
+        laufende = 0;
+        klopfen = 0;
+        buttonLaufende.setText(String.valueOf(laufende));
+        buttonKlopfen.setText(String.valueOf(klopfen));
+
+        buttonSau.setEnabled(false);
+        buttonSau.setSelected(false);
+        buttonRamsch.setEnabled(false);
+        buttonRamsch.setSelected(false);
+        buttonSolo.setEnabled(false);
+        buttonSolo.setSelected(false);
+
+        buttonSchneider.setSelected(false);
+        buttonSchwarz.setSelected(false);
+
+        if(activity.players!=null){
+            String precedingState = activity.players.get(activity.players.size()-1).getState().name();
+            for(Player player : activity.players){
+                String newState = Player.State.PLAY.name();
+                if(precedingState.equals(Player.State.WAIT.name())){
+                    newState = Player.State.WAIT.name();
+                }
+                precedingState = player.getState().name();
+                if(newState.equals(Player.State.WAIT.name())){
+                    player.setState(Player.State.WAIT);
+                }else{
+                    player.setState(Player.State.PLAY);
+                }
+            }
+        }
+        winnerCount=0;
+        usersDynamicAdapter.set(activity.players);
+        usersDynamicAdapter.notifyDataSetChanged();
+
+        Log.d(TAG, "dismissProgress");
+
+        ProgressDialogHelper.getInstance().dismissProgress();
+    }
+
+    private class RecordRoundAsyncTask extends AsyncTask<Void, Void, Void>{
+
+        String type;
+        List<Player> winners;
+        List<Player> losers;
+        List<Player> aussetzer;
+        List<Player> jungfrauen;
+        boolean schneider;
+        boolean schwarz;
+        int laufende;
+        int klopf;
+        RecordRoundListener listener;
+
+
+        public RecordRoundAsyncTask(String type, List<Player> winners, List<Player> losers, List<Player> aussetzer, List<Player> jungfrauen, boolean schneider, boolean schwarz, int laufende, int klopf, RecordRoundListener listener) {
+            this.type = type;
+            this.winners = winners;
+            this.losers = losers;
+            this.aussetzer = aussetzer;
+            this.jungfrauen = jungfrauen;
+            this.schneider = schneider;
+            this.schwarz = schwarz;
+            this.laufende = laufende;
+            this.klopf = klopf;
+            this.listener = listener;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            game.recordNewRound(type, winners, losers,aussetzer, jungfrauen, schneider,
+                    schwarz, laufende, klopfen);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            listener.onSuccess();
+        }
     }
 }

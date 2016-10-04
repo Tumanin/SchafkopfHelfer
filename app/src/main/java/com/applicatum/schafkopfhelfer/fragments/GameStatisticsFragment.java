@@ -54,7 +54,7 @@ public class GameStatisticsFragment extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_statistics, container, false);
         chartView = (LineChartView) mRootView.findViewById(R.id.chart);
         gridView = (DynamicGridView) mRootView.findViewById(R.id.usersGrid);
-        game = Game.lastGame();
+        game = Game.lastGame(TAG);
         //setChartLines();
         updateChart();
         setGridView();
@@ -68,8 +68,8 @@ public class GameStatisticsFragment extends Fragment {
     }
 
     public void updateChart(){
-        Game game = Game.lastGame();
-        HashMap<Player, ArrayList<String>> tableMap = game.getRoundsTable();
+        Game game = Game.lastGame(TAG);
+        HashMap<Player, ArrayList<String>> tableMap = game.getRoundsTable(TAG);
 
         List<Player> activePlayers = new ArrayList<>();
         activePlayers.addAll(tableMap.keySet());

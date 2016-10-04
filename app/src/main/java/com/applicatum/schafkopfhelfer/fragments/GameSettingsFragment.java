@@ -26,6 +26,7 @@ import java.util.HashMap;
 
 public class GameSettingsFragment extends Fragment {
 
+    private static final String TAG = "GameSettingsFragment";
     FloatingActionButton fabGo;
     View mRootView;
     StartActivity activity;
@@ -95,7 +96,7 @@ public class GameSettingsFragment extends Fragment {
 
         mPreferenceUtils = PreferenceUtils.getInstance(getActivity());
 
-        game = Game.lastGame();
+        game = Game.lastGame(TAG);
 
         if(game==null){
             game = Game.createGame();

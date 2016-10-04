@@ -72,6 +72,7 @@ public class Round extends SugarRecord{
             Game game = r.getGame();
             PlayerRound.deletePlayerRound(r);
             Log.d("Round", "Delete Round "+r.getId());
+            game.deleteRound(r);
             r.delete();
             List<Player> activePlayers = game.getActivePlayers();
             for(Player p : activePlayers){
@@ -87,6 +88,7 @@ public class Round extends SugarRecord{
     }
 
     public static List<Round> getRounds(Game game){
+        Log.d("Round", "getLastRound called for game " + game.getId());
         return Select.from(Round.class).where(Condition.prop("game").eq(game.getId())).orderBy("id").list();
     }
 
