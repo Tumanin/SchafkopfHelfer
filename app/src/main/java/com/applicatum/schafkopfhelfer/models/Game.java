@@ -86,12 +86,14 @@ public class Game extends SugarRecord{
             Log.d(TAG, "lastGame load from SQL");
 
             Game game = Select.from(Game.class).orderBy("id desc").first();
-            List<Round> localRounds = Round.getRounds(game);
-            game.addRounds(localRounds);
-            //game.getPlayerRounds().clear();
-            for(Round round : localRounds){
-                List<PlayerRound> localPRs = PlayerRound.getPRforRound(round);
-                game.addPRs(localPRs);
+            if (game != null) {
+                List<Round> localRounds = Round.getRounds(game);
+                game.addRounds(localRounds);
+                //game.getPlayerRounds().clear();
+                for(Round round : localRounds){
+                    List<PlayerRound> localPRs = PlayerRound.getPRforRound(round);
+                    game.addPRs(localPRs);
+                }
             }
             lastGame = game;
             return  game;
